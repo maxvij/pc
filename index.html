@@ -1,0 +1,673 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Compact Gaming PC Plan</title>
+<meta name="description" content="Parts list with GPU and CPU options for a compact 1440p ray-tracing gaming PC in a silver FormD T1.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: oklch(97% 0.006 250);
+    --bg-elev: oklch(99.5% 0.003 250);
+    --ink: oklch(22% 0.01 250);
+    --ink-2: oklch(45% 0.01 250);
+    --ink-3: oklch(50% 0.01 250);
+    --line: oklch(89% 0.006 250);
+    --ok: oklch(47% 0.13 150);
+    --ok-soft: oklch(94% 0.05 150);
+    --next: oklch(49% 0.13 250);
+    --next-soft: oklch(94% 0.04 250);
+    --later: oklch(50% 0.01 250);
+    --later-soft: oklch(93% 0.005 250);
+    --last: oklch(50% 0.13 60);
+    --last-soft: oklch(95% 0.05 75);
+    --serif: "Instrument Serif", Georgia, serif;
+    --sans: "Inter Tight", system-ui, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, monospace;
+    --gutter: clamp(16px, 4vw, 40px);
+    --r: 12px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: oklch(17% 0.006 250); --bg-elev: oklch(21% 0.006 250);
+      --ink: oklch(94% 0.005 250); --ink-2: oklch(76% 0.008 250); --ink-3: oklch(68% 0.008 250);
+      --line: oklch(30% 0.008 250);
+      --ok: oklch(76% 0.13 150); --ok-soft: oklch(27% 0.05 150);
+      --next: oklch(76% 0.11 250); --next-soft: oklch(27% 0.05 250);
+      --later: oklch(72% 0.01 250); --later-soft: oklch(27% 0.005 250);
+      --last: oklch(80% 0.13 70); --last-soft: oklch(28% 0.05 70);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: oklch(17% 0.006 250); --bg-elev: oklch(21% 0.006 250);
+    --ink: oklch(94% 0.005 250); --ink-2: oklch(76% 0.008 250); --ink-3: oklch(68% 0.008 250);
+    --line: oklch(30% 0.008 250);
+    --ok: oklch(76% 0.13 150); --ok-soft: oklch(27% 0.05 150);
+    --next: oklch(76% 0.11 250); --next-soft: oklch(27% 0.05 250);
+    --later: oklch(72% 0.01 250); --later-soft: oklch(27% 0.005 250);
+    --last: oklch(80% 0.13 70); --last-soft: oklch(28% 0.05 70);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 400 1rem/1.55 var(--sans); -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-underline-offset: 3px; text-decoration-color: var(--ink-3); }
+  a:hover { color: var(--next); }
+  .wrap { max-width: 920px; margin: 0 auto; padding: 0 var(--gutter); }
+  header { padding: clamp(2.5rem, 6vw, 4.5rem) 0 1.5rem; }
+  .kicker { font: 500 0.78rem/1 var(--mono); letter-spacing: 0.01em; color: var(--ink-3); }
+  h1 { font: 400 clamp(2.4rem, 1.6rem + 3.5vw, 4rem)/1.02 var(--serif); margin: 0.8rem 0; letter-spacing: -0.01em; }
+  h2 { font: 400 1.7rem/1.1 var(--serif); margin: 2.6rem 0 0.4rem; }
+  .sub { color: var(--ink-2); margin: 0 0 0.9rem; max-width: 66ch; font-size: 0.95rem; }
+  .lede { color: var(--ink-2); max-width: 60ch; margin: 0; }
+  .tablewrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--r); background: var(--bg-elev); }
+  table { width: 100%; border-collapse: collapse; min-width: 640px; font-size: 0.93rem; }
+  th, td { text-align: left; padding: 0.75rem 0.9rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font: 500 0.78rem/1.2 var(--mono); letter-spacing: 0.01em; color: var(--ink-3); }
+  tr:last-child td { border-bottom: 0; }
+  td.num { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  td .why { display: block; color: var(--ink-3); font-size: 0.85em; margin-top: 0.15rem; }
+  tr.pick td { background: color-mix(in oklch, var(--next-soft) 60%, var(--bg-elev)); }
+  .pill { display: inline-block; font: 500 0.78rem/1 var(--mono); letter-spacing: 0.01em; padding: 0.3em 0.6em; border-radius: 999px; white-space: nowrap; }
+  .ok { background: var(--ok-soft); color: var(--ok); }
+  .next { background: var(--next-soft); color: var(--next); }
+  .later { background: var(--later-soft); color: var(--later); }
+  .last { background: var(--last-soft); color: var(--last); }
+  ul.recs { margin: 0; padding: 0; list-style: none; display: grid; gap: 0.7rem; }
+  ul.recs li { background: var(--bg-elev); border: 1px solid var(--line); border-radius: var(--r); padding: 0.9rem 1rem; }
+  ul.recs strong { font-weight: 600; }
+  .small { color: var(--ink-3); font-size: 0.85rem; }
+  footer { margin: 3rem 0; padding-top: 1.2rem; border-top: 1px solid var(--line); color: var(--ink-3); font-size: 0.85rem; }
+
+  /* Hero */
+  .hero { display: grid; grid-template-columns: 1fr; gap: 1.5rem; align-items: center; }
+  @media (min-width: 760px) { .hero { grid-template-columns: 1.05fr 1fr; } }
+  .stage { margin: 0; border-radius: 18px; overflow: hidden; background: #000; aspect-ratio: 4 / 3; box-shadow: 0 1px 0 var(--line), 0 24px 48px -28px oklch(0% 0 0 / 0.55); }
+  .stage img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .progress { margin-top: 1.4rem; max-width: 26rem; }
+  .progress-meta { display: flex; justify-content: space-between; font: 500 0.78rem/1 var(--mono); letter-spacing: 0.01em; color: var(--ink-3); margin-bottom: 0.5rem; }
+  .progress-meta b { color: var(--ok); font-weight: 500; }
+  .bar { height: 6px; border-radius: 999px; background: var(--line); overflow: hidden; }
+  .bar span { display: block; height: 100%; width: 100%; background: var(--ok); border-radius: inherit; transform-origin: left; transform: scaleX(var(--p, 0.333)); transition: transform 600ms cubic-bezier(0.16, 1, 0.3, 1); animation: grow 900ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+  @keyframes grow { from { transform: scaleX(0); } }
+  @media (prefers-reduced-motion: reduce) { .bar span { animation: none; } }
+
+  /* Section head with toggle */
+  .section-head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 0.8rem; margin: 2.6rem 0 0.9rem; }
+  .section-head h2 { margin: 0; }
+  .seg { display: inline-flex; padding: 3px; border: 1px solid var(--line); border-radius: 999px; background: var(--bg-elev); }
+  .seg button { font: 500 0.78rem/1 var(--mono); letter-spacing: 0.01em; color: var(--ink-3); background: none; border: 0; padding: 0.55em 0.95em; border-radius: 999px; cursor: pointer; transition: background-color 150ms, color 150ms; }
+  .seg button:hover { color: var(--ink); }
+  .seg button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+  .seg button:focus-visible { outline: 2px solid var(--next); outline-offset: 2px; }
+  .note { display: none; color: var(--ink-3); font-size: 0.8rem; line-height: 1.4; margin-top: 0.15rem; }
+  [data-view="detailed"] .note { display: block; }
+
+  /* Cost over time: same ledger geometry as the parts list */
+  .ledger { --price-col: 6rem; border: 1px solid var(--line); border-radius: var(--r); background: var(--bg-elev); }
+  .ledger-row { display: grid; grid-template-columns: minmax(0, 1fr) var(--price-col); column-gap: 1rem; align-items: baseline; padding: 0.85rem 1rem; border-bottom: 1px solid var(--line); font-size: 0.95rem; }
+  .ledger-row:last-child { border-bottom: 0; }
+  .ledger-row .amount { font: 400 0.88rem/1.45rem var(--mono); color: var(--ink); text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .ledger-row .desc { display: inline; margin-left: 0.4rem; }
+  .ledger-row.slider { grid-template-columns: auto minmax(0, 1fr) var(--price-col); align-items: center; background: var(--bg); }
+  .ledger-row.slider label { font-weight: 500; }
+  .ledger-row.slider output { font: 400 0.88rem/1.45rem var(--mono); text-align: right; font-variant-numeric: tabular-nums; }
+  input[type="range"] { width: 100%; accent-color: var(--next); cursor: pointer; }
+  input[type="range"]:focus-visible { outline: 2px solid var(--next); outline-offset: 4px; }
+  @media (max-width: 560px) {
+    .ledger { --price-col: 5.2rem; }
+    .ledger-row { padding: 0.8rem 0.9rem; }
+    .ledger-row .desc { display: block; margin-left: 0; }
+    .ledger-row.slider { grid-template-columns: minmax(0, 1fr) var(--price-col); row-gap: 0.4rem; }
+    .ledger-row.slider input { grid-column: 1 / -1; grid-row: 2; }
+  }
+
+  /* Top bar with currency switch */
+  .topbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.8rem 1rem; padding-top: clamp(1.25rem, 3vw, 2rem); }
+  header.hero { padding-top: clamp(1.25rem, 3.5vw, 2.5rem); }
+
+  /* Sticky totals bar: same inner padding as list rows, so "still to pay" lands in the price column */
+  .paybar { position: sticky; bottom: 0; z-index: 5; margin: 0; background: var(--bg-elev); border: 1px solid var(--line); border-radius: 0 0 var(--r) var(--r); transition: box-shadow 200ms; }
+  /* While floating at the window edge: square corners, a soft upward shadow, nothing showing beneath */
+  .paybar.is-stuck { border-radius: 0; box-shadow: 0 -12px 24px -20px oklch(0% 0 0 / 0.45); }
+  /* Paid share of the build, drawn over the bar's top border */
+  .pay-progress { position: absolute; top: -1px; left: -1px; right: -1px; height: 2px; overflow: hidden; pointer-events: none; }
+  .pay-progress span { display: block; height: 100%; background: var(--ok); transform-origin: left; transform: scaleX(var(--paid, 0)); transition: transform 600ms cubic-bezier(0.16, 1, 0.3, 1); }
+  @media (prefers-reduced-motion: reduce) { .pay-progress span { transition: none; } }
+  .paybar-sentinel { height: 1px; margin-bottom: 0.75rem; }
+  #checklist { border-radius: var(--r) var(--r) 0 0; border-bottom: 0; }
+  .paybar dl { margin: 0; display: grid; grid-template-columns: auto auto 1fr; column-gap: 1.75rem; align-items: baseline; padding: 0.85rem 1rem; }
+  .paybar .pair { display: flex; gap: 0.6rem; align-items: baseline; }
+  .paybar dt { font-size: 0.82rem; color: var(--ink-3); }
+  .paybar dd { margin: 0; font: 400 0.88rem/1.45rem var(--mono); color: var(--ink); text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .paybar .due { justify-self: end; }
+  .paybar .due dt { color: var(--ink); font-weight: 500; }
+
+  /* Parts list: a ledger. Every price sits in one right-aligned column. */
+  ol.checklist { --price-col: 6rem; --share-col: 4rem; list-style: none; margin: 0; padding: 0; border: 1px solid var(--line); border-radius: var(--r); background: var(--bg-elev); }
+  ol.checklist > li { display: grid; grid-template-columns: 1.4rem 5rem minmax(0, 1fr); column-gap: 0.9rem; padding: 0.85rem 1rem; border-bottom: 1px solid var(--line); }
+  ol.checklist > li:last-child { border-bottom: 0; }
+  .tick { width: 1.25rem; height: 1.25rem; margin: 0.08rem 0 0 -0.05rem; padding: 0; border: 0; background: none; border-radius: 50%; display: block; color: inherit; }
+  button.tick { cursor: pointer; }
+  button.tick:focus-visible { outline: 2px solid var(--next); outline-offset: 3px; }
+  .tick svg { display: block; width: 100%; height: 100%; overflow: visible; }
+  .tick circle { fill: transparent; stroke: var(--ink-2); stroke-width: 1.5; transition: fill 220ms ease-out, stroke 220ms ease-out; }
+  .tick path { fill: none; stroke: var(--bg-elev); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 13; stroke-dashoffset: 13; transition: stroke-dashoffset 320ms cubic-bezier(0.16, 1, 0.3, 1) 90ms; }
+  button.tick:hover circle { stroke: var(--ok); fill: var(--ok-soft); }
+  li.is-next:not(.is-bought) .tick circle { stroke: var(--next); stroke-dasharray: 3 2.6; }
+  li.done .tick circle, li.is-bought .tick circle { fill: var(--ok); stroke: var(--ok); stroke-dasharray: none; }
+  li.done .tick path, li.is-bought .tick path { stroke-dashoffset: 0; }
+  .tick.pop { animation: tick-pop 420ms cubic-bezier(0.34, 1.56, 0.64, 1); }
+  @keyframes tick-pop { 0% { transform: scale(1); } 35% { transform: scale(0.82); } 70% { transform: scale(1.18); } 100% { transform: scale(1); } }
+  li.is-bought .opt:not(:has(input:checked)) { display: none; }
+  li.is-bought .opt { cursor: default; }
+  li.is-bought .opt:hover { background: none; }
+  li.is-bought .opt input { visibility: hidden; }
+
+  /* Share of the whole build, as a quiet bar left of each price */
+  .share { align-self: start; margin-top: calc(0.725rem - 2px); height: 4px; border-radius: 2px; background: var(--line); overflow: hidden; }
+  .share i { display: block; height: 100%; background: var(--ink-3); opacity: 0.55; border-radius: inherit; transform-origin: left; transform: scaleX(var(--s, 0)); transition: transform 450ms cubic-bezier(0.16, 1, 0.3, 1), opacity 200ms; }
+  .opt:has(input:checked) .share i { background: var(--next); opacity: 1; }
+  li.done .share i, li.is-bought .opt .share i { background: var(--ok); opacity: 1; }
+  @media (prefers-reduced-motion: reduce) { .share i { transition: none; } }
+  li.is-bought .opt .name { font-weight: 400; color: var(--ink); }
+  li.is-bought .opt .amount { color: var(--ink-2); }
+  li.is-bought .options { animation: settle 360ms ease-out; }
+  @keyframes settle { from { opacity: 0.4; } to { opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) {
+    .tick circle, .tick path { transition: none; }
+    .tick.pop, li.is-bought .options { animation: none; }
+  }
+  .cat { font-weight: 500; font-size: 0.92rem; line-height: 1.45rem; }
+  .cat small { display: block; font-weight: 400; font-size: 0.8rem; line-height: 1.3; color: var(--ink-3); }
+
+  .line { display: grid; grid-template-columns: minmax(0, 1fr) var(--share-col) var(--price-col); column-gap: 0.7rem; align-items: baseline; }
+  .line .name { font-size: 0.95rem; line-height: 1.45rem; }
+  .line .name a { text-decoration: none; }
+  .line .name a:hover { text-decoration: underline; }
+  .desc { display: block; font-size: 0.82rem; line-height: 1.35; color: var(--ink-3); }
+  .more { display: none; }
+  [data-view="detailed"] .more { display: inline; }
+  .amount { font: 400 0.88rem/1.45rem var(--mono); color: var(--ink); text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  li.done .amount { color: var(--ink-2); }
+  li.done > .line { padding-left: 1.85rem; } /* radio column + gap, so names align with option names */
+
+  /* Radio rows */
+  .options { display: grid; gap: 0.1rem; margin: 0; }
+  .opt { display: grid; grid-template-columns: 1.15rem minmax(0, 1fr) var(--share-col) var(--price-col); column-gap: 0.7rem; align-items: baseline; margin: 0 -0.5rem; padding: 0.4rem 0.5rem; border-radius: 8px; cursor: pointer; transition: background-color 150ms; }
+  .opt + .opt { margin-top: 0; }
+  .opt:hover { background: var(--bg); }
+  .opt input { appearance: none; -webkit-appearance: none; margin: 0; width: 1rem; height: 1rem; border: 1.5px solid var(--ink-2); border-radius: 50%; background: var(--bg-elev); transform: translateY(0.15rem); cursor: pointer; transition: border-width 150ms, border-color 150ms; }
+  .opt input:checked { border: 5px solid var(--next); }
+  .opt input:focus-visible { outline: 2px solid var(--next); outline-offset: 2px; }
+  .opt .text { min-width: 0; }
+  .opt .name { display: block; font-size: 0.95rem; line-height: 1.45rem; color: var(--ink-2); }
+  .opt:has(input:checked) .name { color: var(--ink); font-weight: 500; }
+  .opt .amount { color: var(--ink-2); }
+  .opt:has(input:checked) .amount { color: var(--ink); }
+  .opt .name a { text-decoration: none; }
+  .opt .name a:hover { text-decoration: underline; }
+
+  @media (max-width: 560px) {
+    ol.checklist { --price-col: 5.2rem; --share-col: 2rem; }
+    ol.checklist > li { grid-template-columns: 1.4rem minmax(0, 1fr); column-gap: 0.7rem; row-gap: 0.35rem; padding: 0.8rem 0.9rem; }
+    ol.checklist > li > .cat { grid-column: 2; }
+    ol.checklist > li > .line, ol.checklist > li > .options { grid-column: 2; }
+    ol.checklist > li.part > .options { grid-column: 1 / -1; }
+    ol.checklist > li.part .opt { grid-template-columns: 1.4rem minmax(0, 1fr) var(--share-col) var(--price-col); }
+    li.done > .line { padding-left: 0; }
+    .paybar dl { grid-template-columns: 1fr auto; row-gap: 0.1rem; padding: 0.75rem 0.9rem; }
+    .paybar .due { grid-column: 2; grid-row: 1 / span 2; align-self: end; flex-direction: column; align-items: flex-end; gap: 0; }
+    .paybar .pair:not(.due) { display: grid; grid-template-columns: 5.6rem auto; }
+  }
+  @media print {
+    @page { margin: 12mm; }
+    body { font-size: 0.9rem; }
+    header { padding: 0 0 1rem; }
+    h2 { margin-top: 1.6rem; }
+    th, td { padding: 0.55rem 0.8rem; }
+    tr, ul.recs li { break-inside: avoid; }
+    footer { margin: 1.5rem 0 0; padding-top: 0.8rem; }
+    .seg { display: none; }
+    .note { display: block; }
+  }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <div class="topbar">
+    <div class="kicker">Compact gaming PC · Auckland · updated 6 Oct 2026</div>
+    <div class="seg" role="group" aria-label="Currency">
+      <button type="button" data-currency="NZD" aria-pressed="true">NZD</button>
+      <button type="button" data-currency="EUR" aria-pressed="false">EUR</button>
+    </div>
+  </div>
+  <header class="hero">
+    <div>
+      <h1>Silver T1, native 1440p, ray tracing on.</h1>
+      <p class="lede">A 10-litre build bought one part at a time. Prices are NZ, GST included. Re-check before buying.</p>
+      <div class="progress" id="progress" role="img" aria-label="Build progress: 3 of 9 parts done">
+        <div class="progress-meta"><span>Build progress</span><span><b id="progress-count">3</b> / <span id="progress-total">9</span> parts</span></div>
+        <div class="bar"><span id="progress-bar"></span></div>
+      </div>
+    </div>
+    <figure class="stage">
+      <img src="t1-silver.jpg" width="1200" height="900" alt="NCASE FormD T1 V2.5 in silver with black mesh side panels" fetchpriority="high">
+    </figure>
+  </header>
+
+  <section id="parts" data-view="compact" aria-labelledby="parts-heading">
+  <div class="section-head">
+    <h2 id="parts-heading">Parts list</h2>
+    <div class="seg" role="group" aria-label="Parts list view">
+      <button type="button" data-set-view="compact" aria-pressed="true">Compact</button>
+      <button type="button" data-set-view="detailed" aria-pressed="false">Detailed</button>
+    </div>
+  </div>
+
+  <ol class="checklist" id="checklist"></ol>
+  <div class="paybar" role="region" aria-label="Totals">
+    <div class="pay-progress" id="pay-progress" role="progressbar" aria-label="Share of the build paid" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span></span></div>
+    <dl>
+      <div class="pair"><dt>Paid so far</dt><dd id="paid">—</dd></div>
+      <div class="pair"><dt>Whole build</dt><dd id="total">—</dd></div>
+      <div class="pair due"><dt>Still to pay</dt><dd id="remaining" aria-live="polite">—</dd></div>
+    </dl>
+  </div>
+  <div class="paybar-sentinel" aria-hidden="true"></div>
+  <p class="small">Prices incl. NZ GST, checked 6 Oct 2026. EUR at €1 = NZ$2.00. Second-hand prices are typical Trade Me and Facebook asks. The case is US$250 converted at NZ$1.78, shipping not included.</p>
+  </section>
+
+  <section id="cost" aria-labelledby="cost-heading">
+    <h2 id="cost-heading">Cost over time</h2>
+    <p class="sub">The whole build with the parts picked above, spread over its life.</p>
+    <div class="ledger">
+      <div class="ledger-row"><span>Per month<span class="desc">over 5 years</span></span><span class="amount" id="pm5">—</span></div>
+      <div class="ledger-row"><span>Per month<span class="desc">over 10 years</span></span><span class="amount" id="pm10">—</span></div>
+      <div class="ledger-row slider">
+        <label for="hours">Gaming per week</label>
+        <input type="range" id="hours" min="0" max="24" step="1" value="8">
+        <output id="hours-out" for="hours">8 h</output>
+      </div>
+      <div class="ledger-row"><span>Per hour gamed<span class="desc">over 5 years</span></span><span class="amount" id="ph5">—</span></div>
+      <div class="ledger-row"><span>Per hour gamed<span class="desc">over 10 years</span></span><span class="amount" id="ph10">—</span></div>
+    </div>
+  </section>
+
+  <h2>T1 accessories</h2>
+  <p class="sub">Made to order overseas: allow 2–4 weeks. Prices in NZ$ from Etsy, 6 Oct 2026.</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Item</th><th>Notes</th><th class="num">≈ NZ$</th></tr></thead>
+    <tbody>
+      <tr><td><a href="https://www.etsy.com/nz/listing/1458781827/custom-teflon-psu-cables-for-itx-sff">Cablester custom Teflon cables</a></td><td>Kit 6 (24-pin, 8-pin CPU, 12V-2×6) fits the SF850 (2024). Safer option: custom 24-pin and CPU only, keep Corsair's native GPU cable. <a href="https://www.etsy.com/nz/listing/1646914652/formd-t1-sandwich-custom-length-with">Silicone version</a> is cheaper</td><td class="num">70–118</td></tr>
+      <tr><td><a href="https://www.etsy.com/nz/listing/4438533383/formd-t1-exhaust-shroud-for-v2-v21-v25">Exhaust shroud / fan mount</a></td><td>For T1 V2.5. Pre-installed inserts option NZ$62</td><td class="num">37–62</td></tr>
+      <tr><td><a href="https://www.etsy.com/nz/listing/4452707829/axp90-x47-and-axp90-x53-cooler-duct-for">AXP90 cooler duct</a></td><td>Made for the Noctua NF-A9x14 swap. 10% off bought with the shroud (same shop)</td><td class="num">24</td></tr>
+      <tr><td><a href="https://www.etsy.com/nz/listing/1053061087/human-pc-feet-sffpc-case-feet-for">Case feet</a></td><td>Optional: more airflow under the case</td><td class="num">28</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>GPU options</h2>
+  <p class="sub">Cyberpunk 2077, native 1440p, RT Ultra, no DLSS. Target is 60+. T1 limit: ≤ 325 mm long, ≤ 3.25 slots.</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Card</th><th class="num">fps</th><th>VRAM</th><th>Power</th><th class="num">≈ NZ$</th><th>Travel kit</th></tr></thead>
+    <tbody>
+      <tr><td>RTX 4080 / 4080 Super<span class="why">Previous gen, mostly used or old stock. 3-slot FE leaves 53 mm for the cooler</span></td><td class="num">~66</td><td>16 GB</td><td>~320 W</td><td class="num">check used</td><td>4080 FE, ASUS ProArt 4080</td></tr>
+      <tr><td>RTX 5070 Ti<span class="why">Cheapest current option. 72–90 fps at RT High</span></td><td class="num">56</td><td>16 GB</td><td>300 W</td><td class="num">2,299+</td><td>Unconfirmed for Prime / ProArt 5070 Ti</td></tr>
+      <tr class="pick"><td>RTX 5080<span class="why">The pick for RT Ultra at 60+. FE is the best fit and coolest</span></td><td class="num">71</td><td>16 GB</td><td>360 W</td><td class="num">2,414–3,000</td><td>5080 FE, ASUS Prime, ASUS ProArt</td></tr>
+      <tr><td>RTX 5080 Super <span class="pill last">Rumour</span><span class="why">CES 2027 at the earliest. Same cores as the 5080, more VRAM, more heat</span></td><td class="num">~71</td><td>24 GB</td><td>415 W</td><td class="num">unknown</td><td>Unknown</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>CPU options</h2>
+  <p class="sub">At 1440p with ray tracing the GPU usually sets the frame rate, so the gaps below shrink in practice. X3D and bLLC chips smooth out busy open worlds.</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>CPU</th><th>Platform</th><th>Gaming</th><th>Status</th><th class="num">≈ NZ$</th></tr></thead>
+    <tbody>
+      <tr class="pick"><td>Ryzen 7 7800X3D<span class="why">The pick: new on Amazon ≈ NZ$609, about NZ$250 under the 9800X3D. Very cool and efficient</span></td><td>AM5</td><td>A few % behind the 9800X3D at 1440p RT</td><td>Shipping</td><td class="num">609</td></tr>
+      <tr><td>Ryzen 7 9800X3D<span class="why">Fastest gaming CPU shipping today, only ~5–8% ahead of the 7800X3D</span></td><td>AM5</td><td>Reference</td><td>Shipping</td><td class="num">861</td></tr>
+      <tr><td>Core Ultra 7 270K Plus<span class="why">Strong all-rounder, good value</span></td><td>Intel LGA1851</td><td>~20% behind the 9800X3D at 1080p</td><td>Shipping</td><td class="num">check</td></tr>
+      <tr><td>Intel Nova Lake with bLLC <span class="pill last">Rumour</span><span class="why">Intel's answer to X3D, ~108 MB cache. New socket, so ITX boards will be scarce at first</span></td><td>Intel LGA1954</td><td>Unknown until reviews</td><td>Late 2026</td><td class="num">unknown</td></tr>
+      <tr><td>AMD Zen 6 (X3D later) <span class="pill last">Rumour</span><span class="why">2 nm. Drops into the same B850-I board</span></td><td>AM5</td><td>Unknown until reviews</td><td>CES 2027; X3D later</td><td class="num">unknown</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>Recommendations</h2>
+  <ul class="recs">
+    <li><strong>GPU.</strong> 5080 for RT Ultra at 60+. 5070 Ti if RT High is fine and the NZ$700 matters. A used 4080 Super only at a clear discount. Skip the 5080 Super unless 24 GB matters more than heat.</li>
+    <li><strong>CPU.</strong> 7800X3D new at ≈ NZ$609; the 9800X3D isn't worth NZ$250 more. Stay on AM5 for the Zen 6 upgrade path unless Nova Lake reviews are exceptional.</li>
+    <li><strong>Cool and quiet.</strong> Cap the frame rate, undervolt or power-limit the GPU, air cooler plus the two Noctua top exhausts.</li>
+  </ul>
+
+  <h2>Build guide</h2>
+  <p><a href="https://eiga.works/builds/formd-t1-5090-air/">EIGA.works: FormD T1 air-cooled 9800X3D build</a>. Assembly, fan curves and gotchas, including that PSU screws aren't included with the T1.</p>
+
+  <p class="small">New to modern PCs? See the <a href="primer.html">catch-up primer</a>: DDR5, AM5, PCIe 5.0, Mini-ITX and quiet tuning.</p>
+
+  <footer>Rumours (5080 Super, Nova Lake, Zen 6) are unconfirmed. fps figures from KitGuru reviews on a 9800X3D test rig. Prices moved fast in 2026.</footer>
+</main>
+<script>
+  (() => {
+    const TIER_LABEL = { used: 'Second-hand', new: 'New', entry: 'Entry, new', mid: 'Middle', high: 'High-end' };
+
+    const DONE = [
+      { cat: 'Case', name: 'FormD T1 V2.5 Silver + travel kit', href: 'https://ncased.com/collections/t-series/products/t1-sandwich-kit-silver-color', paid: 445, note: 'US$250. Includes PCIe 5.0 riser, front USB-C cable, power inlet cable' },
+      { cat: 'Fans', name: 'Noctua NF-A12x25 G2 ×2', href: 'https://computerlounge.co.nz/products/noctua-nf-a12x25-g2-pwm-sx2-pp-chromax-black-120mm-1800rpm-cooling-fan-twin-pack', paid: 140, note: 'chromax.black twin pack, 2× top exhaust' },
+      { cat: 'PSU', name: 'Corsair SF850 (2024)', href: 'https://www.pbtech.co.nz/product/PSUCOR9020256/Corsair-SF-Series-SF850-850W-ATX-31-SFX-Power-Supp', paid: 352, note: 'CP-9020256, PB Tech sale incl. delivery. Enough for every GPU below' },
+    ];
+
+    // Remaining parts. Each option: tier, name, link, NZ$ price, note.
+    const PARTS = [
+      { id: 'cpu', cat: 'CPU', next: true, options: [
+        { tier: 'used', name: 'Ryzen 7 7800X3D, used', href: 'https://www.trademe.co.nz/a/marketplace/computers/components/cpus/amd/search?search_string=7800x3d', price: 540, note: 'Trade Me. Pay with Ping for buyer protection; skip “not tested” listings' },
+        { tier: 'mid', name: 'Ryzen 7 7800X3D, new', href: 'https://www.amazon.com.au/s?k=7800x3d', price: 609, note: 'Amazon (ships from Germany). Check the landed total at checkout' },
+        { tier: 'high', name: 'Ryzen 7 9800X3D, new', href: 'https://www.pbtech.co.nz/search?sf=9800X3D', price: 849, note: 'About 5–8% faster than the 7800X3D' },
+      ] },
+      { id: 'board', cat: 'Board', options: [
+        { tier: 'used', name: 'ASUS ROG Strix B650E-I, used', href: 'https://www.trademe.co.nz/a/marketplace/computers/components/motherboards/search?search_string=b650e-i', price: 380, note: 'Same AM5 socket, Wi-Fi 6E. Used ITX boards are rare, so be patient' },
+        { tier: 'mid', name: 'ASRock B850I Lightning', href: 'https://extremepc.co.nz/asrock-phantom-gaming-b850i-pg-lightning-wifi-itx-motherboard-for-amd-ryzen-cpus-socket-am5-ddr5/', price: 460, note: 'Wi-Fi 7, 20 Gbps USB-C. ExtremePC or PB Tech' },
+        { tier: 'high', name: 'ASUS ROG Strix X870-I', href: 'https://rog.asus.com/motherboards/rog-strix/rog-strix-x870-i-gaming-wifi/', price: 965, note: '2× rear USB4. PB Tech price; much cheaper in Australia' },
+      ] },
+      { id: 'ram', cat: 'RAM', options: [
+        { tier: 'used', name: '32 GB DDR5-6000, used', href: 'https://www.facebook.com/marketplace/item/1652152282948448/', price: 575, note: 'e.g. PNY XLR8 on Facebook; seller lets you test' },
+        { tier: 'mid', name: 'Corsair Vengeance 32 GB 6000 CL30', href: 'https://pricespy.co.nz/search?search=vengeance%2032gb%206000%20cl30', price: 800, note: '2×16 GB. Prices are high in 2026; watch for a dip' },
+        { tier: 'high', name: 'G.Skill Flare X5 48 GB 6000 CL30', href: 'https://pricespy.co.nz/search?search=48gb%20ddr5%206000%20cl30', price: 950, note: '2×24 GB, like your mate’s build. Low-profile sticks' },
+      ] },
+      { id: 'ssd', cat: 'SSD', options: [
+        { key: '512-used', tier: 'used', name: '512 GB Gen4, used', href: 'https://www.trademe.co.nz/a/marketplace/computers/components/hard-drives-storage/search?search_string=512gb%20nvme', price: 70, note: 'Fits Windows plus two or three big games' },
+        { key: '512-new', tier: 'new', name: 'WD Black SN770 500 GB', href: 'https://pricespy.co.nz/search?search=sn770%20500gb', price: 110, note: 'Budget Gen4, runs cool' },
+        { key: 'used', tier: 'used', name: '1 TB Gen4, used', href: 'https://www.trademe.co.nz/a/marketplace/computers/components/hard-drives-storage/search?search_string=1tb%20nvme', price: 150, note: 'e.g. Samsung 980 Pro 1 TB. The board has 2 M.2 slots, so add more later' },
+        { key: '1tb-new', tier: 'new', name: 'WD Black SN850X 1 TB', href: 'https://pricespy.co.nz/search?search=sn850x%201tb', price: 230, note: 'Fast Gen4 with a 5-year warranty' },
+        { key: '2tb-used', tier: 'used', name: '2 TB Gen4, used', href: 'https://www.trademe.co.nz/a/marketplace/computers/components/hard-drives-storage/search?search_string=2tb%20nvme', price: 400, note: 'e.g. ADATA S70 Blade or a used 990 Pro' },
+        { key: 'mid', tier: 'new', name: 'WD Black SN850X 2 TB', href: 'https://pricespy.co.nz/search?search=sn850x%202tb', price: 570, note: 'Gen4. Skip Gen5: it throttles in a 10 L case' },
+        { key: 'high', tier: 'high', name: 'Samsung 990 Pro 2 TB', href: 'https://www.pbtech.co.nz/search?sf=990+pro+2tb', price: 861, note: 'PB Tech price. Barely faster in games than the SN850X' },
+      ] },
+      { id: 'cooler', cat: 'Cooler', options: [
+        { tier: 'used', name: 'Thermalright AXP90-X47', href: 'https://computerlounge.co.nz/search?q=axp90-x47', price: 60, note: 'Aluminium version with the stock fan. Louder; coolers rarely sell used' },
+        { tier: 'mid', name: 'AXP90-X47 Full Copper + Noctua NF-A9x14', href: 'https://computerlounge.co.nz/products/thermalright-axp90-x47-low-profile-cpu-air-cooler-full-copper', price: 140, note: 'NZ$99 + NZ$39. Proven in a T1 with a 9850X3D + Prime 5080' },
+        { tier: 'high', name: 'Full Copper + Noctua + cooler duct', href: 'https://www.etsy.com/nz/listing/4452707829/axp90-x47-and-axp90-x53-cooler-duct-for', price: 164, note: 'Adds the Etsy duct made for this exact cooler and fan' },
+      ] },
+      { id: 'gpu', cat: 'GPU', options: [
+        { key: 'entry', tier: 'entry', name: 'ASUS Prime RTX 5060 Ti 16 GB', href: 'https://computerlounge.co.nz/products/asus-geforce-rtx-5060-ti-prime-oc-16gb-graphics-card', price: 1089, note: 'Witcher 3 with RT ~51–56 fps native 1440p. Prime look' },
+        { key: 'used', tier: 'used', name: 'RTX 4070 Super, used', href: 'https://www.trademe.co.nz/a/marketplace/computers/components/graphics-cards/search?search_string=4070%20super', price: 1150, note: '12 GB, ~25% faster than a 5060 Ti. Check length ≤ 325 mm' },
+        { key: '9070xt', tier: 'new', name: 'AMD Radeon RX 9070 XT', href: 'https://www.pbtech.co.nz/search?sf=9070+xt', price: 1299, note: 'Gigabyte Gaming OC at PB Tech. Near 5070 Ti without RT, weaker with RT, no DLSS. 3-slot, so the cooler limit is 53 mm' },
+        { key: '5070', tier: 'new', name: 'ASUS Prime RTX 5070 12 GB', href: 'https://www.pbtech.co.nz/search?sf=prime+rtx+5070+12gb', price: 1449, note: 'PB Tech. Prime look. 12 GB is tight for RT at 1440p in a few years' },
+        { key: '4070tis', tier: 'used', name: 'RTX 4070 Ti Super, used', href: 'https://www.trademe.co.nz/a/marketplace/computers/components/graphics-cards/search?search_string=4070%20ti%20super', price: 1750, note: '16 GB, close to a 5070 Ti. Check length ≤ 325 mm' },
+        { key: 'mid', tier: 'mid', name: 'ASUS Prime RTX 5070 Ti ♥', href: 'https://www.pbtech.co.nz/product/VGAASU350711/ASUS-PRIME-NVIDIA-GeForce-RTX-5070-Ti-OC-16GB-GDDR7', price: 2299, note: 'Cyberpunk RT High 72–90 fps native 1440p' },
+        { key: '4080s', tier: 'used', name: 'RTX 4080 Super, used', href: 'https://www.trademe.co.nz/a/marketplace/computers/components/graphics-cards/search?search_string=4080%20super', price: 2300, note: 'e.g. MSI Gaming X Slim, fits the T1. Near 5080 speed for less' },
+        { key: 'high', tier: 'high', name: 'ASUS Prime RTX 5080', href: 'https://pricespy.co.nz/search?search=prime%20rtx%205080', price: 2749, note: 'Cyberpunk RT Ultra ~71 fps native 1440p' },
+      ] },
+      { id: 'extras', cat: 'Extras', optional: true, options: [
+        { tier: 'used', name: 'None for now', price: 0, note: 'Add printed parts later' },
+        { tier: 'mid', name: 'Exhaust shroud', href: 'https://www.etsy.com/nz/listing/4438533383/formd-t1-exhaust-shroud-for-v2-v21-v25', price: 62, note: 'Etsy, with pre-installed inserts. Allow 2–4 weeks' },
+        { tier: 'high', name: 'Shroud, Teflon cables, feet', href: 'https://www.etsy.com/nz/listing/1458781827/custom-teflon-psu-cables-for-itx-sff', price: 208, note: 'Cablester Kit 6 fits the SF850 (2024)' },
+      ] },
+    ];
+
+    const DEFAULTS = { cpu: 'mid', board: 'mid', ram: 'mid', ssd: 'mid', cooler: 'mid', gpu: 'entry', extras: 'used' };
+    const STORE_KEY = 'parts-picks-v2';
+    const NZD_PER_EUR = 2.0;
+    let currency = 'NZD';
+    try { if (localStorage.getItem('currency') === 'EUR') currency = 'EUR'; } catch (e) { /* ignore */ }
+    const fmt = (nzd) => currency === 'EUR'
+      ? '€' + Math.round(nzd / NZD_PER_EUR).toLocaleString('en-NZ')
+      : 'NZ$' + Math.round(nzd).toLocaleString('en-NZ');
+    const fmtCents = (nzd) => {
+      const v = currency === 'EUR' ? nzd / NZD_PER_EUR : nzd;
+      return (currency === 'EUR' ? '€' : 'NZ$') + v.toLocaleString('en-NZ', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    };
+    const keyOf = (o) => o.key || o.tier;
+    const optionFor = (part, key) => part.options.find((o) => keyOf(o) === key);
+
+    const loadPicks = () => {
+      try {
+        const saved = JSON.parse(localStorage.getItem(STORE_KEY) || 'null') || {};
+        return Object.fromEntries(PARTS.map((p) => [p.id, optionFor(p, saved[p.id]) ? saved[p.id] : DEFAULTS[p.id]]));
+      } catch (e) {
+        return { ...DEFAULTS };
+      }
+    };
+    let picks = loadPicks();
+    const savePicks = () => { try { localStorage.setItem(STORE_KEY, JSON.stringify(picks)); } catch (e) { /* ignore */ } };
+
+    const el = (tag, cls, text) => {
+      const node = document.createElement(tag);
+      if (cls) node.className = cls;
+      if (text != null) node.textContent = text;
+      return node;
+    };
+    const linkOrText = (name, href) => {
+      if (!href) return document.createTextNode(name);
+      const a = el('a', null, name);
+      Object.assign(a, { href, target: '_blank', rel: 'noopener' });
+      return a;
+    };
+    const SVG_NS = 'http://www.w3.org/2000/svg';
+    const tickIcon = () => {
+      const svg = document.createElementNS(SVG_NS, 'svg');
+      svg.setAttribute('viewBox', '0 0 20 20');
+      svg.setAttribute('aria-hidden', 'true');
+      const circle = document.createElementNS(SVG_NS, 'circle');
+      Object.entries({ cx: 10, cy: 10, r: 9 }).forEach(([k, v]) => circle.setAttribute(k, v));
+      const path = document.createElementNS(SVG_NS, 'path');
+      path.setAttribute('d', 'M6.2 10.4l2.6 2.6 5-5.4');
+      svg.append(circle, path);
+      return svg;
+    };
+    const tick = (label) => {
+      const t = el('span', 'tick');
+      t.setAttribute('role', 'img');
+      t.setAttribute('aria-label', label);
+      t.append(tickIcon());
+      return t;
+    };
+    const BOUGHT_KEY = 'parts-bought';
+    let bought = new Set();
+    try { bought = new Set(JSON.parse(localStorage.getItem(BOUGHT_KEY) || '[]')); } catch (e) { /* ignore */ }
+    const saveBought = () => { try { localStorage.setItem(BOUGHT_KEY, JSON.stringify([...bought])); } catch (e) { /* ignore */ } };
+    const tickButton = (part) => {
+      const b = el('button', 'tick');
+      b.type = 'button';
+      b.dataset.part = part.id;
+      b.setAttribute('aria-pressed', String(bought.has(part.id)));
+      b.setAttribute('aria-label', 'Mark ' + part.cat + ' as bought');
+      b.append(tickIcon());
+      return b;
+    };
+
+    const describe = (lead, note) => {
+      const desc = el('span', 'desc', lead || null);
+      if (note) desc.append(el('span', 'more', (lead ? ' · ' : '') + note));
+      return desc;
+    };
+
+    // Quiet bar showing what share of the whole build a price would be.
+    function shareBar(price, partId) {
+      const bar = el('span', 'share');
+      bar.setAttribute('aria-hidden', 'true');
+      bar.dataset.price = String(price);
+      if (partId) bar.dataset.part = partId;
+      bar.append(el('i'));
+      return bar;
+    }
+
+    function doneRow(d) {
+      const li = el('li', 'done');
+      const text = el('span', 'text');
+      const name = el('span', 'name');
+      name.append(linkOrText(d.name, d.href));
+      text.append(name, describe('', d.note));
+      const line = el('div', 'line');
+      line.append(text, shareBar(d.paid), el('span', 'amount', fmt(d.paid)));
+      li.append(tick('Done'), el('span', 'cat', d.cat), line);
+      return li;
+    }
+
+    function optionRow(part, opt) {
+      const lab = el('label', 'opt');
+      const input = el('input');
+      Object.assign(input, { type: 'radio', name: 'pick-' + part.id, value: keyOf(opt), checked: picks[part.id] === keyOf(opt) });
+      const text = el('span', 'text');
+      const name = el('span', 'name');
+      name.append(linkOrText(opt.name, opt.href));
+      text.append(name, describe(TIER_LABEL[opt.tier], opt.note));
+      lab.append(input, text, shareBar(opt.price, part.id), el('span', 'amount', opt.price ? fmt(opt.price) : '—'));
+      return lab;
+    }
+
+    function partRow(part) {
+      const li = el('li', 'part' + (bought.has(part.id) ? ' is-bought' : ''));
+      li.dataset.part = part.id;
+      const cat = el('span', 'cat', part.cat);
+      if (part.optional) cat.append(el('small', null, 'Optional'));
+      const group = el('div', 'options');
+      group.setAttribute('role', 'radiogroup');
+      group.setAttribute('aria-label', part.cat);
+      group.append(...part.options.map((o) => optionRow(part, o)));
+      if (bought.has(part.id)) group.querySelectorAll('input').forEach((i) => { i.disabled = true; });
+      li.append(tickButton(part), cat, group);
+      return li;
+    }
+
+    const list = document.getElementById('checklist');
+
+    const WEEKS_PER_YEAR = 52;
+    const MAX_HOURS = 24;
+    const hoursInput = document.getElementById('hours');
+    try {
+      const savedHours = Number(localStorage.getItem('hours-per-week'));
+      if (localStorage.getItem('hours-per-week') !== null && savedHours >= 0 && savedHours <= MAX_HOURS) hoursInput.value = String(savedHours);
+    } catch (e) { /* ignore */ }
+    let lastTotal = 0;
+    function renderCost(total) {
+      lastTotal = total;
+      const hours = Number(hoursInput.value);
+      document.getElementById('hours-out').textContent = hours + ' h';
+      hoursInput.setAttribute('aria-valuetext', hours + ' hours per week');
+      document.getElementById('pm5').textContent = fmtCents(total / (5 * 12));
+      document.getElementById('pm10').textContent = fmtCents(total / (10 * 12));
+      const perHour = (years) => (hours === 0 ? '—' : fmtCents(total / (hours * WEEKS_PER_YEAR * years)));
+      document.getElementById('ph5').textContent = perHour(5);
+      document.getElementById('ph10').textContent = perHour(10);
+    }
+    hoursInput.addEventListener('input', () => {
+      renderCost(lastTotal);
+      try { localStorage.setItem('hours-per-week', hoursInput.value); } catch (e) { /* ignore */ }
+    });
+
+    function renderShares(total) {
+      // Every bar is measured against the build as currently picked, so all bars rebalance on each change.
+      document.querySelectorAll('#checklist .share').forEach((bar) => {
+        const price = Number(bar.dataset.price);
+        const share = total > 0 ? price / total : 0;
+        bar.firstChild.style.setProperty('--s', share.toFixed(4));
+        bar.parentElement.title = Math.round(share * 100) + '% of the build';
+      });
+    }
+
+    const paidBase = DONE.reduce((sum, d) => sum + d.paid, 0);
+
+    function renderProgress() {
+      const counted = PARTS.filter((p) => !p.optional);
+      const total = DONE.length + counted.length;
+      const done = DONE.length + counted.filter((p) => bought.has(p.id)).length;
+      document.getElementById('progress-count').textContent = String(done);
+      document.getElementById('progress-total').textContent = String(total);
+      document.getElementById('progress-bar').style.setProperty('--p', String(done / total));
+      document.getElementById('progress').setAttribute('aria-label', 'Build progress: ' + done + ' of ' + total + ' parts done');
+      const next = counted.find((p) => !bought.has(p.id));
+      document.querySelectorAll('li.part').forEach((li) => li.classList.toggle('is-next', !!next && li.dataset.part === next.id));
+    }
+    function renderTotals() {
+      const priceOf = (p) => optionFor(p, picks[p.id]).price;
+      const boughtSum = PARTS.filter((p) => bought.has(p.id)).reduce((sum, p) => sum + priceOf(p), 0);
+      const remaining = PARTS.filter((p) => !bought.has(p.id)).reduce((sum, p) => sum + priceOf(p), 0);
+      const paid = paidBase + boughtSum;
+      document.getElementById('paid').textContent = fmt(paid);
+      document.getElementById('remaining').textContent = fmt(remaining);
+      document.getElementById('total').textContent = fmt(paid + remaining);
+      renderCost(paid + remaining);
+      renderShares(paid + remaining);
+      const paidShare = paid + remaining > 0 ? paid / (paid + remaining) : 0;
+      const payProgress = document.getElementById('pay-progress');
+      payProgress.firstChild.style.setProperty('--paid', paidShare.toFixed(4));
+      payProgress.setAttribute('aria-valuenow', String(Math.round(paidShare * 100)));
+      payProgress.title = Math.round(paidShare * 100) + '% of the build paid';
+    }
+
+    list.addEventListener('change', (e) => {
+      const id = e.target.name && e.target.name.replace('pick-', '');
+      if (!PARTS.some((p) => p.id === id)) return;
+      picks = { ...picks, [id]: e.target.value };
+      savePicks();
+      renderTotals();
+    });
+
+    list.addEventListener('click', (e) => {
+      const btn = e.target.closest('button.tick');
+      if (!btn) return;
+      const id = btn.dataset.part;
+      const li = btn.closest('li');
+      const isBought = !bought.has(id);
+      bought = new Set(bought);
+      if (isBought) bought.add(id); else bought.delete(id);
+      saveBought();
+      li.classList.toggle('is-bought', isBought);
+      btn.setAttribute('aria-pressed', String(isBought));
+      li.querySelectorAll('input').forEach((i) => { i.disabled = isBought; });
+      btn.classList.remove('pop');
+      void btn.offsetWidth; // restart the animation
+      btn.classList.add('pop');
+      renderTotals();
+      renderProgress();
+    });
+    list.addEventListener('animationend', (e) => { if (e.target.classList.contains('tick')) e.target.classList.remove('pop'); });
+
+    const renderList = () => list.replaceChildren(...DONE.map(doneRow), ...PARTS.map(partRow));
+    const currencyButtons = document.querySelectorAll('[data-currency]');
+    const setCurrency = (next) => {
+      currency = next;
+      currencyButtons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.currency === next)));
+      renderList();
+      renderTotals();
+      renderProgress();
+    };
+    currencyButtons.forEach((b) => b.addEventListener('click', () => {
+      setCurrency(b.dataset.currency);
+      try { localStorage.setItem('currency', b.dataset.currency); } catch (e) { /* ignore */ }
+    }));
+    setCurrency(currency);
+
+    // Compact / detailed: identical rows; detailed only adds the note text.
+    const section = document.getElementById('parts');
+    const viewButtons = section.querySelectorAll('[data-set-view]');
+    const setView = (view) => {
+      section.dataset.view = view;
+      viewButtons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.setView === view)));
+    };
+    try {
+      const savedView = localStorage.getItem('parts-view');
+      if (savedView === 'compact' || savedView === 'detailed') setView(savedView);
+    } catch (e) { /* ignore */ }
+    viewButtons.forEach((b) => b.addEventListener('click', () => {
+      setView(b.dataset.setView);
+      try { localStorage.setItem('parts-view', b.dataset.setView); } catch (e) { /* ignore */ }
+    }));
+
+    // Square the bar's corners while it floats; round them again once it docks under the list.
+    const paybar = document.querySelector('.paybar');
+    const sentinel = document.querySelector('.paybar-sentinel');
+    // Scroll events are already frame-aligned; one rect read per event is cheap.
+    const updateStuck = () => {
+      paybar.classList.toggle('is-stuck', sentinel.getBoundingClientRect().top > window.innerHeight);
+    };
+    window.addEventListener('scroll', updateStuck, { passive: true });
+    window.addEventListener('resize', updateStuck);
+    updateStuck();
+
+    renderTotals();
+    renderProgress();
+  })();
+</script>
+</body>
+</html>

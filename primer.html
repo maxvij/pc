@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PC Catch-up Primer</title>
+<meta name="description" content="Short explainers and resources for getting back into PC gaming: DDR5, AM5, PCIe 5.0, Mini-ITX, quiet tuning and the FormD T1.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: oklch(97% 0.006 250); --bg-elev: oklch(99.5% 0.003 250);
+    --ink: oklch(22% 0.01 250); --ink-2: oklch(45% 0.01 250); --ink-3: oklch(60% 0.01 250);
+    --line: oklch(89% 0.006 250); --accent: oklch(52% 0.12 250); --accent-soft: oklch(94% 0.04 250);
+    --warn: oklch(58% 0.14 60); --warn-soft: oklch(95% 0.05 75);
+    --serif: "Instrument Serif", Georgia, serif; --sans: "Inter Tight", system-ui, sans-serif; --mono: "JetBrains Mono", ui-monospace, monospace;
+    --gutter: clamp(16px, 4vw, 40px); --r: 12px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: oklch(17% 0.006 250); --bg-elev: oklch(21% 0.006 250);
+      --ink: oklch(94% 0.005 250); --ink-2: oklch(76% 0.008 250); --ink-3: oklch(60% 0.008 250);
+      --line: oklch(30% 0.008 250); --accent: oklch(76% 0.11 250); --accent-soft: oklch(27% 0.05 250);
+      --warn: oklch(80% 0.13 70); --warn-soft: oklch(28% 0.05 70);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: oklch(17% 0.006 250); --bg-elev: oklch(21% 0.006 250);
+    --ink: oklch(94% 0.005 250); --ink-2: oklch(76% 0.008 250); --ink-3: oklch(60% 0.008 250);
+    --line: oklch(30% 0.008 250); --accent: oklch(76% 0.11 250); --accent-soft: oklch(27% 0.05 250);
+    --warn: oklch(80% 0.13 70); --warn-soft: oklch(28% 0.05 70);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 400 1rem/1.6 var(--sans); -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-underline-offset: 3px; text-decoration-color: var(--ink-3); }
+  a:hover { color: var(--accent); }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 0 var(--gutter); }
+  header { padding: clamp(2.5rem, 6vw, 4.5rem) 0 1rem; }
+  .kicker { font: 500 0.78rem/1 var(--mono); letter-spacing: 0.01em; color: var(--ink-3); }
+  h1 { font: 400 clamp(2.3rem, 1.6rem + 3vw, 3.6rem)/1.05 var(--serif); margin: 0.8rem 0; }
+  h2 { font: 400 1.7rem/1.1 var(--serif); margin: 2.6rem 0 0.8rem; }
+  .lede { color: var(--ink-2); margin: 0; max-width: 62ch; }
+  .cards { display: grid; gap: 0.8rem; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+  .card { background: var(--bg-elev); border: 1px solid var(--line); border-radius: var(--r); padding: 1rem 1.1rem; }
+  .card h3 { margin: 0 0 0.35rem; font: 600 1rem/1.3 var(--sans); }
+  .card p { margin: 0 0 0.5rem; color: var(--ink-2); font-size: 0.93rem; }
+  .card .you { display: block; margin-top: 0.4rem; padding: 0.45rem 0.6rem; border-radius: 8px; background: var(--accent-soft); color: var(--ink); font-size: 0.88rem; }
+  .card .read { font-size: 0.85rem; color: var(--ink-3); margin-top: 0.5rem; }
+  ol, ul { margin: 0; padding-left: 1.2rem; }
+  li { margin: 0.35rem 0; }
+  .note { background: var(--warn-soft); border-radius: var(--r); padding: 0.8rem 1rem; font-size: 0.93rem; margin-top: 0.8rem; }
+  footer { margin: 3rem 0; padding-top: 1.2rem; border-top: 1px solid var(--line); color: var(--ink-3); font-size: 0.85rem; }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <header>
+    <div class="kicker">Getting back into PC · October 2026</div>
+    <h1>What changed since your 3080 build.</h1>
+    <p class="lede">Short explainers, what each means for your silver T1, and the best things to read or watch.</p>
+  </header>
+
+  <h2>The big shifts since 2022</h2>
+  <ul>
+    <li><strong>DDR5 and AM5 are the default.</strong> DDR4 platforms are done; AMD's AM5 socket runs through at least 2027 and takes Zen 6.</li>
+    <li><strong>X3D chips own gaming.</strong> AMD's stacked-cache CPUs (7800X3D, 9800X3D) beat everything else in games while using little power.</li>
+    <li><strong>Upscaling got much better.</strong> DLSS 4's transformer model cut ghosting; DLAA gives the same tech at native resolution, no upscaling.</li>
+    <li><strong>Ray tracing went mainstream</strong>, and path tracing arrived. It's the main reason GPUs still struggle at native resolution.</li>
+    <li><strong>OLED monitors became normal</strong> for gaming at 240–500 Hz.</li>
+    <li><strong>2026 is a memory crunch.</strong> AI demand pushed DDR5, GDDR7 and SSD prices up sharply, which is why used deals matter now.</li>
+  </ul>
+
+  <h2>Explainers</h2>
+  <div class="cards">
+    <div class="card">
+      <h3>DDR5, EXPO and memory training</h3>
+      <p>DDR5 boots at a default 4800 MT/s. Turning on <strong>EXPO</strong> in the BIOS runs it at its rated speed. On AM5, 6000 MT/s CL30 is the sweet spot.</p>
+      <p>The first boot after building or enabling EXPO can show a black screen for a minute or more while the board "trains" the memory. That's normal: don't power off.</p>
+      <span class="you">For you: enable EXPO, then turn on <strong>Memory Context Restore</strong> so later boots skip full training.</span>
+      <div class="read"><a href="https://box.co.uk/blog/amd-expo-explained-enable-ddr5-am5">EXPO explained</a> · <a href="https://www.xda-developers.com/this-am5-bios-change-halves-your-boot-time/">XDA: the BIOS setting that halves AM5 boot time</a></div>
+    </div>
+    <div class="card">
+      <h3>PCIe 5.0</h3>
+      <p>Double the bandwidth of PCIe 4.0, but games barely use it. Tests show a 5090 or 5080 on PCIe 4.0 loses only about 1–3%.</p>
+      <span class="you">For you: the T1's PCIe 5.0 riser is future-proof, but a 40-series card on PCIe 4.0 loses nothing meaningful.</span>
+      <div class="read"><a href="https://www.techpowerup.com/review/nvidia-geforce-rtx-5090-pci-express-scaling/">TechPowerUp PCIe scaling</a> · <a href="https://gamersnexus.net/gpus/nvidia-rtx-5090-pcie-50-vs-40-vs-30-x16-scaling-benchmarks">Gamers Nexus PCIe scaling</a></div>
+    </div>
+    <div class="card">
+      <h3>Mini-ITX</h3>
+      <p>A 17 × 17 cm board: one GPU slot, two RAM slots, usually two M.2 slots, fewer fan headers. Modern B850 ITX boards lose little else.</p>
+      <span class="you">For you: buy 2 sticks now at the size you want long-term. There's no adding a third and fourth later.</span>
+      <div class="read"><a href="https://www.newegg.com/insider/atx-micro-atx-or-mini-itx-the-complete-motherboard-form-factor-guide-for-2026-builds/">Newegg form-factor guide 2026</a></div>
+    </div>
+    <div class="card">
+      <h3>Gen4 vs Gen5 SSDs</h3>
+      <p>Gen5 drives are faster on paper but run hot, can throttle in small cases, and don't load games noticeably faster. DirectStorage support is still rare.</p>
+      <span class="you">For you: a good Gen4 2 TB drive is the right pick for a 10-litre case.</span>
+      <div class="read"><a href="https://www.xda-developers.com/your-pcie-50-ssd-might-be-throttling-without-you-knowing/">XDA: Gen5 throttling</a> · <a href="https://pcgamecheck.com/blog/gen4-vs-gen5-ssd-gaming-2026">Gen4 vs Gen5 for gaming</a></div>
+    </div>
+    <div class="card">
+      <h3>The 12V-2×6 GPU connector</h3>
+      <p>The new 16-pin GPU power plug. Melting cases almost always trace to a plug that isn't fully seated.</p>
+      <span class="you">For you: push until it clicks, check there's no visible gap on both ends, and don't bend the cable sharply right at the plug. Use the SF850's native cable, no adapters.</span>
+      <div class="read"><a href="https://www.tomshardware.com/pc-components/gpus/melting-power-connectors-and-how-to-safeguard-against-them">Tom's Hardware: melting connectors and how to avoid them</a></div>
+    </div>
+    <div class="card">
+      <h3>X3D chips</h3>
+      <p>AMD stacks extra cache on the CPU, which games love. They run at modest power, and the 7800X3D has a lower 89 °C limit.</p>
+      <span class="you">For you: a light negative Curve Optimizer (−10 to −20) lowers temps for free. Test stability after each step.</span>
+      <div class="read"><a href="https://www.techpowerup.com/review/amd-ryzen-7-7800x3d/26.html">TechPowerUp 7800X3D tuning</a> · <a href="https://techfuelhq.com/articles/9800x3d-undervolt-guide-2026/">9800X3D Curve Optimizer guide</a></div>
+    </div>
+  </div>
+
+  <h2>Quiet and cool, step by step</h2>
+  <ol>
+    <li><strong>Frame cap</strong> in the NVIDIA app or RTSS, at 90–120 fps. The single biggest noise cut.</li>
+    <li><strong>GPU undervolt</strong> in MSI Afterburner (free software that works with any NVIDIA card). Start around 900 mV at stock clocks: typically 30–60 W less, 5–10 °C cooler, same fps. <a href="https://techfuelhq.com/articles/rtx-5080-undervolt-guide-2026/">5080 undervolt guide</a></li>
+    <li><strong>CPU Curve Optimizer</strong> at −10 to −20 in the BIOS.</li>
+    <li><strong>Fan curves</strong> with the free <a href="https://github.com/Rem0o/FanControl.Releases">FanControl</a> app: tie the two Noctua top fans to the hotter of CPU and GPU. <a href="https://www.xda-developers.com/fan-control-guide/">XDA FanControl guide</a></li>
+    <li><strong>DLAA instead of TAA</strong> in games that offer it: native resolution, cleaner edges, no upscaling.</li>
+  </ol>
+  <div class="note">Your Noctua G2 fans already include an anti-vibration gasket (NA-AVG1), the rubber layer Optimum recommends between fan and frame.</div>
+
+  <h2>Your T1, specifically</h2>
+  <ul>
+    <li><strong>RAM height:</strong> standard-height kits (~35 mm, like the PNY XLR8 or Corsair Vengeance) are fine. Avoid tall Dominator or Trident Z kits.</li>
+    <li><strong>Before the first boot:</strong> update the BIOS with the flashback button, seat the 12V-2×6 until it clicks, and expect a long first memory-training boot.</li>
+    <li><strong>Build guide:</strong> <a href="https://eiga.works/builds/formd-t1-5090-air/">EIGA.works FormD T1 air build</a>, the closest match to yours.</li>
+    <li><strong>Community:</strong> <a href="https://smallformfactor.net/forum/threads/formd-t1-read-first-post.9933/">smallformfactor.net T1 thread</a> · <a href="https://sff.gg/cases/formd-t1">sff.gg T1 compatibility database</a> · <a href="https://www.printables.com/model/856110-formd-t1-exhaust-shroud-v2">3D-printable T1 exhaust shroud</a></li>
+  </ul>
+
+  <h2>Watch and read</h2>
+  <ul>
+    <li><strong>Optimum Tech</strong>: quiet, minimal SFF builds; the closest to your taste.</li>
+    <li><strong>Hardware Unboxed</strong>: the most thorough GPU and CPU benchmarks.</li>
+    <li><strong>Gamers Nexus</strong>: deep testing, case thermals, and the connector investigations.</li>
+    <li><strong>Digital Foundry</strong>: image quality, DLSS vs native, and optimised game settings. <a href="https://pcoptimizedsettings.com/cyberpunk-2077-optimized-settings-2024-graphics-benchmark/">Cyberpunk optimised settings</a></li>
+  </ul>
+
+  <h2>A fun one: the Steam Deck as a second screen</h2>
+  <p>Once the PC is built, stream it to the Deck anywhere in the house. <strong>Steam Link</strong> works in two minutes. <strong>Moonlight + Sunshine</strong> takes about 20 minutes to set up but is sharper and lower-latency. <a href="https://shattered.io/sunshine-moonlight-setup-guide/">Sunshine + Moonlight setup guide</a> · <a href="https://evezone.evetech.co.za/deep-dives/steam-link-vs-moonlight-pc-handheld-streaming-2025/">Steam Link vs Moonlight</a></p>
+
+  <footer>Compiled 6 Oct 2026. Companion to the parts plan.</footer>
+</main>
+</body>
+</html>
