@@ -368,6 +368,7 @@
       { cat: 'Case', name: 'FormD T1 V2.5 Silver + travel kit', href: 'https://ncased.com/collections/t-series/products/t1-sandwich-kit-silver-color', paid: 445, note: 'US$250. Includes PCIe 5.0 riser, front USB-C cable, power inlet cable' },
       { cat: 'Fans', name: 'Noctua NF-A12x25 G2 ×2', href: 'https://computerlounge.co.nz/products/noctua-nf-a12x25-g2-pwm-sx2-pp-chromax-black-120mm-1800rpm-cooling-fan-twin-pack', paid: 140, note: 'chromax.black twin pack, 2× top exhaust' },
       { cat: 'Cooler', name: 'Thermalright AXP90-X53 Full Copper', href: 'https://www.amazon.com.au/dp/B0CNNFFC5Y', paid: 77, note: 'Amazon AU NZ$76.64 delivered. 53 mm with its stock fan, ~52 mm with the Noctua' },
+      { cat: 'Cooler fan', name: 'Noctua NF-A9x14 HS-PWM chromax.black + NT-H2 AM5', href: 'https://www.newegg.com/global/nz-en/noctua-nf-a9x14-hs-pwm-chromax-black-swap-case-fan/p/1YF-000T-002G2', paid: 91, note: 'Newegg NZ, sold by Noctua, order 596319893. Fan NZ$43 + paste NZ$27 + GST + NZ$9 shipping = NZ$90.85' },
       { cat: 'PSU', name: 'Corsair SF850 (2024)', href: 'https://www.pbtech.co.nz/product/PSUCOR9020256/Corsair-SF-Series-SF850-850W-ATX-31-SFX-Power-Supp', paid: 352, note: 'CP-9020256, PB Tech sale incl. delivery. Enough for every GPU below' },
     ];
 
@@ -397,10 +398,6 @@
         { key: 'mid', tier: 'new', name: 'Kingston NV3 2 TB', href: 'https://computerlounge.co.nz/search?q=kingston+nv3+2tb', price: 569, note: 'Computer Lounge, 7 Oct. Budget Gen4. Skip Gen5: it throttles in a 10 L case' },
         { key: 'high', tier: 'high', name: 'Samsung 990 Pro 2 TB', href: 'https://www.amazon.com.au/dp/B0BPXRY7N2', price: 865, note: 'Amazon AU, about NZ$865 landed (Computer Lounge NZ$959). Barely faster in games than budget Gen4' },
       ] },
-      { id: 'fan', cat: 'Cooler fan', options: [
-        { key: 'stock', tier: 'included', name: 'Thermalright stock fan', price: 0, note: 'Comes with the X53. At equal noise, slim 92 mm fans test within ~1 °C of each other' },
-        { tier: 'mid', name: 'Noctua NF-A9x14 HS-PWM chromax.black + NT-H1', href: 'https://www.newegg.com/global/nz-en/noctua-nf-a9x14-hs-pwm-chromax-black-swap-case-fan/p/1YF-000T-002G2', price: 76, note: 'Newegg NZ, sold by Noctua: fan NZ$49.45 + NT-H1 paste NZ$17.25 + NZ$9 shipping, 7 Oct. Paste is a spare for remounts' },
-      ] },
       { id: 'gpu', cat: 'GPU', options: [
         { key: 'entry', tier: 'entry', name: 'ASUS Prime RTX 5060 Ti 16 GB', href: 'https://computerlounge.co.nz/products/asus-geforce-rtx-5060-ti-prime-oc-16gb-graphics-card', price: 1089, note: 'Witcher 3 with RT ~51–56 fps native 1440p. Prime look' },
         { key: 'used', tier: 'used', name: 'RTX 4070 Super, used', href: 'https://www.trademe.co.nz/a/marketplace/computers/components/graphics-cards/search?search_string=4070%20super', price: 1150, note: '12 GB, ~25% faster than a 5060 Ti. Check length ≤ 325 mm' },
@@ -418,7 +415,7 @@
       ] },
     ];
 
-    const DEFAULTS = { cpu: 'mid', board: 'mid', ram: 'mid', ssd: 'mid', fan: 'mid', gpu: 'entry', extras: 'used' };
+    const DEFAULTS = { cpu: 'mid', board: 'mid', ram: 'mid', ssd: 'mid', gpu: 'entry', extras: 'used' };
     const STORE_KEY = 'parts-picks-v2';
     const NZD_PER_EUR = 2.0;
     let currency = 'NZD';
