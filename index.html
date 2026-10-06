@@ -123,6 +123,21 @@
     .ledger-row.slider input { grid-column: 1 / -1; grid-row: 2; }
   }
 
+  /* Reference tables become stacked rows on phones: no sideways swiping */
+  @media (max-width: 560px) {
+    .tablewrap { overflow: visible; }
+    .tablewrap table { min-width: 0; }
+    .tablewrap thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+    .tablewrap tbody, .tablewrap tr, .tablewrap td { display: block; }
+    .tablewrap tr { padding: 0.8rem 0.9rem; border-bottom: 1px solid var(--line); }
+    .tablewrap tr:last-child { border-bottom: 0; }
+    .tablewrap td { padding: 0.15rem 0; border: 0; text-align: left; }
+    .tablewrap td.num { text-align: left; white-space: normal; }
+    .tablewrap td:first-child { font-weight: 500; padding-bottom: 0.3rem; }
+    .tablewrap td:not(:first-child)[data-label]::before { content: attr(data-label) " "; color: var(--ink-3); font-size: 0.82rem; margin-right: 0.3rem; }
+    .tablewrap td:empty { display: none; }
+  }
+
   /* Top bar with currency switch */
   .topbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.8rem 1rem; padding-top: clamp(1.25rem, 3vw, 2rem); }
   header.hero { padding-top: clamp(1.25rem, 3.5vw, 2.5rem); }
@@ -637,6 +652,14 @@
       try { localStorage.setItem('currency', b.dataset.currency); } catch (e) { /* ignore */ }
     }));
     setCurrency(currency);
+
+    // Label table cells with their column header, for the stacked phone layout.
+    document.querySelectorAll('.tablewrap table').forEach((table) => {
+      const heads = [...table.querySelectorAll('thead th')].map((th) => th.textContent.trim());
+      table.querySelectorAll('tbody tr').forEach((tr) => {
+        [...tr.children].forEach((td, i) => { if (heads[i]) td.dataset.label = heads[i]; });
+      });
+    });
 
     // Compact / detailed: identical rows; detailed only adds the note text.
     const section = document.getElementById('parts');
