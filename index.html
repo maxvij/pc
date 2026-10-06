@@ -398,9 +398,8 @@
         { key: 'high', tier: 'high', name: 'Samsung 990 Pro 2 TB', href: 'https://www.amazon.com.au/dp/B0BPXRY7N2', price: 865, note: 'Amazon AU, about NZ$865 landed (Computer Lounge NZ$959). Barely faster in games than budget Gen4' },
       ] },
       { id: 'fan', cat: 'Cooler fan', options: [
-        { key: 'stock', tier: 'included', name: 'Thermalright stock fan', price: 0, note: 'Comes with the X53. Fine to start with, louder under load' },
-        { tier: 'mid', name: 'Noctua NF-A9x14 HS-PWM chromax.black', href: 'https://computerlounge.co.nz/search?q=nf-a9x14', price: 38, note: 'Computer Lounge, out of stock: call them. 14 mm, so ~52 mm total with the X53' },
-        { tier: 'high', name: 'Noctua NF-A9x14 + Thermal Grizzly Duronaut', href: 'https://computerlounge.co.nz/search?q=duronaut', price: 63, note: 'Same Computer Lounge order, NZ$38 + NZ$25. The X53 includes paste, so Duronaut is optional' },
+        { key: 'stock', tier: 'included', name: 'Thermalright stock fan', price: 0, note: 'Comes with the X53. At equal noise, slim 92 mm fans test within ~1 °C of each other' },
+        { tier: 'mid', name: 'Noctua NF-A9x14 HS-PWM chromax.black', href: 'https://www.newegg.com/global/nz-en/noctua-nf-a9x14-hs-pwm-chromax-black-swap-case-fan/p/1YF-000T-002G2', price: 58, note: 'Newegg NZ, sold by Noctua: NZ$49.45 + NZ$9 shipping, 7 Oct. Computer Lounge won’t restock it' },
       ] },
       { id: 'gpu', cat: 'GPU', options: [
         { key: 'entry', tier: 'entry', name: 'ASUS Prime RTX 5060 Ti 16 GB', href: 'https://computerlounge.co.nz/products/asus-geforce-rtx-5060-ti-prime-oc-16gb-graphics-card', price: 1089, note: 'Witcher 3 with RT ~51–56 fps native 1440p. Prime look' },
@@ -419,7 +418,7 @@
       ] },
     ];
 
-    const DEFAULTS = { cpu: 'mid', board: 'mid', ram: 'mid', ssd: 'mid', fan: 'mid', gpu: 'entry', extras: 'used' };
+    const DEFAULTS = { cpu: 'mid', board: 'mid', ram: 'mid', ssd: 'mid', fan: 'stock', gpu: 'entry', extras: 'used' };
     const STORE_KEY = 'parts-picks-v2';
     const NZD_PER_EUR = 2.0;
     let currency = 'NZD';
