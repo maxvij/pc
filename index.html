@@ -370,7 +370,6 @@
       { cat: 'Cooler', name: 'Thermalright AXP90-X53 Full Copper', href: 'https://www.amazon.com.au/dp/B0CNNFFC5Y', paid: 77, note: 'Amazon AU NZ$76.64 delivered. 53 mm with its stock fan, ~52 mm with the Noctua' },
       { cat: 'Cooler fan', name: 'Noctua NF-A9x14 HS-PWM chromax.black + NT-H2 AM5', href: 'https://www.newegg.com/global/nz-en/noctua-nf-a9x14-hs-pwm-chromax-black-swap-case-fan/p/1YF-000T-002G2', paid: 91, note: 'Newegg NZ, sold by Noctua, order 596319893. Fan NZ$43 + paste NZ$27 + GST + NZ$9 shipping = NZ$90.85' },
       { cat: 'Board', name: 'ASUS TUF Gaming B850I WiFi Neo', href: 'https://quietpc.co.nz/asus-b850i-wifi-neo-tuf?product=8942', paid: 486, note: 'Quiet PC (UK), NZ$332.34 + UPS NZ$153.75 = NZ$486.09, 7 Oct. Update BIOS via FlashBack before the CPU goes in' },
-      { cat: 'SSD', name: 'Samsung 990 Pro 2 TB, used', href: 'https://www.trademe.co.nz/Browse/Listing.aspx?id=6170885558', paid: 405, note: 'Trade Me, NZ$399 + NZ$6 shipping, 9 Oct' },
       { cat: 'PSU', name: 'Corsair SF850 (2024)', href: 'https://www.pbtech.co.nz/product/PSUCOR9020256/Corsair-SF-Series-SF850-850W-ATX-31-SFX-Power-Supp', paid: 352, note: 'CP-9020256, PB Tech sale incl. delivery. Enough for every GPU below' },
     ];
 
@@ -385,6 +384,16 @@
         { tier: 'used', name: 'TeamGroup T-Force Delta 32 GB 6000, used', href: 'https://www.trademe.co.nz/a/marketplace/computers/components/memory-ram/16gb-or-more/listing/6167283491', price: 745, note: 'Trade Me, NZ$745 or Buy Now NZ$750, 7 Oct. RGB and ~46 mm tall. Used DDR5-6000 kits are rare right now' },
         { tier: 'mid', name: 'Crucial Pro OC 32 GB 6000 CL36, new', href: 'https://www.trademe.co.nz/a/marketplace/computers/components/memory-ram/16gb-or-more/listing/6159484731', price: 799, note: 'Trade Me, brand new, 7 Oct. 2×16 GB, white, low-profile, no RGB. CL36 vs CL30 is ~1% with an X3D chip' },
         { tier: 'high', name: 'G.Skill Flare X5 48 GB 6000 CL30', href: 'https://pricespy.co.nz/search?search=48gb%20ddr5%206000%20cl30', price: 950, note: '2×24 GB, like your mate’s build. Low-profile sticks' },
+      ] },
+      { id: 'ssd', cat: 'SSD', options: [
+        { key: '512-used', tier: 'used', name: '512 GB Gen4, used', href: 'https://www.trademe.co.nz/a/marketplace/computers/components/hard-drives-storage/search?search_string=512gb%20nvme', price: 70, note: 'Fits Windows plus two or three big games' },
+        { key: '512-new', tier: 'new', name: 'WD Black SN770 500 GB', href: 'https://pricespy.co.nz/search?search=sn770%20500gb', price: 110, note: 'Budget Gen4, runs cool' },
+        { key: 'used', tier: 'used', name: '1 TB Gen4, used', href: 'https://www.trademe.co.nz/a/marketplace/computers/components/hard-drives-storage/search?search_string=1tb%20nvme', price: 190, note: 'e.g. Kingston NV2 1 TB on Trade Me (NZ$175–205, 7 Oct). The board has 2 M.2 slots, so add more later' },
+        { key: '1tb-new', tier: 'new', name: 'Samsung 990 Pro 1 TB', href: 'https://www.trademe.co.nz/a/listing/6166423635', price: 425, note: 'Trade Me, brand new, Auckland, 8 Oct. Top-tier TLC drive' },
+        { key: '2tb-used', tier: 'used', name: '2 TB Gen4, used', href: 'https://www.trademe.co.nz/a/marketplace/computers/components/hard-drives-storage/search?search_string=2tb%20nvme', price: 400, note: 'e.g. ADATA S70 Blade or a used 990 Pro' },
+        { key: 'mid', tier: 'new', name: 'WD Black SN7100X 2 TB ♥', href: 'https://www.amazon.com.au/dp/B0G2G7P5FC', price: 550, note: 'Amazon AU NZ$549.75, 8 Oct. TLC, fast and runs cool, ideal for a small case. Same drive as the SN7100 (NZ$626)' },
+        { key: 'evo', tier: 'new', name: 'Samsung 990 Evo Plus 2 TB', href: 'https://www.amazon.com.au/dp/B0DGHB9V34', price: 619, note: 'Amazon AU NZ$619, 8 Oct. TLC, efficient, Samsung software' },
+        { key: 'high', tier: 'high', name: 'Samsung 990 Pro 2 TB', href: 'https://www.amazon.com.au/dp/B0BPXRY7N2', price: 826, note: 'Amazon AU NZ$826, 8 Oct. Barely faster in games than the SN7100X' },
       ] },
       { id: 'gpu', cat: 'GPU', options: [
         { key: 'entry', tier: 'entry', name: 'ASUS Prime RTX 5060 Ti 16 GB', href: 'https://computerlounge.co.nz/products/asus-geforce-rtx-5060-ti-prime-oc-16gb-graphics-card', price: 1089, note: 'Witcher 3 with RT ~51–56 fps native 1440p. Prime look' },
@@ -403,7 +412,7 @@
       ] },
     ];
 
-    const DEFAULTS = { cpu: 'mid', ram: 'mid', gpu: 'entry', extras: 'used' };
+    const DEFAULTS = { cpu: 'mid', ram: 'mid', ssd: 'mid', gpu: 'entry', extras: 'used' };
     const STORE_KEY = 'parts-picks-v2';
     const NZD_PER_EUR = 2.0;
     let currency = 'NZD';
