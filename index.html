@@ -362,7 +362,7 @@
 </main>
 <script>
   (() => {
-    const TIER_LABEL = { used: 'Second-hand', new: 'New', entry: 'Entry, new', mid: 'Middle', high: 'High-end', included: 'Included' };
+    const TIER_LABEL = { used: 'Second-hand', new: 'New', entry: 'Entry, new', mid: 'Middle', high: 'High-end', included: 'Included', current: 'Current' };
 
     const DONE = [
       { cat: 'Case', name: 'FormD T1 V2.5 Silver + travel kit', href: 'https://ncased.com/collections/t-series/products/t1-sandwich-kit-silver-color', paid: 445, note: 'US$250. Includes PCIe 5.0 riser, front USB-C cable, power inlet cable' },
@@ -405,6 +405,12 @@
         { key: '4080s', tier: 'used', name: 'RTX 4080 Super, used', href: 'https://www.trademe.co.nz/a/marketplace/computers/components/graphics-cards/search?search_string=4080%20super', price: 2300, note: 'e.g. MSI Gaming X Slim, fits the T1. Near 5080 speed for less' },
         { key: 'high', tier: 'high', name: 'ASUS Prime RTX 5080', href: 'https://pricespy.co.nz/product.php?p=14365109', price: 2749, note: 'Cyberpunk RT Ultra ~71 fps native 1440p' },
       ] },
+      { id: 'monitor', cat: 'Monitor', optional: true, options: [
+        { key: 'keep', tier: 'current', name: 'Keep the ProArt 4K for now', price: 0, note: 'Game on the current screen first' },
+        { key: 'aw2726dm', tier: 'new', name: 'Alienware AW2726DM 27" 1440p 240Hz QD-OLED', href: 'https://www.google.com/search?q=Alienware+AW2726DM&udm=28&gl=nz', price: 695, note: 'Budget OLED, about NZ$695. 1440p, so lower pixel density than 4K' },
+        { tier: 'mid', name: 'AOC AGON Pro AG276UZD 27" 4K 240Hz OLED', href: 'https://www.pbtech.co.nz/search?sf=AG276UZD', price: 1150, note: 'PB Tech, about NZ$1,150' },
+        { tier: 'high', name: 'Samsung Odyssey OLED G8 27" 4K 240Hz', href: 'https://www.google.com/search?q=Samsung+Odyssey+OLED+G8+27+4K&udm=28&gl=nz', price: 1390, note: 'About NZ$1,390–1,680' },
+      ] },
       { id: 'extras', cat: 'Extras', optional: true, options: [
         { tier: 'used', name: 'None for now', price: 0, note: 'Add printed parts later' },
         { tier: 'mid', name: 'Exhaust shroud', href: 'https://www.etsy.com/nz/listing/4438533383/formd-t1-exhaust-shroud-for-v2-v21-v25', price: 62, note: 'Etsy, with pre-installed inserts. Allow 2–4 weeks' },
@@ -412,7 +418,7 @@
       ] },
     ];
 
-    const DEFAULTS = { cpu: 'mid', ram: 'mid', ssd: 'mid', gpu: 'entry', extras: 'used' };
+    const DEFAULTS = { cpu: 'mid', ram: 'mid', ssd: 'mid', gpu: 'entry', monitor: 'keep', extras: 'used' };
     const STORE_KEY = 'parts-picks-v2';
     const NZD_PER_EUR = 2.0;
     let currency = 'NZD';
