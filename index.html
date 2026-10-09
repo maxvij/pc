@@ -326,9 +326,8 @@
   <div class="tablewrap"><table>
     <thead><tr><th>Card</th><th class="num">fps</th><th>VRAM</th><th>Power</th><th class="num">≈ NZ$</th><th>Travel kit</th></tr></thead>
     <tbody>
-      <tr><td>RTX 4080 / 4080 Super<span class="why">Previous gen, mostly used or old stock. 3-slot FE leaves 53 mm for the cooler</span></td><td class="num">~66</td><td>16 GB</td><td>~320 W</td><td class="num">check used</td><td>4080 FE, ASUS ProArt 4080</td></tr>
-      <tr><td>RTX 5070 Ti<span class="why">Cheapest current option. 72–90 fps at RT High</span></td><td class="num">56</td><td>16 GB</td><td>300 W</td><td class="num">2,299+</td><td>Unconfirmed for Prime / ProArt 5070 Ti</td></tr>
-      <tr class="pick"><td>RTX 5080<span class="why">The pick for RT Ultra at 60+. FE is the best fit and coolest</span></td><td class="num">71</td><td>16 GB</td><td>360 W</td><td class="num">2,414–3,000</td><td>5080 FE, ASUS Prime, ASUS ProArt</td></tr>
+      <tr><td>RTX 5070 Ti<span class="why">Cheapest current option. 72–90 fps at RT High</span></td><td class="num">56</td><td>16 GB</td><td>300 W</td><td class="num">2,149+</td><td>Unconfirmed for Prime / ProArt 5070 Ti</td></tr>
+      <tr class="pick"><td>RTX 5080<span class="why">The pick for RT Ultra at 60+. FE is the best fit and coolest</span></td><td class="num">71</td><td>16 GB</td><td>360 W</td><td class="num">2,931+</td><td>5080 FE, ASUS Prime, ASUS ProArt</td></tr>
       <tr><td>RTX 5080 Super <span class="pill last">Rumour</span><span class="why">CES 2027 at the earliest. Same cores as the 5080, more VRAM, more heat</span></td><td class="num">~71</td><td>24 GB</td><td>415 W</td><td class="num">unknown</td><td>Unknown</td></tr>
     </tbody>
   </table></div>
@@ -348,7 +347,7 @@
 
   <h2>Recommendations</h2>
   <ul class="recs">
-    <li><strong>GPU.</strong> 5080 for RT Ultra at 60+. 5070 Ti if RT High is fine and the NZ$700 matters. A used 4080 Super only at a clear discount. Skip the 5080 Super unless 24 GB matters more than heat.</li>
+    <li><strong>GPU.</strong> 5080 for RT Ultra at 60+. 5070 Ti if RT High is fine and the NZ$700 matters. Nothing below a 5070 Ti. Skip the 5080 Super unless 24 GB matters more than heat.</li>
     <li><strong>CPU.</strong> 7800X3D new at ≈ NZ$609; the 9800X3D isn't worth NZ$250 more. Stay on AM5 for the Zen 6 upgrade path unless Nova Lake reviews are exceptional.</li>
     <li><strong>Cool and quiet.</strong> Cap the frame rate, undervolt or power-limit the GPU, air cooler plus the two Noctua top exhausts.</li>
   </ul>
@@ -396,14 +395,10 @@
         { key: 'high', tier: 'high', name: 'Samsung 990 Pro 2 TB', href: 'https://www.amazon.com.au/dp/B0BPXRY7N2', price: 826, note: 'Amazon AU NZ$826, 8 Oct. Barely faster in games than the SN7100X' },
       ] },
       { id: 'gpu', cat: 'GPU', options: [
-        { key: 'entry', tier: 'entry', name: 'ASUS Prime RTX 5060 Ti 16 GB', href: 'https://computerlounge.co.nz/products/asus-geforce-rtx-5060-ti-prime-oc-16gb-graphics-card', price: 1089, note: 'Witcher 3 with RT ~51–56 fps native 1440p. Prime look' },
-        { key: 'used', tier: 'used', name: 'RTX 4070 Super, used', href: 'https://www.trademe.co.nz/a/marketplace/computers/components/graphics-cards/search?search_string=4070%20super', price: 1150, note: '12 GB, ~25% faster than a 5060 Ti. Check length ≤ 325 mm' },
-        { key: '9070xt', tier: 'new', name: 'AMD Radeon RX 9070 XT', href: 'https://www.pbtech.co.nz/search?sf=9070+xt', price: 1299, note: 'Gigabyte Gaming OC at PB Tech. Near 5070 Ti without RT, weaker with RT, no DLSS. 3-slot, so the cooler limit is 53 mm' },
-        { key: '5070', tier: 'new', name: 'ASUS Prime RTX 5070 12 GB', href: 'https://www.pbtech.co.nz/search?sf=prime+rtx+5070+12gb', price: 1449, note: 'PB Tech. Prime look. 12 GB is tight for RT at 1440p in a few years' },
-        { key: '4070tis', tier: 'used', name: 'RTX 4070 Ti Super, used', href: 'https://www.trademe.co.nz/a/marketplace/computers/components/graphics-cards/search?search_string=4070%20ti%20super', price: 1750, note: '16 GB, close to a 5070 Ti. Check length ≤ 325 mm' },
-        { key: 'mid', tier: 'mid', name: 'ASUS Prime RTX 5070 Ti ♥', href: 'https://www.pbtech.co.nz/product/VGAASU350711/ASUS-PRIME-NVIDIA-GeForce-RTX-5070-Ti-OC-16GB-GDDR7', price: 2299, note: 'Cyberpunk RT High 72–90 fps native 1440p' },
-        { key: '4080s', tier: 'used', name: 'RTX 4080 Super, used', href: 'https://www.trademe.co.nz/a/marketplace/computers/components/graphics-cards/search?search_string=4080%20super', price: 2300, note: 'e.g. MSI Gaming X Slim, fits the T1. Near 5080 speed for less' },
-        { key: 'high', tier: 'high', name: 'ASUS Prime RTX 5080', href: 'https://pricespy.co.nz/product.php?p=14365109', price: 2749, note: 'Cyberpunk RT Ultra ~71 fps native 1440p' },
+        { key: '5070ti-sff', tier: 'new', name: 'Gigabyte RTX 5070 Ti Eagle OC SFF', href: 'https://extremepc.co.nz/gigabyte-geforce-rtx-5070-ti-eagle-oc-sff-16gb-graphics-card/', price: 2149, note: 'Extreme PC, NZ$2,149, 10 Oct' },
+        { key: 'mid', tier: 'mid', name: 'ASUS Prime RTX 5070 Ti ♥', href: 'https://www.pbtech.co.nz/product/VGAASU350711', price: 2356, note: 'PB Tech, NZ$2,356, 10 Oct' },
+        { key: '5080-slim', tier: 'new', name: 'PNY RTX 5080 Slim OC', href: 'https://www.pbtech.co.nz/product/VGAPNY150803', price: 2931, note: 'PB Tech, NZ$2,931, 10 Oct' },
+        { key: 'high', tier: 'high', name: 'ASUS Prime RTX 5080', href: 'https://www.pbtech.co.nz/product/VGAASU350800', price: 3046, note: 'PB Tech, NZ$3,046, 10 Oct' },
       ] },
       { id: 'monitor', cat: 'Monitor', optional: true, options: [
         { key: 'keep', tier: 'current', name: 'Keep the ProArt 4K for now', price: 0, note: 'Game on the current screen first' },
@@ -419,7 +414,7 @@
       ] },
     ];
 
-    const DEFAULTS = { cpu: 'mid', ram: 'mid', ssd: 'mid', gpu: 'entry', monitor: 'q27g4zdp', extras: 'used' };
+    const DEFAULTS = { cpu: 'mid', ram: 'mid', ssd: 'mid', gpu: 'mid', monitor: 'q27g4zdp', extras: 'used' };
     const STORE_KEY = 'parts-picks-v2';
     const NZD_PER_EUR = 2.0;
     let currency = 'NZD';
