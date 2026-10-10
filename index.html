@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Compact Gaming PC Plan</title>
-<meta name="description" content="Parts list with GPU and CPU options for a compact 1440p ray-tracing gaming PC in a silver FormD T1.">
+<meta name="description" content="Parts list for a compact 1440p ray-tracing gaming PC in a silver FormD T1.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -74,9 +74,6 @@
   .next { background: var(--next-soft); color: var(--next); }
   .later { background: var(--later-soft); color: var(--later); }
   .last { background: var(--last-soft); color: var(--last); }
-  ul.recs { margin: 0; padding: 0; list-style: none; display: grid; gap: 0.7rem; }
-  ul.recs li { background: var(--bg-elev); border: 1px solid var(--line); border-radius: var(--r); padding: 0.9rem 1rem; }
-  ul.recs strong { font-weight: 600; }
   .small { color: var(--ink-3); font-size: 0.85rem; }
   footer { margin: 3rem 0; padding-top: 1.2rem; border-top: 1px solid var(--line); color: var(--ink-3); font-size: 0.85rem; }
 
@@ -206,7 +203,7 @@
   [data-view="detailed"] .more { display: inline; }
   .amount { font: 400 0.88rem/1.45rem var(--mono); color: var(--ink); text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
   li.done .amount { color: var(--ink-2); }
-  li.done > .line { padding-left: 1.85rem; } /* radio column + gap, so names align with option names */
+  li.done > .line, li.part > .line { padding-left: 1.85rem; } /* radio column + gap, so names align with option names */
 
   /* Radio rows */
   .options { display: grid; gap: 0.1rem; margin: 0; }
@@ -231,7 +228,7 @@
     ol.checklist > li > .line, ol.checklist > li > .options { grid-column: 2; }
     ol.checklist > li.part > .options { grid-column: 1 / -1; }
     ol.checklist > li.part .opt { grid-template-columns: 1.4rem minmax(0, 1fr) var(--share-col) var(--price-col); }
-    li.done > .line { padding-left: 0; }
+    li.done > .line, li.part > .line { padding-left: 0; }
     .paybar dl { grid-template-columns: 1fr auto; row-gap: 0.1rem; padding: 0.75rem 0.9rem; }
     .paybar .due { grid-column: 2; grid-row: 1 / span 2; align-self: end; flex-direction: column; align-items: flex-end; gap: 0; }
     .paybar .pair:not(.due) { display: grid; grid-template-columns: 5.6rem auto; }
@@ -242,7 +239,7 @@
     header { padding: 0 0 1rem; }
     h2 { margin-top: 1.6rem; }
     th, td { padding: 0.55rem 0.8rem; }
-    tr, ul.recs li { break-inside: avoid; }
+    tr { break-inside: avoid; }
     footer { margin: 1.5rem 0 0; padding-top: 0.8rem; }
     .seg { display: none; }
     .note { display: block; }
@@ -252,7 +249,7 @@
 <body>
 <main class="wrap">
   <div class="topbar">
-    <div class="kicker">Compact gaming PC · Auckland · updated 6 Oct 2026</div>
+    <div class="kicker">Compact gaming PC · Auckland · updated 10 Oct 2026</div>
     <div class="seg" role="group" aria-label="Currency">
       <button type="button" data-currency="NZD" aria-pressed="true">NZD</button>
       <button type="button" data-currency="EUR" aria-pressed="false">EUR</button>
@@ -291,7 +288,7 @@
     </dl>
   </div>
   <div class="paybar-sentinel" aria-hidden="true"></div>
-  <p class="small">Prices incl. NZ GST, checked 6 Oct 2026. EUR at €1 = NZ$2.00. Second-hand prices are typical Trade Me and Facebook asks. The case is US$250 converted at NZ$1.78, shipping not included.</p>
+  <p class="small">Prices incl. NZ GST, checked 10 Oct 2026. EUR at €1 = NZ$2.00. The case is US$250 converted at NZ$1.78, shipping not included.</p>
   </section>
 
   <section id="cost" aria-labelledby="cost-heading">
@@ -310,19 +307,10 @@
     </div>
   </section>
 
-  <h2>Recommendations</h2>
-  <ul class="recs">
-    <li><strong>GPU.</strong> 5080 for RT Ultra at 60+. 5070 Ti if RT High is fine and the NZ$700 matters. Nothing below a 5070 Ti. Skip the 5080 Super unless 24 GB matters more than heat.</li>
-    <li><strong>CPU.</strong> 7800X3D new at ≈ NZ$609; the 9800X3D isn't worth NZ$250 more. Stay on AM5 for the Zen 6 upgrade path unless Nova Lake reviews are exceptional.</li>
-    <li><strong>Cool and quiet.</strong> Cap the frame rate, undervolt or power-limit the GPU, air cooler plus the two Noctua top exhausts.</li>
-  </ul>
-
   <h2>Build guide</h2>
   <p><a href="https://eiga.works/builds/formd-t1-5090-air/">EIGA.works: FormD T1 air-cooled 9800X3D build</a>. Assembly, fan curves and gotchas, including that PSU screws aren't included with the T1.</p>
 
-  <p class="small">New to modern PCs? See the <a href="primer.html">catch-up primer</a>: DDR5, AM5, PCIe 5.0, Mini-ITX and quiet tuning.</p>
-
-  <footer>Rumours (5080 Super, Nova Lake, Zen 6) are unconfirmed. fps figures from KitGuru reviews on a 9800X3D test rig. Prices moved fast in 2026.</footer>
+  <footer>Prices moved fast in 2026.</footer>
 </main>
 <script>
   (() => {
@@ -335,42 +323,23 @@
       { cat: 'Cooler fan', name: 'Noctua NF-A9x14 HS-PWM chromax.black + NT-H2 AM5', href: 'https://www.newegg.com/global/nz-en/noctua-nf-a9x14-hs-pwm-chromax-black-swap-case-fan/p/1YF-000T-002G2', paid: 91, note: 'Newegg NZ, sold by Noctua, order 596319893. Fan NZ$43 + paste NZ$27 + GST + NZ$9 shipping = NZ$90.85' },
       { cat: 'Board', name: 'ASUS TUF Gaming B850I WiFi Neo', href: 'https://quietpc.co.nz/asus-b850i-wifi-neo-tuf?product=8942', paid: 486, note: 'Quiet PC (UK), NZ$332.34 + UPS NZ$153.75 = NZ$486.09, 7 Oct. Update BIOS via FlashBack before the CPU goes in' },
       { cat: 'SSD', name: 'Crucial E100 2 TB', href: 'https://www.pbtech.co.nz/product/HDDCRU30130', paid: 451, note: 'PB Tech, NZ$451, 10 Oct' },
-      { cat: 'PSU', name: 'Corsair SF850 (2024)', href: 'https://www.pbtech.co.nz/product/PSUCOR9020256/Corsair-SF-Series-SF850-850W-ATX-31-SFX-Power-Supp', paid: 352, note: 'CP-9020256, PB Tech sale incl. delivery. Enough for every GPU below' },
+      { cat: 'PSU', name: 'Corsair SF850 (2024)', href: 'https://www.pbtech.co.nz/product/PSUCOR9020256/Corsair-SF-Series-SF850-850W-ATX-31-SFX-Power-Supp', paid: 352, note: 'CP-9020256, PB Tech sale incl. delivery' },
     ];
 
-    // Remaining parts. Each option: tier, name, link, NZ$ price, note.
+    // Remaining parts: the chosen option for each. Note = shop, price, date.
     const PARTS = [
       { id: 'cpu', cat: 'CPU', next: true, options: [
-        { tier: 'used', name: 'Ryzen 7 7800X3D, used', href: 'https://www.trademe.co.nz/a/marketplace/computers/components/cpus/amd/search?search_string=7800x3d', price: 540, note: 'Trade Me. Pay with Ping for buyer protection; skip “not tested” listings' },
-        { tier: 'mid', name: 'Ryzen 7 7800X3D, new', href: 'https://www.amazon.com.au/s?k=7800x3d', price: 609, note: 'Amazon (ships from Germany). Check the landed total at checkout' },
-        { tier: 'high', name: 'Ryzen 7 9800X3D, new', href: 'https://www.pbtech.co.nz/search?sf=9800X3D', price: 849, note: 'About 5–8% faster than the 7800X3D' },
+        { key: 'pick', tier: 'new', name: 'AMD Ryzen 7 7800X3D', href: 'https://www.amazon.com.au/dp/B0BTZB7F88', price: 619, note: 'Amazon AU, NZ$619, 10 Oct' },
       ] },
       { id: 'ram', cat: 'RAM', options: [
-        { tier: 'used', name: 'TeamGroup T-Force Delta 32 GB 6000, used', href: 'https://www.trademe.co.nz/a/marketplace/computers/components/memory-ram/16gb-or-more/listing/6167283491', price: 745, note: 'Trade Me, NZ$745 or Buy Now NZ$750, 7 Oct. RGB and ~46 mm tall. Used DDR5-6000 kits are rare right now' },
-        { tier: 'mid', name: 'Crucial Pro OC 32 GB 6000 CL36, new', href: 'https://www.trademe.co.nz/a/marketplace/computers/components/memory-ram/16gb-or-more/listing/6159484731', price: 799, note: 'Trade Me, brand new, 7 Oct. 2×16 GB, white, low-profile, no RGB. CL36 vs CL30 is ~1% with an X3D chip' },
-        { tier: 'high', name: 'G.Skill Flare X5 48 GB 6000 CL30', href: 'https://pricespy.co.nz/search?search=48gb%20ddr5%206000%20cl30', price: 950, note: '2×24 GB, like your mate’s build. Low-profile sticks' },
+        { key: 'pick', tier: 'new', name: 'G.Skill Flare X5 32 GB DDR5-6000 CL30', href: 'https://www.trademe.co.nz/a/marketplace/computers/components/memory-ram/16gb-or-more/search?search_string=flare%20x5', price: 750, note: 'Trade Me, NZ$750, 10 Oct' },
       ] },
       { id: 'gpu', cat: 'GPU', options: [
-        { key: '5070ti-sff', tier: 'new', name: 'Gigabyte RTX 5070 Ti Eagle OC SFF', href: 'https://extremepc.co.nz/gigabyte-geforce-rtx-5070-ti-eagle-oc-sff-16gb-graphics-card/', price: 2149, note: 'Extreme PC, NZ$2,149, 10 Oct' },
-        { key: 'mid', tier: 'mid', name: 'ASUS Prime RTX 5070 Ti ♥', href: 'https://www.pbtech.co.nz/product/VGAASU350711', price: 2356, note: 'PB Tech, NZ$2,356, 10 Oct' },
-        { key: '5080-slim', tier: 'new', name: 'PNY RTX 5080 Slim OC', href: 'https://www.pbtech.co.nz/product/VGAPNY150803', price: 2931, note: 'PB Tech, NZ$2,931, 10 Oct' },
-        { key: 'high', tier: 'high', name: 'ASUS Prime RTX 5080', href: 'https://www.pbtech.co.nz/product/VGAASU350800', price: 3046, note: 'PB Tech, NZ$3,046, 10 Oct' },
-      ] },
-      { id: 'monitor', cat: 'Monitor', optional: true, options: [
-        { key: 'keep', tier: 'current', name: 'Keep the ProArt 4K for now', price: 0, note: 'Game on the current screen first' },
-        { key: 'q27g4zdp', tier: 'new', name: 'AOC Q27G4ZDP 27" 1440p 280Hz Tandem OLED', href: 'https://www.pbtech.co.nz/search?sf=Q27G4ZDP', price: 944, note: 'About NZ$944. Gaming screen next to the ProArt' },
-        { key: 'aw2726dm', tier: 'new', name: 'Alienware AW2726DM 27" 1440p 240Hz QD-OLED', href: 'https://www.google.com/search?q=Alienware+AW2726DM&udm=28&gl=nz', price: 695, note: 'About NZ$695' },
-        { tier: 'mid', name: 'AOC AGON Pro AG276UZD 27" 4K 240Hz OLED', href: 'https://www.pbtech.co.nz/search?sf=AG276UZD', price: 1150, note: 'PB Tech, about NZ$1,150' },
-        { tier: 'high', name: 'Samsung Odyssey OLED G8 27" 4K 240Hz', href: 'https://www.google.com/search?q=Samsung+Odyssey+OLED+G8+27+4K&udm=28&gl=nz', price: 1390, note: 'About NZ$1,390–1,680' },
-      ] },
-      { id: 'extras', cat: 'Extras', optional: true, options: [
-        { tier: 'used', name: 'None for now', price: 0, note: 'Add printed parts later' },
-        { tier: 'mid', name: 'Exhaust shroud', href: 'https://www.etsy.com/nz/listing/4438533383/formd-t1-exhaust-shroud-for-v2-v21-v25', price: 62, note: 'Etsy, with pre-installed inserts. Allow 2–4 weeks' },
-        { tier: 'high', name: 'Shroud, Teflon cables, feet', href: 'https://www.etsy.com/nz/listing/1458781827/custom-teflon-psu-cables-for-itx-sff', price: 208, note: 'Cablester Kit 6 fits the SF850 (2024)' },
+        { key: 'pick', tier: 'new', name: 'ASUS Prime RTX 5080', href: 'https://www.pbtech.co.nz/product/VGAASU350800', price: 3046, note: 'PB Tech, NZ$3,046, 10 Oct' },
       ] },
     ];
 
-    const DEFAULTS = { cpu: 'mid', ram: 'mid', gpu: 'mid', monitor: 'q27g4zdp', extras: 'used' };
+    const DEFAULTS = { cpu: 'pick', ram: 'pick', gpu: 'pick' };
     const STORE_KEY = 'parts-picks-v2';
     const NZD_PER_EUR = 2.0;
     let currency = 'NZD';
@@ -485,6 +454,17 @@
       const li = el('li', 'part' + (bought.has(part.id) ? ' is-bought' : ''));
       li.dataset.part = part.id;
       const cat = el('span', 'cat', part.cat);
+      if (part.options.length === 1) { // one chosen part: a plain row like the done ones, no radio
+        const opt = part.options[0];
+        const name = el('span', 'name');
+        name.append(linkOrText(opt.name, opt.href));
+        const text = el('span', 'text');
+        text.append(name, describe(TIER_LABEL[opt.tier], opt.note));
+        const line = el('div', 'line');
+        line.append(text, shareBar(opt.price, part.id), el('span', 'amount', fmt(opt.price)));
+        li.append(tickButton(part), cat, line);
+        return li;
+      }
       if (part.optional) cat.append(el('small', null, 'Optional'));
       const group = el('div', 'options');
       group.setAttribute('role', 'radiogroup');
