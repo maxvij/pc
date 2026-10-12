@@ -170,6 +170,8 @@
   li.is-next:not(.is-bought) .tick circle { stroke: var(--next); stroke-dasharray: 3 2.6; }
   li.done .tick circle, li.is-bought .tick circle { fill: var(--ok); stroke: var(--ok); stroke-dasharray: none; }
   li.done .tick path, li.is-bought .tick path { stroke-dashoffset: 0; }
+  li.done:not(.arrived) .tick circle { fill: transparent; } /* bought, on its way: outline tick; arrived: filled */
+  li.done:not(.arrived) .tick path { stroke: var(--ok); }
   .tick.pop { animation: tick-pop 420ms cubic-bezier(0.34, 1.56, 0.64, 1); }
   @keyframes tick-pop { 0% { transform: scale(1); } 35% { transform: scale(0.82); } 70% { transform: scale(1.18); } 100% { transform: scale(1); } }
   li.is-bought .opt:not(:has(input:checked)) { display: none; }
@@ -288,7 +290,7 @@
     </dl>
   </div>
   <div class="paybar-sentinel" aria-hidden="true"></div>
-  <p class="small">Prices incl. NZ GST, checked 10 Oct 2026. EUR at €1 = NZ$2.00. The case is US$250 converted at NZ$1.78, shipping not included.</p>
+  <p class="small">Filled tick: arrived. Outline tick: bought, on its way. Prices incl. NZ GST, checked 10 Oct 2026. EUR at €1 = NZ$2.00. The case is US$250 converted at NZ$1.78, shipping not included.</p>
   </section>
 
   <section id="cost" aria-labelledby="cost-heading">
@@ -317,15 +319,16 @@
     const TIER_LABEL = { used: 'Second-hand', new: 'New', entry: 'Entry, new', mid: 'Middle', high: 'High-end', included: 'Included', current: 'Current' };
 
     const DONE = [
-      { cat: 'Case', name: 'FormD T1 V2.5 Silver + travel kit', href: 'https://ncased.com/collections/t-series/products/t1-sandwich-kit-silver-color', paid: 445, note: 'US$250. Includes PCIe 5.0 riser, front USB-C cable, power inlet cable' },
-      { cat: 'Fans', name: 'Noctua NF-A12x25 G2 ×2', href: 'https://computerlounge.co.nz/products/noctua-nf-a12x25-g2-pwm-sx2-pp-chromax-black-120mm-1800rpm-cooling-fan-twin-pack', paid: 140, note: 'chromax.black twin pack, 2× top exhaust' },
-      { cat: 'Cooler', name: 'Thermalright AXP90-X53 Full Copper', href: 'https://www.amazon.com.au/dp/B0CNNFFC5Y', paid: 77, note: 'Amazon AU NZ$76.64 delivered. 53 mm with its stock fan, ~52 mm with the Noctua' },
-      { cat: 'Cooler fan', name: 'Noctua NF-A9x14 HS-PWM chromax.black + NT-H2 AM5', href: 'https://www.newegg.com/global/nz-en/noctua-nf-a9x14-hs-pwm-chromax-black-swap-case-fan/p/1YF-000T-002G2', paid: 91, note: 'Newegg NZ, sold by Noctua, order 596319893. Fan NZ$43 + paste NZ$27 + GST + NZ$9 shipping = NZ$90.85' },
+      { cat: 'Case', arrived: true, name: 'FormD T1 V2.5 Silver + travel kit', href: 'https://ncased.com/collections/t-series/products/t1-sandwich-kit-silver-color', paid: 445, note: 'US$250. Includes PCIe 5.0 riser, front USB-C cable, power inlet cable' },
+      { cat: 'Fans', arrived: true, name: 'Noctua NF-A12x25 G2 ×2', href: 'https://computerlounge.co.nz/products/noctua-nf-a12x25-g2-pwm-sx2-pp-chromax-black-120mm-1800rpm-cooling-fan-twin-pack', paid: 140, note: 'chromax.black twin pack, 2× top exhaust' },
+      { cat: 'Cooler', arrived: true, name: 'Thermalright AXP90-X53 Full Copper', href: 'https://www.amazon.com.au/dp/B0CNNFFC5Y', paid: 77, note: 'Amazon AU NZ$76.64 delivered. 53 mm with its stock fan, ~52 mm with the Noctua' },
+      { cat: 'Cooler fan', arrived: true, name: 'Noctua NF-A9x14 HS-PWM chromax.black + NT-H2 AM5', href: 'https://www.newegg.com/global/nz-en/noctua-nf-a9x14-hs-pwm-chromax-black-swap-case-fan/p/1YF-000T-002G2', paid: 91, note: 'Newegg NZ, sold by Noctua, order 596319893. Fan NZ$43 + paste NZ$27 + GST + NZ$9 shipping = NZ$90.85' },
       { cat: 'Board', name: 'ASUS TUF Gaming B850I WiFi Neo', href: 'https://quietpc.co.nz/asus-b850i-wifi-neo-tuf?product=8942', paid: 486, note: 'Quiet PC (UK), NZ$332.34 + UPS NZ$153.75 = NZ$486.09, 7 Oct. Update BIOS via FlashBack before the CPU goes in' },
       { cat: 'SSD', name: 'Crucial E100 2 TB', href: 'https://www.pbtech.co.nz/product/HDDCRU30130', paid: 451, note: 'PB Tech, NZ$451, 10 Oct' },
       { cat: 'CPU', name: 'AMD Ryzen 7 7800X3D', href: 'https://www.aliexpress.com/item/1005009495052188.html', paid: 551, note: 'AliExpress, NZ$551, 11 Oct' },
       { cat: 'RAM', name: 'Crucial Pro OC 32 GB DDR5-6000 CL36 White', href: 'https://www.trademe.co.nz/Browse/Listing.aspx?id=6159484731', paid: 750, note: 'Trade Me, NZ$750, 12 Oct' },
-      { cat: 'PSU', name: 'Corsair SF850 (2024)', href: 'https://www.pbtech.co.nz/product/PSUCOR9020256/Corsair-SF-Series-SF850-850W-ATX-31-SFX-Power-Supp', paid: 352, note: 'CP-9020256, PB Tech sale incl. delivery' },
+      { cat: 'Mouse', arrived: true, name: 'Keychron M6 white, 8K', href: 'https://keychron.co.nz/products/keychron-m6-wireless-mouse?variant=52397184155937', paid: 161, note: 'Keychron NZ, NZ$161, 10 Oct' },
+      { cat: 'PSU', arrived: true, name: 'Corsair SF850 (2024)', href: 'https://www.pbtech.co.nz/product/PSUCOR9020256/Corsair-SF-Series-SF850-850W-ATX-31-SFX-Power-Supp', paid: 352, note: 'CP-9020256, PB Tech sale incl. delivery' },
     ];
 
     // Remaining parts: the chosen part for each, priced at the most Max will pay.
@@ -423,14 +426,14 @@
     }
 
     function doneRow(d) {
-      const li = el('li', 'done');
+      const li = el('li', 'done' + (d.arrived ? ' arrived' : ''));
       const text = el('span', 'text');
       const name = el('span', 'name');
       name.append(linkOrText(d.name, d.href));
       text.append(name, describe('', d.note));
       const line = el('div', 'line');
       line.append(text, shareBar(d.paid), el('span', 'amount', fmt(d.paid)));
-      li.append(tick('Done'), el('span', 'cat', d.cat), line);
+      li.append(tick(d.arrived ? 'Arrived' : 'Bought, on its way'), el('span', 'cat', d.cat), line);
       return li;
     }
 
