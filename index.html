@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Compact Gaming PC Plan</title>
+<title>Compact Gaming PC</title>
 <meta name="description" content="Parts list for a compact 4K ray-tracing gaming PC in a silver FormD T1.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,13 +17,7 @@
     --ink-3: oklch(50% 0.01 250);
     --line: oklch(89% 0.006 250);
     --ok: oklch(47% 0.13 150);
-    --ok-soft: oklch(94% 0.05 150);
     --next: oklch(49% 0.13 250);
-    --next-soft: oklch(94% 0.04 250);
-    --later: oklch(50% 0.01 250);
-    --later-soft: oklch(93% 0.005 250);
-    --last: oklch(50% 0.13 60);
-    --last-soft: oklch(95% 0.05 75);
     --serif: "Instrument Serif", Georgia, serif;
     --sans: "Inter Tight", system-ui, sans-serif;
     --mono: "JetBrains Mono", ui-monospace, monospace;
@@ -35,50 +29,29 @@
       --bg: oklch(17% 0.006 250); --bg-elev: oklch(21% 0.006 250);
       --ink: oklch(94% 0.005 250); --ink-2: oklch(76% 0.008 250); --ink-3: oklch(68% 0.008 250);
       --line: oklch(30% 0.008 250);
-      --ok: oklch(76% 0.13 150); --ok-soft: oklch(27% 0.05 150);
-      --next: oklch(76% 0.11 250); --next-soft: oklch(27% 0.05 250);
-      --later: oklch(72% 0.01 250); --later-soft: oklch(27% 0.005 250);
-      --last: oklch(80% 0.13 70); --last-soft: oklch(28% 0.05 70);
+      --ok: oklch(76% 0.13 150); --next: oklch(76% 0.11 250);
     }
   }
   :root[data-theme="dark"] {
     --bg: oklch(17% 0.006 250); --bg-elev: oklch(21% 0.006 250);
     --ink: oklch(94% 0.005 250); --ink-2: oklch(76% 0.008 250); --ink-3: oklch(68% 0.008 250);
     --line: oklch(30% 0.008 250);
-    --ok: oklch(76% 0.13 150); --ok-soft: oklch(27% 0.05 150);
-    --next: oklch(76% 0.11 250); --next-soft: oklch(27% 0.05 250);
-    --later: oklch(72% 0.01 250); --later-soft: oklch(27% 0.005 250);
-    --last: oklch(80% 0.13 70); --last-soft: oklch(28% 0.05 70);
+    --ok: oklch(76% 0.13 150); --next: oklch(76% 0.11 250);
   }
   * { box-sizing: border-box; }
   body { margin: 0; background: var(--bg); color: var(--ink); font: 400 1rem/1.55 var(--sans); -webkit-font-smoothing: antialiased; }
   a { color: inherit; text-underline-offset: 3px; text-decoration-color: var(--ink-3); }
   a:hover { color: var(--next); }
   .wrap { max-width: 920px; margin: 0 auto; padding: 0 var(--gutter); }
-  header { padding: clamp(2.5rem, 6vw, 4.5rem) 0 1.5rem; }
-  .kicker { font: 500 0.78rem/1 var(--mono); letter-spacing: 0.01em; color: var(--ink-3); }
+  .kicker { font: 500 0.78rem/1 var(--mono); letter-spacing: 0.01em; color: var(--ink-3); padding-top: clamp(1.25rem, 3vw, 2rem); }
   h1 { font: 400 clamp(2.4rem, 1.6rem + 3.5vw, 4rem)/1.02 var(--serif); margin: 0.8rem 0; letter-spacing: -0.01em; }
-  h2 { font: 400 1.7rem/1.1 var(--serif); margin: 2.6rem 0 0.4rem; }
-  .sub { color: var(--ink-2); margin: 0 0 0.9rem; max-width: 66ch; font-size: 0.95rem; }
+  h2 { font: 400 1.7rem/1.1 var(--serif); margin: 2.6rem 0 0.9rem; }
   .lede { color: var(--ink-2); max-width: 60ch; margin: 0; }
-  .tablewrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--r); background: var(--bg-elev); }
-  table { width: 100%; border-collapse: collapse; min-width: 640px; font-size: 0.93rem; }
-  th, td { text-align: left; padding: 0.75rem 0.9rem; border-bottom: 1px solid var(--line); vertical-align: top; }
-  th { font: 500 0.78rem/1.2 var(--mono); letter-spacing: 0.01em; color: var(--ink-3); }
-  tr:last-child td { border-bottom: 0; }
-  td.num { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
-  td .why { display: block; color: var(--ink-3); font-size: 0.85em; margin-top: 0.15rem; }
-  tr.pick td { background: color-mix(in oklch, var(--next-soft) 60%, var(--bg-elev)); }
-  .pill { display: inline-block; font: 500 0.78rem/1 var(--mono); letter-spacing: 0.01em; padding: 0.3em 0.6em; border-radius: 999px; white-space: nowrap; }
-  .ok { background: var(--ok-soft); color: var(--ok); }
-  .next { background: var(--next-soft); color: var(--next); }
-  .later { background: var(--later-soft); color: var(--later); }
-  .last { background: var(--last-soft); color: var(--last); }
   .small { color: var(--ink-3); font-size: 0.85rem; }
   footer { margin: 3rem 0; padding-top: 1.2rem; border-top: 1px solid var(--line); color: var(--ink-3); font-size: 0.85rem; }
 
   /* Hero */
-  .hero { display: grid; grid-template-columns: 1fr; gap: 1.5rem; align-items: center; }
+  .hero { display: grid; grid-template-columns: 1fr; gap: 1.5rem; align-items: center; padding-top: clamp(1.25rem, 3.5vw, 2.5rem); }
   @media (min-width: 760px) { .hero { grid-template-columns: 1.05fr 1fr; } }
   .stage { margin: 0; border-radius: 18px; overflow: hidden; background: #000; aspect-ratio: 4 / 3; box-shadow: 0 1px 0 var(--line), 0 24px 48px -28px oklch(0% 0 0 / 0.55); }
   .stage img { display: block; width: 100%; height: 100%; object-fit: cover; }
@@ -86,184 +59,43 @@
   .progress-meta { display: flex; justify-content: space-between; font: 500 0.78rem/1 var(--mono); letter-spacing: 0.01em; color: var(--ink-3); margin-bottom: 0.5rem; }
   .progress-meta b { color: var(--ok); font-weight: 500; }
   .bar { height: 6px; border-radius: 999px; background: var(--line); overflow: hidden; }
-  .bar span { display: block; height: 100%; width: 100%; background: var(--ok); border-radius: inherit; transform-origin: left; transform: scaleX(var(--p, 0.333)); transition: transform 600ms cubic-bezier(0.16, 1, 0.3, 1); animation: grow 900ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+  .bar span { display: block; height: 100%; width: 100%; background: var(--ok); border-radius: inherit; transform-origin: left; transform: scaleX(var(--p)); animation: grow 900ms cubic-bezier(0.16, 1, 0.3, 1) both; }
   @keyframes grow { from { transform: scaleX(0); } }
   @media (prefers-reduced-motion: reduce) { .bar span { animation: none; } }
 
-  /* Section head with toggle */
-  .section-head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 0.8rem; margin: 2.6rem 0 0.9rem; }
-  .section-head h2 { margin: 0; }
-  .seg { display: inline-flex; padding: 3px; border: 1px solid var(--line); border-radius: 999px; background: var(--bg-elev); }
-  .seg button { font: 500 0.78rem/1 var(--mono); letter-spacing: 0.01em; color: var(--ink-3); background: none; border: 0; padding: 0.55em 0.95em; border-radius: 999px; cursor: pointer; transition: background-color 150ms, color 150ms; }
-  .seg button:hover { color: var(--ink); }
-  .seg button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
-  .seg button:focus-visible { outline: 2px solid var(--next); outline-offset: 2px; }
-  .note { display: none; color: var(--ink-3); font-size: 0.8rem; line-height: 1.4; margin-top: 0.15rem; }
-  [data-view="detailed"] .note { display: block; }
-
-  /* Cost over time: same ledger geometry as the parts list */
-  .ledger { --price-col: 6rem; border: 1px solid var(--line); border-radius: var(--r); background: var(--bg-elev); }
-  .ledger-row { display: grid; grid-template-columns: minmax(0, 1fr) var(--price-col); column-gap: 1rem; align-items: baseline; padding: 0.85rem 1rem; border-bottom: 1px solid var(--line); font-size: 0.95rem; }
-  .ledger-row:last-child { border-bottom: 0; }
-  .ledger-row .amount { font: 400 0.88rem/1.45rem var(--mono); color: var(--ink); text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
-  .ledger-row .desc { display: inline; margin-left: 0.4rem; }
-  .ledger-row.slider { grid-template-columns: auto minmax(0, 1fr) var(--price-col); align-items: center; background: var(--bg); }
-  .ledger-row.slider label { font-weight: 500; }
-  .ledger-row.slider output { font: 400 0.88rem/1.45rem var(--mono); text-align: right; font-variant-numeric: tabular-nums; }
-  input[type="range"] { width: 100%; accent-color: var(--next); cursor: pointer; }
-  input[type="range"]:focus-visible { outline: 2px solid var(--next); outline-offset: 4px; }
-  @media (max-width: 560px) {
-    .ledger { --price-col: 5.2rem; }
-    .ledger-row { padding: 0.8rem 0.9rem; }
-    .ledger-row .desc { display: block; margin-left: 0; }
-    .ledger-row.slider { grid-template-columns: minmax(0, 1fr) var(--price-col); row-gap: 0.4rem; }
-    .ledger-row.slider input { grid-column: 1 / -1; grid-row: 2; }
-  }
-
-  /* Reference tables become stacked rows on phones: no sideways swiping */
-  @media (max-width: 560px) {
-    .tablewrap { overflow: visible; }
-    .tablewrap table { min-width: 0; }
-    .tablewrap thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
-    .tablewrap tbody, .tablewrap tr, .tablewrap td { display: block; }
-    .tablewrap tr { padding: 0.8rem 0.9rem; border-bottom: 1px solid var(--line); }
-    .tablewrap tr:last-child { border-bottom: 0; }
-    .tablewrap td { padding: 0.15rem 0; border: 0; text-align: left; }
-    .tablewrap td.num { text-align: left; white-space: normal; }
-    .tablewrap td:first-child { font-weight: 500; padding-bottom: 0.3rem; }
-    .tablewrap td:not(:first-child)[data-label]::before { content: attr(data-label) " "; color: var(--ink-3); font-size: 0.82rem; margin-right: 0.3rem; }
-    .tablewrap td:empty { display: none; }
-  }
-
-  /* Top bar with currency switch */
-  .topbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.8rem 1rem; padding-top: clamp(1.25rem, 3vw, 2rem); }
-  header.hero { padding-top: clamp(1.25rem, 3.5vw, 2.5rem); }
-
-  /* Sticky totals bar: same inner padding as list rows, so "still to pay" lands in the price column */
-  .paybar { position: sticky; bottom: 0; z-index: 5; margin: 0; background: var(--bg-elev); border: 1px solid var(--line); border-radius: 0 0 var(--r) var(--r); transition: box-shadow 200ms; }
-  /* While floating at the window edge: square corners, a soft upward shadow, nothing showing beneath */
-  .paybar.is-stuck { border-radius: 0; box-shadow: 0 -12px 24px -20px oklch(0% 0 0 / 0.45); }
-  /* Paid share of the build, drawn over the bar's top border */
-  .pay-progress { position: absolute; top: -1px; left: -1px; right: -1px; height: 2px; overflow: hidden; pointer-events: none; }
-  .pay-progress span { display: block; height: 100%; background: var(--ok); transform-origin: left; transform: scaleX(var(--paid, 0)); transition: transform 600ms cubic-bezier(0.16, 1, 0.3, 1); }
-  @media (prefers-reduced-motion: reduce) { .pay-progress span { transition: none; } }
-  .paybar-sentinel { height: 1px; margin-bottom: 0.75rem; }
-  #checklist { border-radius: var(--r) var(--r) 0 0; border-bottom: 0; }
-  .paybar dl { margin: 0; display: grid; grid-template-columns: auto auto 1fr; column-gap: 1.75rem; align-items: baseline; padding: 0.85rem 1rem; }
-  .paybar .pair { display: flex; gap: 0.6rem; align-items: baseline; }
-  .paybar dt { font-size: 0.82rem; color: var(--ink-3); }
-  .paybar dd { margin: 0; font: 400 0.88rem/1.45rem var(--mono); color: var(--ink); text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
-  .paybar .due { justify-self: end; }
-  .paybar .due dt { color: var(--ink); font-weight: 500; }
-
-  /* Parts list: a ledger. Every price sits in one right-aligned column. */
-  ol.checklist { --price-col: 6rem; --share-col: 4rem; list-style: none; margin: 0; padding: 0; border: 1px solid var(--line); border-radius: var(--r); background: var(--bg-elev); }
-  ol.checklist > li { display: grid; grid-template-columns: 1.4rem 5rem minmax(0, 1fr); column-gap: 0.9rem; padding: 0.85rem 1rem; border-bottom: 1px solid var(--line); }
+  /* Parts list */
+  ol.checklist { list-style: none; margin: 0; padding: 0; border: 1px solid var(--line); border-radius: var(--r); background: var(--bg-elev); }
+  ol.checklist > li { display: grid; grid-template-columns: 1.4rem 5.5rem minmax(0, 1fr); column-gap: 0.9rem; padding: 0.85rem 1rem; border-bottom: 1px solid var(--line); }
   ol.checklist > li:last-child { border-bottom: 0; }
-  .tick { width: 1.25rem; height: 1.25rem; margin: 0.08rem 0 0 -0.05rem; padding: 0; border: 0; background: none; border-radius: 50%; display: block; color: inherit; }
-  button.tick { cursor: pointer; }
-  button.tick:focus-visible { outline: 2px solid var(--next); outline-offset: 3px; }
+  .tick { width: 1.25rem; height: 1.25rem; margin-top: 0.08rem; display: block; }
   .tick svg { display: block; width: 100%; height: 100%; overflow: visible; }
-  .tick circle { fill: transparent; stroke: var(--ink-2); stroke-width: 1.5; transition: fill 220ms ease-out, stroke 220ms ease-out; }
-  .tick path { fill: none; stroke: var(--bg-elev); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 13; stroke-dashoffset: 13; transition: stroke-dashoffset 320ms cubic-bezier(0.16, 1, 0.3, 1) 90ms; }
-  button.tick:hover circle { stroke: var(--ok); fill: var(--ok-soft); }
-  li.is-next:not(.is-bought) .tick circle { stroke: var(--next); stroke-dasharray: 3 2.6; }
-  li.done .tick circle, li.is-bought .tick circle { fill: var(--ok); stroke: var(--ok); stroke-dasharray: none; }
-  li.done .tick path, li.is-bought .tick path { stroke-dashoffset: 0; }
-  li.done:not(.arrived) .tick circle { fill: transparent; } /* bought, on its way: outline tick; arrived: filled */
-  li.done:not(.arrived) .tick path { stroke: var(--ok); }
-  .tick.pop { animation: tick-pop 420ms cubic-bezier(0.34, 1.56, 0.64, 1); }
-  @keyframes tick-pop { 0% { transform: scale(1); } 35% { transform: scale(0.82); } 70% { transform: scale(1.18); } 100% { transform: scale(1); } }
-  li.is-bought .opt:not(:has(input:checked)) { display: none; }
-  li.is-bought .opt { cursor: default; }
-  li.is-bought .opt:hover { background: none; }
-  li.is-bought .opt input { visibility: hidden; }
-
-  /* Share of the whole build, as a quiet bar left of each price */
-  .share { align-self: start; margin-top: calc(0.725rem - 2px); height: 4px; border-radius: 2px; background: var(--line); overflow: hidden; }
-  .share i { display: block; height: 100%; background: var(--ink-3); opacity: 0.55; border-radius: inherit; transform-origin: left; transform: scaleX(var(--s, 0)); transition: transform 450ms cubic-bezier(0.16, 1, 0.3, 1), opacity 200ms; }
-  .opt:has(input:checked) .share i { background: var(--next); opacity: 1; }
-  li.done .share i, li.is-bought .opt .share i { background: var(--ok); opacity: 1; }
-  @media (prefers-reduced-motion: reduce) { .share i { transition: none; } }
-  li.is-bought .opt .name { font-weight: 400; color: var(--ink); }
-  li.is-bought .opt .amount { color: var(--ink-2); }
-  li.is-bought .options { animation: settle 360ms ease-out; }
-  @keyframes settle { from { opacity: 0.4; } to { opacity: 1; } }
-  @media (prefers-reduced-motion: reduce) {
-    .tick circle, .tick path { transition: none; }
-    .tick.pop, li.is-bought .options { animation: none; }
-  }
+  .tick circle { fill: transparent; stroke: var(--ok); stroke-width: 1.5; }
+  .tick path { fill: none; stroke: var(--ok); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+  li.arrived .tick circle { fill: var(--ok); }
+  li.arrived .tick path { stroke: var(--bg-elev); }
+  li.next .tick circle { stroke: var(--next); stroke-dasharray: 3 2.6; }
+  li.next .tick path { display: none; }
   .cat { font-weight: 500; font-size: 0.92rem; line-height: 1.45rem; }
-  .cat small { display: block; font-weight: 400; font-size: 0.8rem; line-height: 1.3; color: var(--ink-3); }
-
-  .line { display: grid; grid-template-columns: minmax(0, 1fr) var(--share-col) var(--price-col); column-gap: 0.7rem; align-items: baseline; }
-  .line .name { font-size: 0.95rem; line-height: 1.45rem; }
-  .line .name a { text-decoration: none; }
-  .line .name a:hover { text-decoration: underline; }
+  .name { display: block; font-size: 0.95rem; line-height: 1.45rem; }
+  .name a { text-decoration: none; }
+  .name a:hover { text-decoration: underline; }
   .desc { display: block; font-size: 0.82rem; line-height: 1.35; color: var(--ink-3); }
-  .more { display: none; }
-  [data-view="detailed"] .more { display: inline; }
-  .amount { font: 400 0.88rem/1.45rem var(--mono); color: var(--ink); text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
-  li.done .amount { color: var(--ink-2); }
-  li.done > .line, li.part > .line { padding-left: 1.85rem; } /* radio column + gap, so names align with option names */
-
-  /* Radio rows */
-  .options { display: grid; gap: 0.1rem; margin: 0; }
-  .opt { display: grid; grid-template-columns: 1.15rem minmax(0, 1fr) var(--share-col) var(--price-col); column-gap: 0.7rem; align-items: baseline; margin: 0 -0.5rem; padding: 0.4rem 0.5rem; border-radius: 8px; cursor: pointer; transition: background-color 150ms; }
-  .opt + .opt { margin-top: 0; }
-  .opt:hover { background: var(--bg); }
-  .opt input { appearance: none; -webkit-appearance: none; margin: 0; width: 1rem; height: 1rem; border: 1.5px solid var(--ink-2); border-radius: 50%; background: var(--bg-elev); transform: translateY(0.15rem); cursor: pointer; transition: border-width 150ms, border-color 150ms; }
-  .opt input:checked { border: 5px solid var(--next); }
-  .opt input:focus-visible { outline: 2px solid var(--next); outline-offset: 2px; }
-  .opt .text { min-width: 0; }
-  .opt .name { display: block; font-size: 0.95rem; line-height: 1.45rem; color: var(--ink-2); }
-  .opt:has(input:checked) .name { color: var(--ink); font-weight: 500; }
-  .opt .amount { color: var(--ink-2); }
-  .opt:has(input:checked) .amount { color: var(--ink); }
-  .opt .name a { text-decoration: none; }
-  .opt .name a:hover { text-decoration: underline; }
-
   @media (max-width: 560px) {
-    ol.checklist { --price-col: 5.2rem; --share-col: 2rem; }
-    ol.checklist > li { grid-template-columns: 1.4rem minmax(0, 1fr); column-gap: 0.7rem; row-gap: 0.35rem; padding: 0.8rem 0.9rem; }
-    ol.checklist > li > .cat { grid-column: 2; }
-    ol.checklist > li > .line, ol.checklist > li > .options { grid-column: 2; }
-    ol.checklist > li.part > .options { grid-column: 1 / -1; }
-    ol.checklist > li.part .opt { grid-template-columns: 1.4rem minmax(0, 1fr) var(--share-col) var(--price-col); }
-    li.done > .line, li.part > .line { padding-left: 0; }
-    .paybar dl { grid-template-columns: 1fr auto; row-gap: 0.1rem; padding: 0.75rem 0.9rem; }
-    .paybar .due { grid-column: 2; grid-row: 1 / span 2; align-self: end; flex-direction: column; align-items: flex-end; gap: 0; }
-    .paybar .pair:not(.due) { display: grid; grid-template-columns: 5.6rem auto; }
-  }
-  @media print {
-    @page { margin: 12mm; }
-    body { font-size: 0.9rem; }
-    header { padding: 0 0 1rem; }
-    h2 { margin-top: 1.6rem; }
-    th, td { padding: 0.55rem 0.8rem; }
-    tr { break-inside: avoid; }
-    footer { margin: 1.5rem 0 0; padding-top: 0.8rem; }
-    .seg { display: none; }
-    .note { display: block; }
+    ol.checklist > li { grid-template-columns: 1.4rem minmax(0, 1fr); column-gap: 0.7rem; row-gap: 0.2rem; padding: 0.8rem 0.9rem; }
+    ol.checklist > li > .item { grid-column: 2; }
   }
 </style>
 </head>
 <body>
 <main class="wrap">
-  <div class="topbar">
-    <div class="kicker">Compact gaming PC · Auckland · updated 16 Oct 2026</div>
-    <div class="seg" role="group" aria-label="Currency">
-      <button type="button" data-currency="NZD" aria-pressed="true">NZD</button>
-      <button type="button" data-currency="EUR" aria-pressed="false">EUR</button>
-    </div>
-  </div>
+  <div class="kicker">Compact gaming PC · Auckland · updated 16 Oct 2026</div>
   <header class="hero">
     <div>
       <h1>Silver T1, 4K OLED, ray tracing on.</h1>
-      <p class="lede">A 10-litre build bought one part at a time. Prices are NZ, GST included. Re-check before buying.</p>
-      <div class="progress" id="progress" role="img" aria-label="Build progress: 3 of 9 parts done">
-        <div class="progress-meta"><span>Build progress</span><span><b id="progress-count">3</b> / <span id="progress-total">9</span> parts</span></div>
-        <div class="bar"><span id="progress-bar"></span></div>
+      <p class="lede">A 10-litre build, bought one part at a time.</p>
+      <div class="progress" role="img" aria-label="Build progress: 9 of 10 parts bought">
+        <div class="progress-meta"><span>Build progress</span><span><b>9</b> / 10 parts</span></div>
+        <div class="bar"><span style="--p: 0.9"></span></div>
       </div>
     </div>
     <figure class="stage">
@@ -271,356 +103,27 @@
     </figure>
   </header>
 
-  <section id="parts" data-view="compact" aria-labelledby="parts-heading">
-  <div class="section-head">
+  <section aria-labelledby="parts-heading">
     <h2 id="parts-heading">Parts list</h2>
-    <div class="seg" role="group" aria-label="Parts list view">
-      <button type="button" data-set-view="compact" aria-pressed="true">Compact</button>
-      <button type="button" data-set-view="detailed" aria-pressed="false">Detailed</button>
-    </div>
-  </div>
-
-  <ol class="checklist" id="checklist"></ol>
-  <div class="paybar" role="region" aria-label="Totals">
-    <div class="pay-progress" id="pay-progress" role="progressbar" aria-label="Share of the build paid" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span></span></div>
-    <dl>
-      <div class="pair"><dt>Paid so far</dt><dd id="paid">—</dd></div>
-      <div class="pair"><dt>Whole build</dt><dd id="total">—</dd></div>
-      <div class="pair due"><dt>Still to pay</dt><dd id="remaining" aria-live="polite">—</dd></div>
-    </dl>
-  </div>
-  <div class="paybar-sentinel" aria-hidden="true"></div>
-  <p class="small">Filled tick: arrived. Outline tick: bought, on its way. Prices incl. NZ GST, checked 10 Oct 2026. EUR at €1 = NZ$2.00. The case is US$250 converted at NZ$1.78, shipping not included.</p>
-  </section>
-
-  <section id="cost" aria-labelledby="cost-heading">
-    <h2 id="cost-heading">Cost over time</h2>
-    <p class="sub">The whole build with the parts picked above, spread over its life.</p>
-    <div class="ledger">
-      <div class="ledger-row"><span>Per month<span class="desc">over 5 years</span></span><span class="amount" id="pm5">—</span></div>
-      <div class="ledger-row"><span>Per month<span class="desc">over 10 years</span></span><span class="amount" id="pm10">—</span></div>
-      <div class="ledger-row slider">
-        <label for="hours">Gaming per week</label>
-        <input type="range" id="hours" min="0" max="24" step="1" value="8">
-        <output id="hours-out" for="hours">8 h</output>
-      </div>
-      <div class="ledger-row"><span>Per hour gamed<span class="desc">over 5 years</span></span><span class="amount" id="ph5">—</span></div>
-      <div class="ledger-row"><span>Per hour gamed<span class="desc">over 10 years</span></span><span class="amount" id="ph10">—</span></div>
-    </div>
+    <ol class="checklist">
+      <li class="arrived"><span class="tick" role="img" aria-label="Arrived"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9"/><path d="M6.2 10.4l2.6 2.6 5-5.4"/></svg></span><span class="cat">Case</span><span class="item"><span class="name"><a href="https://ncased.com/collections/t-series/products/t1-sandwich-kit-silver-color" target="_blank" rel="noopener">FormD T1 V2.5 Silver + travel kit</a></span><span class="desc">PCIe 5.0 riser, front USB-C, GPU anti-sag travel kit</span></span></li>
+      <li class="arrived"><span class="tick" role="img" aria-label="Arrived"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9"/><path d="M6.2 10.4l2.6 2.6 5-5.4"/></svg></span><span class="cat">CPU cooler</span><span class="item"><span class="name"><a href="https://www.amazon.com.au/dp/B0CNNFFC5Y" target="_blank" rel="noopener">Thermalright AXP90-X53 Full Copper</a></span><span class="desc">With a Noctua NF-A9x14 HS-PWM chromax.black and NT-H2 paste</span></span></li>
+      <li class="arrived"><span class="tick" role="img" aria-label="Arrived"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9"/><path d="M6.2 10.4l2.6 2.6 5-5.4"/></svg></span><span class="cat">Fans</span><span class="item"><span class="name"><a href="https://computerlounge.co.nz/products/noctua-nf-a12x25-g2-pwm-sx2-pp-chromax-black-120mm-1800rpm-cooling-fan-twin-pack" target="_blank" rel="noopener">Noctua NF-A12x25 G2 ×2</a></span><span class="desc">chromax.black, top exhaust</span></span></li>
+      <li class="arrived"><span class="tick" role="img" aria-label="Arrived"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9"/><path d="M6.2 10.4l2.6 2.6 5-5.4"/></svg></span><span class="cat">Board</span><span class="item"><span class="name"><a href="https://quietpc.co.nz/asus-b850i-wifi-neo-tuf?product=8942" target="_blank" rel="noopener">ASUS TUF Gaming B850I WiFi Neo</a></span><span class="desc">Mini-ITX, AM5</span></span></li>
+      <li><span class="tick" role="img" aria-label="Bought, on its way"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9"/><path d="M6.2 10.4l2.6 2.6 5-5.4"/></svg></span><span class="cat">CPU</span><span class="item"><span class="name">AMD Ryzen 7 7800X3D</span><span class="desc">8 cores, 3D V-Cache</span></span></li>
+      <li class="arrived"><span class="tick" role="img" aria-label="Arrived"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9"/><path d="M6.2 10.4l2.6 2.6 5-5.4"/></svg></span><span class="cat">RAM</span><span class="item"><span class="name">Crucial Pro OC 32 GB DDR5-6000 White</span><span class="desc">2 × 16 GB</span></span></li>
+      <li class="arrived"><span class="tick" role="img" aria-label="Arrived"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9"/><path d="M6.2 10.4l2.6 2.6 5-5.4"/></svg></span><span class="cat">SSD</span><span class="item"><span class="name">Crucial E100 2 TB</span><span class="desc">PCIe 4.0 NVMe</span></span></li>
+      <li class="arrived"><span class="tick" role="img" aria-label="Arrived"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9"/><path d="M6.2 10.4l2.6 2.6 5-5.4"/></svg></span><span class="cat">PSU</span><span class="item"><span class="name">Corsair SF850 (2024)</span><span class="desc">SFX, native 12V-2x6 cable</span></span></li>
+      <li class="next"><span class="tick" role="img" aria-label="Next"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9"/><path d="M6.2 10.4l2.6 2.6 5-5.4"/></svg></span><span class="cat">GPU</span><span class="item"><span class="name">ASUS Prime GeForce RTX 5080 OC</span><span class="desc">2.5 slot, SFF-Ready</span></span></li>
+      <li class="arrived"><span class="tick" role="img" aria-label="Arrived"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9"/><path d="M6.2 10.4l2.6 2.6 5-5.4"/></svg></span><span class="cat">Monitor</span><span class="item"><span class="name">AOC AGON Pro AG276UZD</span><span class="desc">27" 4K 240 Hz QD-OLED</span></span></li>
+    </ol>
+    <p class="small">Filled tick: arrived. Outline tick: bought, on its way. Dashed: next.</p>
   </section>
 
   <h2>Build guide</h2>
   <p><a href="https://eiga.works/builds/formd-t1-5090-air/">EIGA.works: FormD T1 air-cooled 9800X3D build</a>. Assembly, fan curves and gotchas, including that PSU screws aren't included with the T1.</p>
 
-  <footer>Prices moved fast in 2026.</footer>
+  <footer>Built in Auckland, 2026.</footer>
 </main>
-<script>
-  (() => {
-    const TIER_LABEL = { used: 'Second-hand', new: 'New', entry: 'Entry, new', mid: 'Middle', high: 'High-end', included: 'Included', current: 'Current' };
-
-    const DONE = [
-      { cat: 'Case', arrived: true, name: 'FormD T1 V2.5 Silver + travel kit', href: 'https://ncased.com/collections/t-series/products/t1-sandwich-kit-silver-color', paid: 445, note: 'US$250. Includes PCIe 5.0 riser, front USB-C cable, power inlet cable' },
-      { cat: 'Fans', arrived: true, name: 'Noctua NF-A12x25 G2 ×2', href: 'https://computerlounge.co.nz/products/noctua-nf-a12x25-g2-pwm-sx2-pp-chromax-black-120mm-1800rpm-cooling-fan-twin-pack', paid: 140, note: 'chromax.black twin pack, 2× top exhaust' },
-      { cat: 'Cooler', arrived: true, name: 'Thermalright AXP90-X53 Full Copper', href: 'https://www.amazon.com.au/dp/B0CNNFFC5Y', paid: 77, note: 'Amazon AU NZ$76.64 delivered. 53 mm with its stock fan, ~52 mm with the Noctua' },
-      { cat: 'Cooler fan', arrived: true, name: 'Noctua NF-A9x14 HS-PWM chromax.black + NT-H2 AM5', href: 'https://www.newegg.com/global/nz-en/noctua-nf-a9x14-hs-pwm-chromax-black-swap-case-fan/p/1YF-000T-002G2', paid: 91, note: 'Newegg NZ, sold by Noctua, order 596319893. Fan NZ$43 + paste NZ$27 + GST + NZ$9 shipping = NZ$90.85' },
-      { cat: 'Board', arrived: true, name: 'ASUS TUF Gaming B850I WiFi Neo', href: 'https://quietpc.co.nz/asus-b850i-wifi-neo-tuf?product=8942', paid: 486, note: 'Quiet PC (UK), NZ$332.34 + UPS NZ$153.75 = NZ$486.09, 7 Oct. Update BIOS via FlashBack before the CPU goes in' },
-      { cat: 'SSD', arrived: true, name: 'Crucial E100 2 TB', href: 'https://www.pbtech.co.nz/product/HDDCRU30130', paid: 451, note: 'PB Tech, NZ$451, 10 Oct' },
-      { cat: 'CPU', name: 'AMD Ryzen 7 7800X3D', href: 'https://www.aliexpress.com/item/1005009495052188.html', paid: 551, note: 'AliExpress, NZ$551, 11 Oct' },
-      { cat: 'RAM', arrived: true, name: 'Crucial Pro OC 32 GB DDR5-6000 CL36 White', href: 'https://www.trademe.co.nz/Browse/Listing.aspx?id=6159484731', paid: 750, note: 'Trade Me, NZ$750, 12 Oct' },
-      { cat: 'Monitor', name: 'AOC AGON Pro AG276UZD 27" 4K 240 Hz QD-OLED', href: 'https://www.pbtech.co.nz/product/MONAOC92766', paid: 976, note: 'PB Tech ex-demo, NZ$976, 13 Oct' },
-      { cat: 'PSU', arrived: true, name: 'Corsair SF850 (2024)', href: 'https://www.pbtech.co.nz/product/PSUCOR9020256/Corsair-SF-Series-SF850-850W-ATX-31-SFX-Power-Supp', paid: 352, note: 'CP-9020256, PB Tech sale incl. delivery' },
-    ];
-
-    // Remaining parts: the chosen part for each, priced at the most Max will pay.
-    const PARTS = [
-      { id: 'gpu', cat: 'GPU', next: true, options: [
-        { key: 'pick', tier: 'new', name: 'RTX 5070 Ti / 5080', href: 'https://www.pbtech.co.nz/search?sf=rtx+5080', price: 2400, note: 'Max NZ$2,400' },
-      ] },
-    ];
-
-    const DEFAULTS = { gpu: 'pick' };
-    const STORE_KEY = 'parts-picks-v2';
-    const NZD_PER_EUR = 2.0;
-    let currency = 'NZD';
-    try { if (localStorage.getItem('currency') === 'EUR') currency = 'EUR'; } catch (e) { /* ignore */ }
-    const fmt = (nzd) => currency === 'EUR'
-      ? '€' + Math.round(nzd / NZD_PER_EUR).toLocaleString('en-NZ')
-      : 'NZ$' + Math.round(nzd).toLocaleString('en-NZ');
-    const fmtCents = (nzd) => {
-      const v = currency === 'EUR' ? nzd / NZD_PER_EUR : nzd;
-      return (currency === 'EUR' ? '€' : 'NZ$') + v.toLocaleString('en-NZ', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    };
-    const keyOf = (o) => o.key || o.tier;
-    const optionFor = (part, key) => part.options.find((o) => keyOf(o) === key);
-
-    const loadPicks = () => {
-      try {
-        const saved = JSON.parse(localStorage.getItem(STORE_KEY) || 'null') || {};
-        return Object.fromEntries(PARTS.map((p) => [p.id, optionFor(p, saved[p.id]) ? saved[p.id] : DEFAULTS[p.id]]));
-      } catch (e) {
-        return { ...DEFAULTS };
-      }
-    };
-    let picks = loadPicks();
-    const savePicks = () => { try { localStorage.setItem(STORE_KEY, JSON.stringify(picks)); } catch (e) { /* ignore */ } };
-
-    const el = (tag, cls, text) => {
-      const node = document.createElement(tag);
-      if (cls) node.className = cls;
-      if (text != null) node.textContent = text;
-      return node;
-    };
-    const linkOrText = (name, href) => {
-      if (!href) return document.createTextNode(name);
-      const a = el('a', null, name);
-      Object.assign(a, { href, target: '_blank', rel: 'noopener' });
-      return a;
-    };
-    const SVG_NS = 'http://www.w3.org/2000/svg';
-    const tickIcon = () => {
-      const svg = document.createElementNS(SVG_NS, 'svg');
-      svg.setAttribute('viewBox', '0 0 20 20');
-      svg.setAttribute('aria-hidden', 'true');
-      const circle = document.createElementNS(SVG_NS, 'circle');
-      Object.entries({ cx: 10, cy: 10, r: 9 }).forEach(([k, v]) => circle.setAttribute(k, v));
-      const path = document.createElementNS(SVG_NS, 'path');
-      path.setAttribute('d', 'M6.2 10.4l2.6 2.6 5-5.4');
-      svg.append(circle, path);
-      return svg;
-    };
-    const tick = (label) => {
-      const t = el('span', 'tick');
-      t.setAttribute('role', 'img');
-      t.setAttribute('aria-label', label);
-      t.append(tickIcon());
-      return t;
-    };
-    const BOUGHT_KEY = 'parts-bought';
-    let bought = new Set();
-    try { bought = new Set(JSON.parse(localStorage.getItem(BOUGHT_KEY) || '[]')); } catch (e) { /* ignore */ }
-    const saveBought = () => { try { localStorage.setItem(BOUGHT_KEY, JSON.stringify([...bought])); } catch (e) { /* ignore */ } };
-    const tickButton = (part) => {
-      const b = el('button', 'tick');
-      b.type = 'button';
-      b.dataset.part = part.id;
-      b.setAttribute('aria-pressed', String(bought.has(part.id)));
-      b.setAttribute('aria-label', 'Mark ' + part.cat + ' as bought');
-      b.append(tickIcon());
-      return b;
-    };
-
-    const describe = (lead, note) => {
-      const desc = el('span', 'desc', lead || null);
-      if (note) desc.append(el('span', 'more', (lead ? ' · ' : '') + note));
-      return desc;
-    };
-
-    // Quiet bar showing what share of the whole build a price would be.
-    function shareBar(price, partId) {
-      const bar = el('span', 'share');
-      bar.setAttribute('aria-hidden', 'true');
-      bar.dataset.price = String(price);
-      if (partId) bar.dataset.part = partId;
-      bar.append(el('i'));
-      return bar;
-    }
-
-    function doneRow(d) {
-      const li = el('li', 'done' + (d.arrived ? ' arrived' : ''));
-      const text = el('span', 'text');
-      const name = el('span', 'name');
-      name.append(linkOrText(d.name, d.href));
-      text.append(name, describe('', d.note));
-      const line = el('div', 'line');
-      line.append(text, shareBar(d.paid), el('span', 'amount', fmt(d.paid)));
-      li.append(tick(d.arrived ? 'Arrived' : 'Bought, on its way'), el('span', 'cat', d.cat), line);
-      return li;
-    }
-
-    function optionRow(part, opt) {
-      const lab = el('label', 'opt');
-      const input = el('input');
-      Object.assign(input, { type: 'radio', name: 'pick-' + part.id, value: keyOf(opt), checked: picks[part.id] === keyOf(opt) });
-      const text = el('span', 'text');
-      const name = el('span', 'name');
-      name.append(linkOrText(opt.name, opt.href));
-      text.append(name, describe(TIER_LABEL[opt.tier], opt.note));
-      lab.append(input, text, shareBar(opt.price, part.id), el('span', 'amount', opt.price ? fmt(opt.price) : '—'));
-      return lab;
-    }
-
-    function partRow(part) {
-      const li = el('li', 'part' + (bought.has(part.id) ? ' is-bought' : ''));
-      li.dataset.part = part.id;
-      const cat = el('span', 'cat', part.cat);
-      if (part.options.length === 1) { // one chosen part: a plain row like the done ones, no radio
-        const opt = part.options[0];
-        const name = el('span', 'name');
-        name.append(linkOrText(opt.name, opt.href));
-        const text = el('span', 'text');
-        text.append(name, describe(TIER_LABEL[opt.tier], opt.note));
-        const line = el('div', 'line');
-        line.append(text, shareBar(opt.price, part.id), el('span', 'amount', fmt(opt.price)));
-        li.append(tickButton(part), cat, line);
-        return li;
-      }
-      if (part.optional) cat.append(el('small', null, 'Optional'));
-      const group = el('div', 'options');
-      group.setAttribute('role', 'radiogroup');
-      group.setAttribute('aria-label', part.cat);
-      group.append(...part.options.map((o) => optionRow(part, o)));
-      if (bought.has(part.id)) group.querySelectorAll('input').forEach((i) => { i.disabled = true; });
-      li.append(tickButton(part), cat, group);
-      return li;
-    }
-
-    const list = document.getElementById('checklist');
-
-    const WEEKS_PER_YEAR = 52;
-    const MAX_HOURS = 24;
-    const hoursInput = document.getElementById('hours');
-    try {
-      const savedHours = Number(localStorage.getItem('hours-per-week'));
-      if (localStorage.getItem('hours-per-week') !== null && savedHours >= 0 && savedHours <= MAX_HOURS) hoursInput.value = String(savedHours);
-    } catch (e) { /* ignore */ }
-    let lastTotal = 0;
-    function renderCost(total) {
-      lastTotal = total;
-      const hours = Number(hoursInput.value);
-      document.getElementById('hours-out').textContent = hours + ' h';
-      hoursInput.setAttribute('aria-valuetext', hours + ' hours per week');
-      document.getElementById('pm5').textContent = fmtCents(total / (5 * 12));
-      document.getElementById('pm10').textContent = fmtCents(total / (10 * 12));
-      const perHour = (years) => (hours === 0 ? '—' : fmtCents(total / (hours * WEEKS_PER_YEAR * years)));
-      document.getElementById('ph5').textContent = perHour(5);
-      document.getElementById('ph10').textContent = perHour(10);
-    }
-    hoursInput.addEventListener('input', () => {
-      renderCost(lastTotal);
-      try { localStorage.setItem('hours-per-week', hoursInput.value); } catch (e) { /* ignore */ }
-    });
-
-    function renderShares(total) {
-      // Every bar is measured against the build as currently picked, so all bars rebalance on each change.
-      document.querySelectorAll('#checklist .share').forEach((bar) => {
-        const price = Number(bar.dataset.price);
-        const share = total > 0 ? price / total : 0;
-        bar.firstChild.style.setProperty('--s', share.toFixed(4));
-        bar.parentElement.title = Math.round(share * 100) + '% of the build';
-      });
-    }
-
-    const paidBase = DONE.reduce((sum, d) => sum + d.paid, 0);
-
-    function renderProgress() {
-      const counted = PARTS.filter((p) => !p.optional);
-      const total = DONE.length + counted.length;
-      const done = DONE.length + counted.filter((p) => bought.has(p.id)).length;
-      document.getElementById('progress-count').textContent = String(done);
-      document.getElementById('progress-total').textContent = String(total);
-      document.getElementById('progress-bar').style.setProperty('--p', String(done / total));
-      document.getElementById('progress').setAttribute('aria-label', 'Build progress: ' + done + ' of ' + total + ' parts done');
-      const next = counted.find((p) => !bought.has(p.id));
-      document.querySelectorAll('li.part').forEach((li) => li.classList.toggle('is-next', !!next && li.dataset.part === next.id));
-    }
-    function renderTotals() {
-      const priceOf = (p) => optionFor(p, picks[p.id]).price;
-      const boughtSum = PARTS.filter((p) => bought.has(p.id)).reduce((sum, p) => sum + priceOf(p), 0);
-      const remaining = PARTS.filter((p) => !bought.has(p.id)).reduce((sum, p) => sum + priceOf(p), 0);
-      const paid = paidBase + boughtSum;
-      document.getElementById('paid').textContent = fmt(paid);
-      document.getElementById('remaining').textContent = fmt(remaining);
-      document.getElementById('total').textContent = fmt(paid + remaining);
-      renderCost(paid + remaining);
-      renderShares(paid + remaining);
-      const paidShare = paid + remaining > 0 ? paid / (paid + remaining) : 0;
-      const payProgress = document.getElementById('pay-progress');
-      payProgress.firstChild.style.setProperty('--paid', paidShare.toFixed(4));
-      payProgress.setAttribute('aria-valuenow', String(Math.round(paidShare * 100)));
-      payProgress.title = Math.round(paidShare * 100) + '% of the build paid';
-    }
-
-    list.addEventListener('change', (e) => {
-      const id = e.target.name && e.target.name.replace('pick-', '');
-      if (!PARTS.some((p) => p.id === id)) return;
-      picks = { ...picks, [id]: e.target.value };
-      savePicks();
-      renderTotals();
-    });
-
-    list.addEventListener('click', (e) => {
-      const btn = e.target.closest('button.tick');
-      if (!btn) return;
-      const id = btn.dataset.part;
-      const li = btn.closest('li');
-      const isBought = !bought.has(id);
-      bought = new Set(bought);
-      if (isBought) bought.add(id); else bought.delete(id);
-      saveBought();
-      li.classList.toggle('is-bought', isBought);
-      btn.setAttribute('aria-pressed', String(isBought));
-      li.querySelectorAll('input').forEach((i) => { i.disabled = isBought; });
-      btn.classList.remove('pop');
-      void btn.offsetWidth; // restart the animation
-      btn.classList.add('pop');
-      renderTotals();
-      renderProgress();
-    });
-    list.addEventListener('animationend', (e) => { if (e.target.classList.contains('tick')) e.target.classList.remove('pop'); });
-
-    const renderList = () => list.replaceChildren(...DONE.map(doneRow), ...PARTS.map(partRow));
-    const currencyButtons = document.querySelectorAll('[data-currency]');
-    const setCurrency = (next) => {
-      currency = next;
-      currencyButtons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.currency === next)));
-      renderList();
-      renderTotals();
-      renderProgress();
-    };
-    currencyButtons.forEach((b) => b.addEventListener('click', () => {
-      setCurrency(b.dataset.currency);
-      try { localStorage.setItem('currency', b.dataset.currency); } catch (e) { /* ignore */ }
-    }));
-    setCurrency(currency);
-
-    // Label table cells with their column header, for the stacked phone layout.
-    document.querySelectorAll('.tablewrap table').forEach((table) => {
-      const heads = [...table.querySelectorAll('thead th')].map((th) => th.textContent.trim());
-      table.querySelectorAll('tbody tr').forEach((tr) => {
-        [...tr.children].forEach((td, i) => { if (heads[i]) td.dataset.label = heads[i]; });
-      });
-    });
-
-    // Compact / detailed: identical rows; detailed only adds the note text.
-    const section = document.getElementById('parts');
-    const viewButtons = section.querySelectorAll('[data-set-view]');
-    const setView = (view) => {
-      section.dataset.view = view;
-      viewButtons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.setView === view)));
-    };
-    try {
-      const savedView = localStorage.getItem('parts-view');
-      if (savedView === 'compact' || savedView === 'detailed') setView(savedView);
-    } catch (e) { /* ignore */ }
-    viewButtons.forEach((b) => b.addEventListener('click', () => {
-      setView(b.dataset.setView);
-      try { localStorage.setItem('parts-view', b.dataset.setView); } catch (e) { /* ignore */ }
-    }));
-
-    // Square the bar's corners while it floats; round them again once it docks under the list.
-    const paybar = document.querySelector('.paybar');
-    const sentinel = document.querySelector('.paybar-sentinel');
-    // Scroll events are already frame-aligned; one rect read per event is cheap.
-    const updateStuck = () => {
-      paybar.classList.toggle('is-stuck', sentinel.getBoundingClientRect().top > window.innerHeight);
-    };
-    window.addEventListener('scroll', updateStuck, { passive: true });
-    window.addEventListener('resize', updateStuck);
-    updateStuck();
-
-    renderTotals();
-    renderProgress();
-  })();
-</script>
 </body>
 </html>
