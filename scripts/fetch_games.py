@@ -16,7 +16,7 @@ def get(url, tries=4):
     """curl with a hard timeout; Python's urllib occasionally hangs on SteamSpy."""
     for i in range(tries):
         try:
-            out = subprocess.run(["curl", "-sS", "-m", "20", "-A", "pc-games-quiz/1.0", url],
+            out = subprocess.run(["curl", "-sS", "-m", "8", "-A", "pc-games-quiz/1.0", url],
                                  capture_output=True, timeout=30, check=True).stdout
             return json.loads(out)
         except Exception as e:
@@ -50,14 +50,17 @@ json.dump(ids, open(f"{CACHE}/ids.json", "w"))
 print("fetching", len(ids), "games", file=sys.stderr, flush=True)
 
 # 2. Details, two hosts in parallel, each at its own polite rate.
-def spy():
+def spy(worker=0, workers=4):
+    # SteamSpy sometimes hangs on a request; several slow workers keep the overall
+    # rate near 1/s without one stuck call blocking the rest.
     for i, a in enumerate(ids):
+        if i % workers != worker: continue
         f = f"{CACHE}/spy/{a}.json"
         if os.path.exists(f): continue
         d = get(f"https://steamspy.com/api.php?request=appdetails&appid={a}")
         if d: json.dump(d, open(f, "w"))
-        if i % 100 == 0: print("spy", i, file=sys.stderr, flush=True)
-        time.sleep(1.05)
+        if i % 100 == worker: print("spy", i, file=sys.stderr, flush=True)
+        time.sleep(4)
 
 def store():
     for i, a in enumerate(ids):
@@ -74,6 +77,6 @@ def store():
         if i % 100 == 0: print("store", i, file=sys.stderr, flush=True)
         time.sleep(1.6)
 
-ts = [threading.Thread(target=spy), threading.Thread(target=store)]
+ts = [threading.Thread(target=spy, args=(w,)) for w in range(4)] + [threading.Thread(target=store)]
 [t.start() for t in ts]; [t.join() for t in ts]
 print("done", file=sys.stderr, flush=True)
