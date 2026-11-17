@@ -175,6 +175,12 @@
   .why li { font-size: 0.76rem; background: var(--surface-2); border-radius: 6px; padding: 0.2rem 0.5rem; color: var(--ink-2); }
   .why li.minus { color: var(--neg); background: var(--neg-dim); }
   .why li.own { color: var(--accent); background: var(--accent-dim); }
+  .reviews { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; font-size: 0.8rem; color: var(--ink-3); }
+  .reviews .lbl { color: oklch(78% 0.1 230); font-weight: 500; }
+  .reviews .lbl.best { color: oklch(82% 0.12 220); }
+  .reviews .lbl.mid { color: oklch(80% 0.12 85); }
+  .mc { margin-left: auto; font: 600 0.78rem/1 var(--mono); min-width: 30px; text-align: center; padding: 0.32rem 0.35rem; border-radius: 6px; color: oklch(15% 0.02 140); }
+  .mc.good { background: oklch(72% 0.17 145); } .mc.ok { background: oklch(80% 0.15 90); } .mc.bad { background: oklch(65% 0.18 25); color: #fff; }
   .live { margin-top: auto; font: 0.74rem/1.4 var(--mono); color: var(--ink-3); padding-top: 0.6rem; border-top: 1px solid var(--line); display: flex; gap: 0.6rem; flex-wrap: wrap; }
   .live b { color: var(--ink); font-weight: 500; }
   .live a { color: var(--accent); text-decoration: none; }
@@ -297,7 +303,7 @@
   <div class="about-inner">
     <div>
       <h2>How it works</h2>
-      <p>Every game has eleven traits, each scored 0 to 3: story, reflexes, thinking, open world, challenge, chill, building, realism, graphics, length and short sessions. They're worked out from the tags Steam players vote onto each game and from median playtime, then calibrated against about 190 games tagged by hand.</p>
+      <p>Every game has eleven traits, each scored 0 to 3: story, reflexes, thinking, open world, challenge, chill, building, realism, graphics, length and short sessions. They're worked out from the tags Steam players vote onto each game and from median playtime, then calibrated against about 190 games tagged by hand. Review labels follow Steam's own thresholds; Metacritic scores come from the Steam store.</p>
       <p>Your settings become weights. A game scores higher the more its traits agree with them, the more it resembles the games you loved, and the better it's rated on Steam. The list then spreads across genres so one kind of game doesn't take over.</p>
       <p>Nothing you enter leaves your browser. Prices come live from CheapShark.</p>
     </div>
@@ -345,6 +351,7 @@ const NUDGES = [
   { k: 'horror', name: 'Horror',  opts: [[-1, 'Hide'], [0, 'Neutral'], [1, 'Boost']] },
   { k: 'era',    name: 'Release', opts: [[-1, 'Older'], [0, 'Any'], [1, 'Newer']] },
   { k: 'indie',  name: 'Studio',  opts: [[-1, 'AAA'], [0, 'Any'], [1, 'Indie']] },
+  { k: 'minrev', name: 'Reviews', opts: [[0, 'Any'], [1, 'Very Positive+'], [2, 'Overwhelming']] },
 ];
 const PRESETS = [
   { id: 'story',  icon: '📖', label: 'Story binge',     w: { s: 1, x: 0.5, g: 0.5, k: -0.5 } },
@@ -365,13 +372,23 @@ const HAND = window.HAND || [];
 const BIG = Array.isArray(window.GAMES_DB) && window.GAMES_DB.length > HAND.length;
 const SRC = BIG ? window.GAMES_DB : HAND.map(r => [...r, 4, '']);
 const Q_MID = BIG ? 88 : 82;   // Steam rating (big DB) vs critic score (hand list)
-const games = SRC.map(([name, id, year, traits, modes, tags, q, pop, art], i) => {
+const games = SRC.map(([name, id, year, traits, modes, tags, q, pop, art, pct, n, mc], i) => {
   const t = tags.split(',');
-  return { i, name, id, year, q, pop, art, modes, tags: t, genre: t[0], v: [...traits].map(d => (+d / 3) * 2 - 1), key: norm(name) };
+  return { i, name, id, year, q, pop, art, pct, n, mc, modes, tags: t, genre: t[0], v: [...traits].map(d => (+d / 3) * 2 - 1), key: norm(name) };
 });
 function norm(s) { return s.toLowerCase().normalize('NFKD').replace(/[^a-z0-9 ]+/g, ' ').replace(/\s+/g, ' ').trim(); }
 const byName = new Map(games.map(g => [g.name, g]));
 const popular = [...games].sort((a, b) => b.pop - a.pop);
+/* Steam's review summary label, from its published thresholds. */
+function steamLabel(pct, n) {
+  if (pct == null) return null;
+  if (pct >= 95 && n >= 500) return 'Overwhelmingly Positive';
+  if (pct >= 80) return n >= 50 ? 'Very Positive' : 'Positive';
+  if (pct >= 70) return 'Mostly Positive';
+  if (pct >= 40) return 'Mixed';
+  return 'Mostly Negative';
+}
+const fmtN = n => n >= 1e6 ? (n / 1e6).toFixed(1).replace(/\.0$/, '') + 'M' : n >= 1e3 ? Math.round(n / 1e3) + 'k' : String(n);
 const artUrl = g => `https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/${g.art || g.id + '/header.jpg'}`;
 
 /* ---------------------------------------------------------------
@@ -383,7 +400,7 @@ const store = {
   set(v) { try { localStorage.setItem(KEY, JSON.stringify(v)); } catch {} },
 };
 const zeroW = () => Object.fromEntries(DIMS.map(d => [d.k, 0]));
-const fresh = () => ({ w: zeroW(), modes: { S: 1, C: 1, P: 1 }, horror: 0, era: 0, indie: 0, themes: [], seeds: [], hidden: [], shown: 12, owned: [], wish: [], libMode: 'mark', preset: null });
+const fresh = () => ({ w: zeroW(), modes: { S: 1, C: 1, P: 1 }, horror: 0, era: 0, indie: 0, minrev: 0, themes: [], seeds: [], hidden: [], shown: 12, owned: [], wish: [], libMode: 'mark', preset: null });
 let state = Object.assign(fresh(), store.get() || {});
 state.seeds = state.seeds.filter(n => byName.has(n));
 const save = () => store.set(state);
@@ -405,6 +422,7 @@ function scoreAll(p) {
   return games.map(g => {
     const why = [], minus = [];
     if (p.horror < 0 && g.tags.includes('horror')) return null;
+    if (p.minrev && g.pct != null && (g.pct < (p.minrev > 1 ? 95 : 80) || (p.minrev > 1 && g.n < 500))) return null;
     if (p.seeds.includes(g.name)) return null;
     const own = ownedSet.has(g.id), wished = wishSet.has(g.id);
     if (p.libMode === 'hide' && own) return null;
@@ -441,7 +459,7 @@ function scoreAll(p) {
     const era = p.era * Math.max(-0.2, Math.min(0.2, (g.year - 2018) / 30));
     const indie = p.indie * (g.tags.includes('indie') ? 0.1 : -0.04);
     const wish = wished ? 0.1 : 0;
-    const quality = (g.q - Q_MID) / 100 + (BIG ? 0.03 * (g.pop - 4) : 0);
+    const quality = (g.q - Q_MID) / 100 + (BIG ? 0.03 * (g.pop - 4) : 0) + (g.mc ? 0.3 * (g.mc - 80) / 100 : 0);
     if (own) why.unshift({ t: 'In your library', own: true });
     else if (wished) why.unshift({ t: 'On your wishlist', own: true });
 
@@ -625,6 +643,7 @@ function card(r, label) {
       <h3 class="t"><a href="https://store.steampowered.com/app/${g.id}/" target="_blank" rel="noopener">${esc(g.name)}</a></h3>
       <div class="meta">${g.year} · ${g.genre}${g.tags.includes('indie') ? ' · indie' : ''} · ${[...g.modes].map(m => ({ S: 'solo', C: 'co-op', P: 'PvP' })[m]).join(' / ')}</div>
       <ul class="why">${r.why.map(w => `<li class="${w.minus ? 'minus' : w.own ? 'own' : ''}">${w.minus ? '− ' : ''}${esc(w.t)}</li>`).join('')}</ul>
+      <div class="reviews">${g.pct != null ? `<span class="lbl ${g.pct >= 95 && g.n >= 500 ? 'best' : g.pct < 80 ? 'mid' : ''}">${steamLabel(g.pct, g.n)}</span><span>${g.pct}% of ${fmtN(g.n)}</span>` : ''}${g.mc ? `<span class="mc ${g.mc >= 75 ? 'good' : g.mc >= 50 ? 'ok' : 'bad'}" title="Metacritic">${g.mc}</span>` : ''}</div>
       <div class="live" data-live="${g.id}">Checking prices…</div>
     </div>
   </article>`;
@@ -665,7 +684,7 @@ function renderFormula() {
   + 0.13 per theme match (max 0.3)
   + horror / release / studio (±0.2)
   + 0.1 if on your wishlist
-  + 0.7 × quality (Steam rating, review count)
+  + 0.7 × quality (Steam rating, review count, Metacritic)
 
 your weights
   ${DIMS.map(d => d.name.toLowerCase().padEnd(15) + (state.w[d.k] > 0 ? '+' : state.w[d.k] < 0 ? '' : ' ') + state.w[d.k]).join('\n  ')}
@@ -681,14 +700,13 @@ async function live(g) {
   try {
     liveCache[g.id] ||= fetch(`https://www.cheapshark.com/api/1.0/deals?steamAppID=${g.id}&sortBy=Price&pageSize=10`).then(r => { if (!r.ok) throw r; return r.json(); });
     const deals = await liveCache[g.id];
-    const bits = [`<span>Steam <b>${g.q}%</b></span>`];
+    const bits = [];
     if (deals.length) {
       const d = deals.reduce((a, b) => +b.salePrice < +a.salePrice ? b : a);
-      if (+d.metacriticScore) bits.push(`<span>Meta <b>${d.metacriticScore}</b></span>`);
       bits.push(`<a href="https://www.cheapshark.com/redirect?dealID=${encodeURIComponent(d.dealID)}" target="_blank" rel="noopener">${+d.salePrice === 0 ? 'Free' : 'US$' + d.salePrice}${+d.savings > 1 ? ` −${Math.round(d.savings)}%` : ''} →</a>`);
-    } else if (g.tags.includes('f2p')) bits.push('<span>Free to play</span>');
+    } else bits.push(g.tags.includes('f2p') ? '<span>Free to play</span>' : '<span>No tracked deals</span>');
     paint(bits.join(''));
-  } catch { delete liveCache[g.id]; paint(`<span>Steam <b>${g.q}%</b></span>`); }
+  } catch { delete liveCache[g.id]; paint(`<a href="https://store.steampowered.com/app/${g.id}/" target="_blank" rel="noopener">View on Steam →</a>`); }
 }
 
 /* ---------------------------------------------------------------
