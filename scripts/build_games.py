@@ -174,7 +174,9 @@ def main():
         top3 = sorted(st, key=lambda k: -st[k])[:3]
         if (store or {}).get("type") not in (None, "game") or NOT_GAMES & set(top3):
             skipped["not-game"] += 1; continue
-        if any(st.get(t, 0) > .35 for t in ADULT):
+        # Drop games that are mainly adult content; plenty of mainstream RPGs carry a Nudity tag.
+        if a not in hand and (any(st.get(t, 0) > .2 for t in ("Hentai", "NSFW")) or top3[0] in ADULT
+                              or (st.get("Sexual Content", 0) > .5 and max(st.get("Dating Sim", 0), st.get("Visual Novel", 0)) > .5)):
             skipped["adult"] += 1; continue
         if "VR" in top3 or "VR Only" in st:
             skipped["vr"] += 1; continue
