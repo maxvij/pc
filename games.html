@@ -87,6 +87,12 @@
   .btn { border: 1px solid var(--line); background: var(--bg); border-radius: 999px; padding: 0.45rem 1rem; cursor: pointer; font-weight: 500; font-size: 0.9rem; }
   .btn:hover { border-color: var(--ink-3); }
   #results h2 { margin-top: 0; }
+  .steps { margin: 0 0 0.6rem; padding-left: 1.2rem; font-size: 0.82rem; color: var(--ink-2); }
+  .steps a { overflow-wrap: anywhere; }
+  #libpaste { font: 0.78rem/1.4 var(--mono); color: inherit; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 0.5rem 0.7rem; width: 100%; resize: vertical; }
+  #libpaste:focus { outline: 2px solid var(--next); outline-offset: 1px; }
+  #libstatus { margin: 0.4rem 0 0.2rem; }
+  .why li.own { background: color-mix(in oklch, var(--ok) 16%, var(--chip)); color: var(--ink); }
 
   /* Results */
   .results-head { display: flex; justify-content: space-between; align-items: end; gap: 1rem; flex-wrap: wrap; }
@@ -149,6 +155,17 @@
         <input id="seedq" list="seedlist" placeholder="Search and press Enter" autocomplete="off" aria-label="Add a game you loved">
         <datalist id="seedlist"></datalist>
         <div class="toggles" id="seeds"></div>
+      </fieldset>
+      <fieldset>
+        <legend>My Steam library <span>stays in this browser</span></legend>
+        <ol class="steps">
+          <li>Sign in to Steam in this browser, then open <a href="https://store.steampowered.com/dynamicstore/userdata/" target="_blank" rel="noopener">store.steampowered.com/dynamicstore/userdata</a></li>
+          <li>Select all, copy, and paste it here</li>
+        </ol>
+        <textarea id="libpaste" rows="2" placeholder='{"rgWishlist":[…],"rgOwnedApps":[…]…}' aria-label="Paste your Steam userdata"></textarea>
+        <p class="small" id="libstatus"></p>
+        <div class="var" id="libmode-row" hidden><span class="name" id="n-lib">Owned games</span><span class="desc"></span>
+          <span class="seg wide3" role="group" aria-labelledby="n-lib" id="libmode"></span></div>
       </fieldset>
       <div class="toolbar">
         <button type="button" class="btn" id="reset">Reset</button>
@@ -428,7 +445,7 @@ const store = {
   get() { try { return JSON.parse(localStorage.getItem(KEY)) || null; } catch { return null; } },
   set(v) { try { localStorage.setItem(KEY, JSON.stringify(v)); } catch {} },
 };
-const fresh = () => ({ w: Object.fromEntries(DIMS.map(d => [d.k, 0])), modes: { S: 1, C: 1, P: 1 }, horror: 0, era: 0, indie: 0, themes: [], seeds: [], hidden: [], shown: 12 });
+const fresh = () => ({ w: Object.fromEntries(DIMS.map(d => [d.k, 0])), modes: { S: 1, C: 1, P: 1 }, horror: 0, era: 0, indie: 0, themes: [], seeds: [], hidden: [], shown: 12, owned: [], wish: [], libMode: 'mark' });
 let state = Object.assign(fresh(), store.get() || {});
 const save = () => store.set(state);
 
@@ -456,6 +473,9 @@ function scoreAll(p) {
     const why = [], minus = [];
     if (p.horror < 0 && g.tags.includes('horror')) return null;
     if (p.seeds.includes(g.name)) return null;
+    const own = ownedSet.has(g.id), wished = wishSet.has(g.id);
+    if (p.libMode === 'hide' && own) return null;
+    if (p.libMode === 'only' && !own) return null;
 
     // 1. Trait fit: weighted agreement between your weights and the game's traits.
     const contrib = DIMS.map((d, i) => ({ d, c: wv[i] * g.v[i], v: g.v[i] }));
@@ -490,7 +510,10 @@ function scoreAll(p) {
     const indie = p.indie * (g.tags.includes('indie') ? 0.1 : -0.04);
     const quality = (g.q - Q_MID) / 100 + (BIG ? 0.03 * (g.pop - 4) : 0);
 
-    const total = (centroid ? 0.6 : 1) * fit + (centroid ? 0.4 : 0) * sim + mode + theme + horror + era + indie + 0.7 * quality;
+    const wish = wished ? 0.1 : 0;
+    if (own) why.unshift({ t: 'In your library', own: true });
+    else if (wished) why.unshift({ t: 'On your wishlist', own: true });
+    const total = (centroid ? 0.6 : 1) * fit + (centroid ? 0.4 : 0) * sim + mode + theme + horror + era + indie + wish + 0.7 * quality;
     return { g, total, match: Math.round(50 + 49 * Math.tanh(total * 1.15)), why: [...why.slice(0, 3), ...minus.slice(0, 1)] };
   }).filter(Boolean);
 }
@@ -556,6 +579,48 @@ $('seedq').addEventListener('keydown', e => { if (e.key === 'Enter') { e.prevent
 $('seedq').addEventListener('change', addSeed);
 
 /* ---------------------------------------------------------------
+   Steam library (pasted from store.steampowered.com/dynamicstore/userdata)
+---------------------------------------------------------------- */
+let ownedSet = new Set(state.owned), wishSet = new Set(state.wish);
+const catalogueIds = new Set(games.map(g => g.id));
+
+function parseLibrary(text) {
+  try {
+    const j = JSON.parse(text);
+    if (Array.isArray(j.rgOwnedApps)) return { owned: j.rgOwnedApps.map(Number), wish: (j.rgWishlist || []).map(Number) };
+  } catch {}
+  // Fallback: a list of app IDs or store URLs, one per line or comma-separated.
+  const ids = [...text.matchAll(/(?:app\/)?\b(\d{2,8})\b/g)].map(m => +m[1]);
+  return ids.length ? { owned: ids, wish: [] } : null;
+}
+
+function renderLibrary() {
+  ownedSet = new Set(state.owned); wishSet = new Set(state.wish);
+  const has = state.owned.length > 0;
+  const inCat = state.owned.filter(id => catalogueIds.has(id)).length;
+  $('libstatus').innerHTML = has
+    ? `${state.owned.length} owned (${inCat} in this catalogue), ${state.wish.length} wishlisted. <button type="button" class="linkish" id="libclear">Clear</button>`
+    : '';
+  $('libmode-row').hidden = !has;
+  $('libmode').innerHTML = [['mark', 'Mark'], ['hide', 'Hide'], ['only', 'Only these']].map(([v, l]) =>
+    `<button type="button" data-lib="${v}" aria-pressed="${state.libMode === v}">${l}</button>`).join('');
+  const c = $('libclear'); if (c) c.onclick = () => { state.owned = []; state.wish = []; state.libMode = 'mark'; save(); renderLibrary(); renderList(); };
+}
+
+$('libpaste').addEventListener('input', () => {
+  const text = $('libpaste').value.trim(); if (!text) return;
+  const lib = parseLibrary(text);
+  if (!lib) { $('libstatus').textContent = "Couldn't read that. Paste the whole page from the link above."; return; }
+  if (!lib.owned.length && !lib.wish.length) { $('libstatus').textContent = 'That came back empty. Are you signed in to Steam in this browser?'; return; }
+  state.owned = lib.owned; state.wish = lib.wish; $('libpaste').value = '';
+  save(); renderLibrary(); renderList();
+});
+$('libmode').addEventListener('click', e => {
+  const b = e.target.closest('[data-lib]'); if (!b) return;
+  e.stopPropagation(); state.libMode = b.dataset.lib; save(); renderLibrary(); renderList();
+});
+
+/* ---------------------------------------------------------------
    Results
 ---------------------------------------------------------------- */
 const hue = s => [...s].reduce((h, c) => (h * 31 + c.charCodeAt(0)) % 360, 7);
@@ -572,7 +637,7 @@ function card(r, label) {
     <div class="body">
       <div class="title"><b><a href="${steamUrl(g)}" target="_blank" rel="noopener">${esc(g.name)}</a></b><span class="match">${r.match}%</span></div>
       <div class="meta">${g.year} · ${g.genre}${g.tags.includes('indie') ? ' · indie' : ''} · ${[...g.modes].map(m => ({ S: 'solo', C: 'co-op', P: 'PvP' })[m]).join('/')}</div>
-      <ul class="why">${r.why.map(w => `<li class="${w.minus ? 'minus' : ''}">${w.minus ? '− ' : ''}${esc(w.t)}</li>`).join('')}</ul>
+      <ul class="why">${r.why.map(w => `<li class="${w.minus ? 'minus' : w.own ? 'own' : ''}">${w.minus ? '− ' : ''}${esc(w.t)}</li>`).join('')}</ul>
       <div class="live" data-live="${g.id}">Checking CheapShark…</div>
     </div>
   </article>`;
@@ -604,6 +669,7 @@ function renderFormula() {
   ` : ''}− 0.6 if none of the game's modes are selected
   + 0.13 per theme match (max 0.3)
   + horror / release / studio (±0.2)
+  + 0.1 if on your Steam wishlist
   + 0.7 × quality (${BIG ? 'Steam rating, review count' : 'critic score'})
 
 weights: ${DIMS.map(d => d.k + '=' + state.w[d.k]).join(' ')}
@@ -630,15 +696,16 @@ async function live(g) {
 }
 
 
-$('reset').onclick = () => { state = Object.assign(fresh(), { hidden: state.hidden }); save(); renderForm(); renderList(); };
+$('reset').onclick = () => { state = Object.assign(fresh(), { hidden: state.hidden, owned: state.owned, wish: state.wish, libMode: state.libMode }); save(); renderForm(); renderList(); };
 $('unhide').onclick = () => { state.hidden = []; save(); renderList(); };
 $('copy').onclick = async e => {
-  const { hidden, shown, ...settings } = state;
+  const { hidden, shown, owned, wish, ...settings } = state;
   try { await navigator.clipboard.writeText(JSON.stringify(settings, null, 2)); e.target.textContent = 'Copied'; } catch { e.target.textContent = 'Copy failed'; }
   setTimeout(() => e.target.textContent = 'Copy settings', 1500);
 };
 
 renderForm();
+renderLibrary();
 renderList();
 </script>
 </body>
