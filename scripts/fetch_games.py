@@ -3,7 +3,7 @@ store (release date, header art). Resumable: every response is cached under CACH
 
 usage: python3 fetch_games.py CACHE_DIR [pages=4] [limit=1500]
 """
-import json, os, re, sys, threading, time, urllib.request, urllib.parse
+import json, os, re, subprocess, sys, threading, time
 
 CACHE = sys.argv[1]
 PAGES = int(sys.argv[2]) if len(sys.argv) > 2 else 4
@@ -13,13 +13,14 @@ os.makedirs(f"{CACHE}/spy", exist_ok=True); os.makedirs(f"{CACHE}/store", exist_
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 def get(url, tries=4):
+    """curl with a hard timeout; Python's urllib occasionally hangs on SteamSpy."""
     for i in range(tries):
         try:
-            req = urllib.request.Request(url, headers={"User-Agent": "pc-games-quiz/1.0"})
-            with urllib.request.urlopen(req, timeout=90) as r:
-                return json.load(r)
+            out = subprocess.run(["curl", "-sS", "-m", "20", "-A", "pc-games-quiz/1.0", url],
+                                 capture_output=True, timeout=30, check=True).stdout
+            return json.loads(out)
         except Exception as e:
-            print("retry", url, e, file=sys.stderr, flush=True); time.sleep(8 * (i + 1))
+            print("retry", url, str(e)[:100], file=sys.stderr, flush=True); time.sleep(5 * (i + 1))
     return None
 
 def rating(pos, neg):
