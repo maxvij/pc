@@ -43,7 +43,7 @@ for p in range(PAGES):
             cands[int(k)] = rating(pos, neg)
 ids = sorted(cands, key=lambda k: -cands[k])[:LIMIT]
 # Always include the hand-tagged games.
-html = open(f"{ROOT}/games.html").read()
+html = open(f"{ROOT}/hand-tags.js").read()
 hand = [int(x) for x in re.findall(r'^\["[^\n]*?",(\d+),', html, re.M) if int(x)]
 ids = list(dict.fromkeys(hand + ids))
 json.dump(ids, open(f"{CACHE}/ids.json", "w"))

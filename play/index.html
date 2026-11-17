@@ -1,0 +1,714 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#0d0e14">
+<title>whatto.play</title>
+<meta name="description" content="Tell it what you like, and it ranks 1,000+ Steam games by how well they fit. Live prices, your Steam library, no sign-up.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23c8f06a'/%3E%3Cpath d='M12 9.5v13l11-6.5z' fill='%23121408'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: oklch(14.5% 0.014 275);
+    --surface: oklch(18.5% 0.016 275);
+    --surface-2: oklch(22% 0.018 275);
+    --surface-3: oklch(26% 0.02 275);
+    --line: oklch(29% 0.02 275);
+    --ink: oklch(96% 0.006 275);
+    --ink-2: oklch(80% 0.012 275);
+    --ink-3: oklch(64% 0.014 275);
+    --accent: oklch(89% 0.18 125);
+    --accent-ink: oklch(22% 0.06 125);
+    --accent-dim: oklch(89% 0.18 125 / 0.14);
+    --neg: oklch(72% 0.15 25);
+    --neg-dim: oklch(72% 0.15 25 / 0.16);
+    --display: "Space Grotesk", system-ui, sans-serif;
+    --sans: "Inter Tight", system-ui, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, monospace;
+    --gutter: clamp(16px, 3.5vw, 40px);
+    --radius: 14px;
+    --panel-w: 400px;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 400 15px/1.5 var(--sans); -webkit-font-smoothing: antialiased; }
+  body::before { content: ""; position: fixed; inset: 0 0 auto; height: 520px; pointer-events: none; z-index: -1;
+    background: radial-gradient(60% 100% at 15% 0%, oklch(40% 0.12 280 / 0.35), transparent 70%), radial-gradient(40% 80% at 85% 0%, oklch(55% 0.14 125 / 0.14), transparent 70%); }
+  a { color: inherit; text-underline-offset: 3px; text-decoration-color: var(--ink-3); }
+  a:hover { color: var(--accent); }
+  button, input, textarea { font: inherit; color: inherit; }
+  button { cursor: pointer; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+  .mono { font-family: var(--mono); }
+  [hidden] { display: none !important; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  /* Top bar */
+  .top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 18px var(--gutter); max-width: 1440px; margin: 0 auto; }
+  .logo { font: 700 1.35rem/1 var(--display); letter-spacing: -0.02em; text-decoration: none; display: inline-flex; align-items: center; gap: 0.55rem; }
+  .logo i { font-style: normal; color: var(--accent); }
+  .logo svg { width: 26px; height: 26px; }
+  .top nav { display: flex; gap: 1.2rem; align-items: center; font-size: 0.9rem; color: var(--ink-2); white-space: nowrap; }
+  @media (max-width: 560px) { .top .pill { display: none; } }
+  .pill { font: 500 0.75rem/1 var(--mono); padding: 0.4rem 0.6rem; border-radius: 999px; background: var(--surface-2); color: var(--ink-2); border: 1px solid var(--line); }
+
+  /* Hero */
+  .hero { max-width: 1440px; margin: 0 auto; padding: clamp(1rem, 4vw, 3rem) var(--gutter) 1.4rem; }
+  h1 { font: 700 clamp(2.2rem, 1.4rem + 3.6vw, 4.2rem)/0.98 var(--display); letter-spacing: -0.035em; margin: 0 0 0.8rem; max-width: 14ch; }
+  h1 em { font-style: normal; color: var(--accent); }
+  .sub { color: var(--ink-2); font-size: 1.05rem; margin: 0 0 1.5rem; max-width: 52ch; }
+  .presets { display: flex; gap: 0.5rem; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; margin: 0 calc(-1 * var(--gutter)); padding-inline: var(--gutter); }
+  .presets::-webkit-scrollbar { display: none; }
+  .preset { flex: none; border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 0.55rem 0.95rem; font-weight: 500; font-size: 0.9rem; display: inline-flex; gap: 0.45rem; align-items: center; transition: border-color .15s, background .15s, transform .15s; }
+  .preset:hover { border-color: var(--ink-3); transform: translateY(-1px); }
+  .preset[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+  .preset span { font-size: 1rem; }
+  .presets-label { font: 500 0.72rem/1 var(--mono); color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.6rem; }
+
+  /* Layout */
+  .app { max-width: 1440px; margin: 0 auto; padding: 0 var(--gutter) 6rem; display: grid; gap: 2rem; align-items: start; }
+  @media (min-width: 1020px) { .app { grid-template-columns: var(--panel-w) 1fr; } }
+
+  /* Tune panel */
+  .panel { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; }
+  @media (min-width: 1020px) {
+    .panel { position: sticky; top: 16px; max-height: calc(100vh - 32px); overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--surface-3) transparent; }
+    .panel-head .done, .tune-fab, .scrim { display: none !important; }
+  }
+  @media (max-width: 1019.98px) {
+    .panel { position: fixed; inset: auto 0 0 0; z-index: 50; max-height: 88vh; overflow-y: auto; border-radius: 20px 20px 0 0; border-bottom: 0;
+      transform: translateY(102%); transition: transform .28s cubic-bezier(.2,.8,.2,1); padding-bottom: env(safe-area-inset-bottom); box-shadow: 0 -20px 60px oklch(0% 0 0 / .5); }
+    .panel.open { transform: none; }
+    .scrim { position: fixed; inset: 0; background: oklch(0% 0 0 / .55); z-index: 40; opacity: 0; pointer-events: none; transition: opacity .2s; }
+    .scrim.open { opacity: 1; pointer-events: auto; }
+  }
+  .panel-head { position: sticky; top: 0; z-index: 2; display: flex; justify-content: space-between; align-items: center; padding: 14px 18px; background: var(--surface); border-bottom: 1px solid var(--line); border-radius: 18px 18px 0 0; }
+  .panel-head h2 { font: 600 1rem/1 var(--display); margin: 0; display: flex; gap: 0.5rem; align-items: center; }
+  .count { font: 500 0.7rem/1 var(--mono); background: var(--accent-dim); color: var(--accent); padding: 0.3rem 0.45rem; border-radius: 6px; }
+  .head-actions { display: flex; gap: 0.4rem; }
+  .ghost { border: 1px solid var(--line); background: transparent; border-radius: 999px; padding: 0.4rem 0.8rem; font-size: 0.82rem; color: var(--ink-2); }
+  .ghost:hover { color: var(--ink); border-color: var(--ink-3); }
+  .done { background: var(--accent); color: var(--accent-ink); border: 0; font-weight: 600; }
+
+  .sec { padding: 16px 18px 18px; border-bottom: 1px solid var(--line); }
+  .sec:last-child { border-bottom: 0; }
+  .sec h3 { font: 600 0.78rem/1 var(--mono); text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-3); margin: 0 0 0.9rem; display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; }
+  .sec h3 small { text-transform: none; letter-spacing: 0; font: 400 0.78rem var(--sans); color: var(--ink-3); }
+
+  /* Loved games search */
+  .combo { position: relative; }
+  .combo input { width: 100%; background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 0.7rem 0.85rem 0.7rem 2.3rem; font-size: 0.95rem; }
+  .combo input::placeholder { color: var(--ink-3); }
+  .combo input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-dim); }
+  .combo .icon { position: absolute; left: 0.8rem; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: var(--ink-3); pointer-events: none; }
+  .results-list { position: absolute; left: 0; right: 0; top: calc(100% + 6px); z-index: 5; background: var(--surface-2); border: 1px solid var(--line); border-radius: 12px; padding: 6px; margin: 0; list-style: none; box-shadow: 0 18px 40px oklch(0% 0 0 / .45); max-height: 320px; overflow-y: auto; }
+  .results-list li { display: flex; align-items: center; gap: 0.7rem; padding: 6px 8px; border-radius: 8px; cursor: pointer; font-size: 0.9rem; }
+  .results-list li[aria-selected="true"], .results-list li:hover { background: var(--surface-3); }
+  .results-list img, .results-list .ph { width: 64px; height: 30px; border-radius: 4px; object-fit: cover; flex: none; background: var(--surface-3); }
+  .results-list .yr { margin-left: auto; color: var(--ink-3); font: 0.75rem var(--mono); }
+  .results-list .none { color: var(--ink-3); cursor: default; }
+  .chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .loved { margin-top: 0.75rem; }
+  .chip { display: inline-flex; align-items: center; gap: 0.35rem; border-radius: 999px; padding: 0.32rem 0.45rem 0.32rem 0.75rem; font-size: 0.84rem; background: var(--accent); color: var(--accent-ink); font-weight: 500; border: 0; }
+  .chip b { font-weight: 600; width: 18px; height: 18px; display: grid; place-items: center; border-radius: 50%; background: oklch(0% 0 0 / .14); font-size: 0.8rem; line-height: 1; }
+  .suggest-label { font-size: 0.78rem; color: var(--ink-3); margin: 0.9rem 0 0.45rem; }
+  .add { border: 1px dashed var(--line); background: transparent; color: var(--ink-2); border-radius: 999px; padding: 0.3rem 0.7rem; font-size: 0.82rem; }
+  .add:hover { border-style: solid; border-color: var(--accent); color: var(--ink); }
+
+  /* Trait rows */
+  .var { display: grid; grid-template-columns: 1fr auto; gap: 0.1rem 0.8rem; align-items: center; padding: 0.42rem 0; }
+  .var .name { font-size: 0.92rem; font-weight: 500; }
+  .var .desc { font-size: 0.76rem; color: var(--ink-3); grid-column: 1; }
+  .var .seg { grid-row: 1 / span 2; grid-column: 2; }
+  .seg { display: inline-flex; background: var(--bg); border: 1px solid var(--line); border-radius: 9px; padding: 2px; gap: 2px; }
+  .seg button { border: 0; background: transparent; border-radius: 7px; height: 28px; min-width: 32px; padding: 0 0.4rem; font: 500 0.78rem/1 var(--mono); color: var(--ink-3); transition: background .12s, color .12s; }
+  .seg.words button { font-family: var(--sans); font-size: 0.8rem; padding: 0 0.6rem; }
+  .seg button:hover { color: var(--ink); background: var(--surface-2); }
+  .seg button[aria-pressed="true"] { background: var(--surface-3); color: var(--ink); }
+  .seg button[aria-pressed="true"].neg { background: var(--neg-dim); color: var(--neg); }
+  .seg button[aria-pressed="true"].pos { background: var(--accent-dim); color: var(--accent); }
+  .seg button[aria-pressed="true"].pos.max { background: var(--accent); color: var(--accent-ink); }
+  .toggles { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .tog { border: 1px solid var(--line); background: var(--bg); border-radius: 999px; padding: 0.38rem 0.8rem; font-size: 0.85rem; color: var(--ink-2); transition: all .12s; }
+  .tog:hover { color: var(--ink); border-color: var(--ink-3); }
+  .tog[aria-pressed="true"] { background: var(--accent-dim); border-color: var(--accent); color: var(--accent); }
+
+  /* Library */
+  .steps { margin: 0 0 0.7rem; padding-left: 1.2rem; font-size: 0.84rem; color: var(--ink-2); }
+  .steps li { margin-bottom: 0.2rem; }
+  .steps a { overflow-wrap: anywhere; color: var(--accent); }
+  #libpaste { font: 0.78rem/1.4 var(--mono); background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 0.6rem 0.75rem; width: 100%; resize: vertical; }
+  #libpaste:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-dim); }
+  .libstatus { font-size: 0.84rem; color: var(--ink-2); margin: 0.5rem 0 0; }
+  .libstatus.ok { color: var(--accent); }
+  .linkish { background: none; border: 0; padding: 0; color: var(--ink-3); text-decoration: underline; text-underline-offset: 3px; font-size: 0.84rem; }
+
+  /* Results */
+  .res-head { display: flex; justify-content: space-between; align-items: end; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem; }
+  .res-head h2 { font: 700 1.6rem/1.1 var(--display); letter-spacing: -0.02em; margin: 0; }
+  .res-sub { color: var(--ink-3); font-size: 0.88rem; margin: 0.3rem 0 0; }
+  .cards { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); }
+  @media (min-width: 720px) { .cards .card:first-child { grid-column: span 2; } .cards .card:first-child .t { font-size: 1.35rem; } }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; display: flex; flex-direction: column; transition: transform .18s, border-color .18s, box-shadow .18s; }
+  .card:hover { transform: translateY(-3px); border-color: var(--surface-3); box-shadow: 0 18px 40px -18px oklch(0% 0 0 / .7); }
+  @media (prefers-reduced-motion: reduce) { .card { transition: none; } }
+  .art { aspect-ratio: 460 / 215; position: relative; background: linear-gradient(135deg, oklch(35% 0.09 var(--hue)), oklch(20% 0.05 calc(var(--hue) + 60))); display: grid; place-items: center; text-align: center; padding: 1rem; font: 600 1.2rem/1.15 var(--display); color: oklch(92% 0.02 var(--hue)); }
+  .art img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .art::after { content: ""; position: absolute; inset: 55% 0 0; background: linear-gradient(transparent, oklch(10% 0.01 275 / .7)); pointer-events: none; }
+  .badge { position: absolute; z-index: 1; font: 600 0.74rem/1 var(--mono); padding: 0.4rem 0.55rem; border-radius: 7px; backdrop-filter: blur(8px); }
+  .rank { top: 10px; left: 10px; background: oklch(10% 0.01 275 / .7); color: var(--ink); }
+  .match { bottom: 10px; left: 10px; background: var(--accent); color: var(--accent-ink); }
+  .match.mid { background: oklch(10% 0.01 275 / .75); color: var(--accent); }
+  .hide { position: absolute; z-index: 1; top: 8px; right: 8px; width: 30px; height: 30px; border-radius: 8px; border: 0; background: oklch(10% 0.01 275 / .7); color: var(--ink); font-size: 1rem; line-height: 1; opacity: 0; transition: opacity .15s; }
+  .card:hover .hide, .hide:focus-visible { opacity: 1; }
+  @media (hover: none) { .hide { opacity: .85; } }
+  .body { padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 0.55rem; flex: 1; }
+  .t { font: 600 1.06rem/1.25 var(--display); letter-spacing: -0.01em; margin: 0; }
+  .t a { text-decoration: none; }
+  .meta { font: 0.74rem/1.3 var(--mono); color: var(--ink-3); }
+  .why { display: flex; flex-wrap: wrap; gap: 0.3rem; margin: 0; padding: 0; list-style: none; }
+  .why li { font-size: 0.76rem; background: var(--surface-2); border-radius: 6px; padding: 0.2rem 0.5rem; color: var(--ink-2); }
+  .why li.minus { color: var(--neg); background: var(--neg-dim); }
+  .why li.own { color: var(--accent); background: var(--accent-dim); }
+  .live { margin-top: auto; font: 0.74rem/1.4 var(--mono); color: var(--ink-3); padding-top: 0.6rem; border-top: 1px solid var(--line); display: flex; gap: 0.6rem; flex-wrap: wrap; }
+  .live b { color: var(--ink); font-weight: 500; }
+  .live a { color: var(--accent); text-decoration: none; }
+  .more { display: flex; justify-content: center; margin-top: 1.2rem; }
+  .btn { border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 0.65rem 1.3rem; font-weight: 600; font-size: 0.92rem; }
+  .btn:hover { border-color: var(--accent); color: var(--accent); }
+  .wild { margin-top: 2.6rem; }
+  .wild h2 { font: 700 1.3rem/1.1 var(--display); margin: 0 0 0.3rem; }
+  .wild .cards { grid-template-columns: minmax(0, 560px); }
+  .wild .card:first-child { grid-column: auto; }
+  .empty { border: 1px dashed var(--line); border-radius: var(--radius); padding: 2.5rem 1.5rem; text-align: center; color: var(--ink-2); }
+
+  /* Mobile tune button */
+  .tune-fab { position: fixed; z-index: 30; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom)); transform: translateX(-50%); background: var(--accent); color: var(--accent-ink); border: 0; border-radius: 999px; padding: 0.85rem 1.3rem; font: 600 0.95rem/1 var(--display); box-shadow: 0 10px 30px oklch(0% 0 0 / .5); display: flex; gap: 0.5rem; align-items: center; }
+  .tune-fab .n { background: var(--accent-ink); color: var(--accent); border-radius: 999px; padding: 0.15rem 0.45rem; font: 600 0.75rem var(--mono); }
+
+  /* About */
+  .about { max-width: 1440px; margin: 0 auto; padding: 0 var(--gutter) 3rem; }
+  .about-inner { border-top: 1px solid var(--line); padding-top: 2rem; display: grid; gap: 2rem; }
+  @media (min-width: 900px) { .about-inner { grid-template-columns: 1fr 1fr; } }
+  .about-inner > div, .app > * { min-width: 0; }
+  .about h2 { font: 700 1.3rem/1.1 var(--display); margin: 0 0 0.8rem; }
+  .about p { color: var(--ink-2); margin: 0 0 0.8rem; max-width: 60ch; }
+  .formula { font: 0.78rem/1.65 var(--mono); color: var(--ink-2); background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 1rem 1.1rem; overflow-x: auto; white-space: pre; margin: 0; }
+  .foot { color: var(--ink-3); font-size: 0.82rem; margin-top: 2rem; }
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="logo" href="./" aria-label="whatto.play home">
+    <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="oklch(89% 0.18 125)"/><path d="M12 9.5v13l11-6.5z" fill="oklch(22% 0.06 125)"/></svg>
+    <span>whatto<i>.play</i></span>
+  </a>
+  <nav><span class="pill"><span id="count">–</span> games</span><a href="#about">How it works</a></nav>
+</header>
+
+<section class="hero">
+  <h1>Find your next <em>game</em>.</h1>
+  <p class="sub">Tell it what you like. Over a thousand Steam games re-rank as you go, with live prices and your own library in the mix.</p>
+  <div class="presets-label">Quick start</div>
+  <div class="presets" id="presets" role="group" aria-label="Quick start presets"></div>
+</section>
+
+<div class="app">
+  <div class="scrim" id="scrim"></div>
+  <aside class="panel" id="panel" aria-label="Tune your results">
+    <div class="panel-head">
+      <h2>Tune <span class="count" id="setcount" hidden></span></h2>
+      <div class="head-actions">
+        <button type="button" class="ghost" id="reset">Reset</button>
+        <button type="button" class="ghost done" id="done">Done</button>
+      </div>
+    </div>
+
+    <div class="sec">
+      <h3>Games you loved <small>finds more like these</small></h3>
+      <div class="combo">
+        <svg class="icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="7" cy="7" r="4.8"/><path d="M10.6 10.6L14 14"/></svg>
+        <input id="seedq" type="search" role="combobox" aria-expanded="false" aria-controls="seedlist" aria-autocomplete="list" placeholder="Search any game…" autocomplete="off" spellcheck="false">
+        <ul class="results-list" id="seedlist" role="listbox" hidden></ul>
+      </div>
+      <div class="chips loved" id="loved"></div>
+      <div class="suggest-label">Popular</div>
+      <div class="chips" id="popular"></div>
+    </div>
+
+    <div class="sec">
+      <h3>Traits <small>−− avoid · ++ must</small></h3>
+      <div id="traits"></div>
+    </div>
+
+    <div class="sec">
+      <h3>Play with</h3>
+      <div class="toggles" id="modes"></div>
+    </div>
+
+    <div class="sec">
+      <h3>Themes <small>bonus per match</small></h3>
+      <div class="toggles" id="themes"></div>
+    </div>
+
+    <div class="sec">
+      <h3>Adjustments</h3>
+      <div id="nudges"></div>
+    </div>
+
+    <div class="sec">
+      <h3>Your Steam library <small>stays on this device</small></h3>
+      <ol class="steps">
+        <li>Sign in to Steam in this browser and open <a href="https://store.steampowered.com/dynamicstore/userdata/" target="_blank" rel="noopener">store.steampowered.com/dynamicstore/userdata</a></li>
+        <li>Select all, copy, paste below</li>
+      </ol>
+      <textarea id="libpaste" rows="2" placeholder='{"rgWishlist":[…],"rgOwnedApps":[…]}' aria-label="Paste your Steam userdata"></textarea>
+      <p class="libstatus" id="libstatus"></p>
+      <div class="var" id="libmode-row" hidden><span class="name" id="n-lib">Games you own</span><span class="desc"></span>
+        <span class="seg words" role="group" aria-labelledby="n-lib" id="libmode"></span></div>
+    </div>
+  </aside>
+
+  <main id="results" aria-live="polite">
+    <div class="res-head">
+      <div>
+        <h2 id="res-h">Top picks</h2>
+        <p class="res-sub" id="res-sub"></p>
+      </div>
+      <button type="button" class="ghost" id="unhide" hidden>Show hidden</button>
+    </div>
+    <div class="cards" id="cards"></div>
+    <div class="more"><button type="button" class="btn" id="more">Show 12 more</button></div>
+    <div class="wild" id="wild"></div>
+  </main>
+</div>
+
+<button type="button" class="tune-fab" id="fab" aria-controls="panel" aria-expanded="false">
+  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 4h7M12 4h2M2 12h2M7 12h7"/><circle cx="10.5" cy="4" r="1.5"/><circle cx="5.5" cy="12" r="1.5"/></svg>
+  Tune <span class="n" id="fabn" hidden></span>
+</button>
+
+<section class="about" id="about">
+  <div class="about-inner">
+    <div>
+      <h2>How it works</h2>
+      <p>Every game has eleven traits, each scored 0 to 3: story, reflexes, thinking, open world, challenge, chill, building, realism, graphics, length and short sessions. They're worked out from the tags Steam players vote onto each game and from median playtime, then calibrated against about 190 games tagged by hand.</p>
+      <p>Your settings become weights. A game scores higher the more its traits agree with them, the more it resembles the games you loved, and the better it's rated on Steam. The list then spreads across genres so one kind of game doesn't take over.</p>
+      <p>Nothing you enter leaves your browser. Prices come live from CheapShark.</p>
+    </div>
+    <div>
+      <h2>The formula</h2>
+      <pre class="formula" id="formula"></pre>
+    </div>
+  </div>
+  <p class="foot">Data: <a href="https://steamspy.com" target="_blank" rel="noopener">SteamSpy</a>, the Steam store and <a href="https://www.cheapshark.com" target="_blank" rel="noopener">CheapShark</a> (USD). Cover art © the respective publishers. Not affiliated with Valve.</p>
+</section>
+
+<script src="hand-tags.js"></script>
+<script src="games-data.js"></script>
+<script>
+/* ---------------------------------------------------------------
+   Model
+---------------------------------------------------------------- */
+const DIMS = [
+  { k: 's', name: 'Story',          desc: 'Cutscenes, dialogue, plot',          plus: 'Story-heavy',        minus: 'Light on story' },
+  { k: 'a', name: 'Reflexes',       desc: 'Fast reactions, aiming, timing',     plus: 'Fast and twitchy',   minus: 'No twitch needed' },
+  { k: 't', name: 'Thinking',       desc: 'Planning, strategy, puzzles',        plus: 'Brain-burner',       minus: 'Switch-off brain' },
+  { k: 'x', name: 'Open world',     desc: 'Big maps to roam freely',            plus: 'Big world to roam',  minus: 'Tight and focused' },
+  { k: 'c', name: 'Challenge',      desc: 'Hard, punishing, skill-heavy',       plus: 'Properly hard',      minus: 'Forgiving' },
+  { k: 'z', name: 'Chill',          desc: 'Relaxing, low stress',               plus: 'Low-stress',         minus: 'Intense' },
+  { k: 'b', name: 'Building',       desc: 'Bases, factories, cities, crafting', plus: 'Build and tinker',   minus: 'No building' },
+  { k: 'r', name: 'Realism',        desc: 'Simulation over arcade',             plus: 'Sim-grade realism',  minus: 'Arcade fun' },
+  { k: 'g', name: 'Graphics',       desc: 'Visual showcase, pushes the GPU',    plus: 'Graphical showcase', minus: 'Simple visuals' },
+  { k: 'h', name: 'Length',         desc: 'Long games, 50+ hours or endless',   plus: 'Hundreds of hours',  minus: 'Short and tight' },
+  { k: 'k', name: 'Short sessions', desc: 'Playable in 20–30 minutes',          plus: 'Fits a short session', minus: 'Needs long sittings' },
+];
+const STEPS = [[-1, '−−', 'Avoid'], [-0.5, '−', 'Less'], [0, '·', "Don't mind"], [0.5, '+', 'More'], [1, '++', 'Must']];
+const THEMES = [
+  { id: 'motor',   label: 'Motorsport & bikes', tags: ['bikes','motor','racing','driving'] },
+  { id: 'sport',   label: 'Football & sport',   tags: ['football','sport'] },
+  { id: 'fantasy', label: 'Fantasy',            tags: ['fantasy'] },
+  { id: 'scifi',   label: 'Sci-fi & space',     tags: ['scifi','space'] },
+  { id: 'history', label: 'History & war',      tags: ['history','war'] },
+  { id: 'modern',  label: 'Modern & crime',     tags: ['modern','crime','city'] },
+  { id: 'nature',  label: 'Nature & survival',  tags: ['nature'] },
+  { id: 'anime',   label: 'Anime & JRPG',       tags: ['anime'] },
+  { id: 'mystery', label: 'Mystery & puzzle',   tags: ['mystery','puzzle'] },
+  { id: 'cozy',    label: 'Cozy',               tags: ['cozy'] },
+];
+const NUDGES = [
+  { k: 'horror', name: 'Horror',  opts: [[-1, 'Hide'], [0, 'Neutral'], [1, 'Boost']] },
+  { k: 'era',    name: 'Release', opts: [[-1, 'Older'], [0, 'Any'], [1, 'Newer']] },
+  { k: 'indie',  name: 'Studio',  opts: [[-1, 'AAA'], [0, 'Any'], [1, 'Indie']] },
+];
+const PRESETS = [
+  { id: 'story',  icon: '📖', label: 'Story binge',     w: { s: 1, x: 0.5, g: 0.5, k: -0.5 } },
+  { id: 'quick',  icon: '⏱️', label: 'Quick sessions',  w: { k: 1, h: -0.5, a: 0.5 } },
+  { id: 'brain',  icon: '🧠', label: 'Brain burners',   w: { t: 1, a: -0.5, c: 0.5 } },
+  { id: 'rush',   icon: '⚡', label: 'Adrenaline',      w: { a: 1, z: -1, c: 0.5 } },
+  { id: 'cozy',   icon: '🌿', label: 'Cozy',            w: { z: 1, c: -1, b: 0.5 }, horror: -1 },
+  { id: 'build',  icon: '🏗️', label: 'Build & tinker',  w: { b: 1, t: 0.5, h: 1 } },
+  { id: 'sim',    icon: '🏁', label: 'Sim racing',      w: { r: 1, a: 0.5, k: 0.5 }, themes: ['motor'] },
+  { id: 'coop',   icon: '🤝', label: 'Co-op night',     w: { k: 0.5 }, modes: { S: 0, C: 1, P: 0 } },
+  { id: 'show',   icon: '✨', label: 'Graphics showcase', w: { g: 1, x: 0.5 }, era: 1 },
+];
+
+/* ---------------------------------------------------------------
+   Data
+---------------------------------------------------------------- */
+const HAND = window.HAND || [];
+const BIG = Array.isArray(window.GAMES_DB) && window.GAMES_DB.length > HAND.length;
+const SRC = BIG ? window.GAMES_DB : HAND.map(r => [...r, 4, '']);
+const Q_MID = BIG ? 88 : 82;   // Steam rating (big DB) vs critic score (hand list)
+const games = SRC.map(([name, id, year, traits, modes, tags, q, pop, art], i) => {
+  const t = tags.split(',');
+  return { i, name, id, year, q, pop, art, modes, tags: t, genre: t[0], v: [...traits].map(d => (+d / 3) * 2 - 1), key: norm(name) };
+});
+function norm(s) { return s.toLowerCase().normalize('NFKD').replace(/[^a-z0-9 ]+/g, ' ').replace(/\s+/g, ' ').trim(); }
+const byName = new Map(games.map(g => [g.name, g]));
+const popular = [...games].sort((a, b) => b.pop - a.pop);
+const artUrl = g => `https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/${g.art || g.id + '/header.jpg'}`;
+
+/* ---------------------------------------------------------------
+   State (this browser only)
+---------------------------------------------------------------- */
+const KEY = 'whattoplay-v1';
+const store = {
+  get() { try { return JSON.parse(localStorage.getItem(KEY)) || JSON.parse(localStorage.getItem('pc-games-vars-v2')) || null; } catch { return null; } },
+  set(v) { try { localStorage.setItem(KEY, JSON.stringify(v)); } catch {} },
+};
+const zeroW = () => Object.fromEntries(DIMS.map(d => [d.k, 0]));
+const fresh = () => ({ w: zeroW(), modes: { S: 1, C: 1, P: 1 }, horror: 0, era: 0, indie: 0, themes: [], seeds: [], hidden: [], shown: 12, owned: [], wish: [], libMode: 'mark', preset: null });
+let state = Object.assign(fresh(), store.get() || {});
+state.seeds = state.seeds.filter(n => byName.has(n));
+const save = () => store.set(state);
+
+/* ---------------------------------------------------------------
+   Scoring
+---------------------------------------------------------------- */
+const dot = (a, b) => a.reduce((s, x, i) => s + x * b[i], 0);
+const len = a => Math.sqrt(dot(a, a)) || 1;
+let ownedSet = new Set(), wishSet = new Set();
+
+function scoreAll(p) {
+  const wv = DIMS.map(d => p.w[d.k]);
+  const wsum = wv.reduce((s, x) => s + Math.abs(x), 0) || 1;
+  const seedGames = p.seeds.map(n => byName.get(n)).filter(Boolean);
+  const centroid = seedGames.length ? DIMS.map((_, i) => seedGames.reduce((s, g) => s + g.v[i], 0) / seedGames.length) : null;
+  const anyMode = Object.values(p.modes).some(Boolean);
+
+  return games.map(g => {
+    const why = [], minus = [];
+    if (p.horror < 0 && g.tags.includes('horror')) return null;
+    if (p.seeds.includes(g.name)) return null;
+    const own = ownedSet.has(g.id), wished = wishSet.has(g.id);
+    if (p.libMode === 'hide' && own) return null;
+    if (p.libMode === 'only' && !own) return null;
+
+    // 1. Trait fit: how well the game's traits agree with your weights.
+    const contrib = DIMS.map((d, i) => ({ d, c: wv[i] * g.v[i], v: g.v[i] }));
+    const fit = contrib.reduce((s, x) => s + x.c, 0) / wsum;
+    contrib.filter(x => x.c > 0.25).sort((a, b) => b.c - a.c).slice(0, 2).forEach(x => why.push({ t: x.v > 0 ? x.d.plus : x.d.minus }));
+    const worst = contrib.filter(x => x.c < -0.4).sort((a, b) => a.c - b.c)[0];
+    if (worst) minus.push({ t: worst.v > 0 ? worst.d.plus : worst.d.minus, minus: true });
+
+    // 2. Similarity to the games you loved (cosine).
+    let sim = 0;
+    if (centroid) {
+      sim = dot(g.v, centroid) / (len(g.v) * len(centroid));
+      let best = -2, nearest = null;
+      for (const s of seedGames) { const c = dot(g.v, s.v) / (len(g.v) * len(s.v)); if (c > best) { best = c; nearest = s; } }
+      if (best > 0.55) why.unshift({ t: 'Like ' + nearest.name.replace(/[:™®].*/, '') });
+    }
+
+    // 3. Play with: a filter, not a bonus.
+    const ok = [...g.modes].filter(m => p.modes[m]);
+    const mode = !anyMode || ok.length ? 0 : -0.6;
+    if (anyMode && !ok.length) minus.unshift({ t: g.modes === 'P' ? 'Competitive only' : g.modes === 'C' ? 'Co-op only' : 'Solo only', minus: true });
+
+    // 4. Themes.
+    const hits = THEMES.filter(t => p.themes.includes(t.id) && t.tags.some(x => g.tags.includes(x)));
+    const theme = Math.min(0.3, hits.length * 0.13);
+    hits.slice(0, 2).forEach(t => why.push({ t: t.label }));
+
+    // 5. Adjustments, library, quality.
+    const horror = g.tags.includes('horror') ? (p.horror > 0 ? 0.1 : -0.12) : 0;
+    const era = p.era * Math.max(-0.2, Math.min(0.2, (g.year - 2018) / 30));
+    const indie = p.indie * (g.tags.includes('indie') ? 0.1 : -0.04);
+    const wish = wished ? 0.1 : 0;
+    const quality = (g.q - Q_MID) / 100 + (BIG ? 0.03 * (g.pop - 4) : 0);
+    if (own) why.unshift({ t: 'In your library', own: true });
+    else if (wished) why.unshift({ t: 'On your wishlist', own: true });
+
+    const total = (centroid ? 0.6 : 1) * fit + (centroid ? 0.4 : 0) * sim + mode + theme + horror + era + indie + wish + 0.7 * quality;
+    return { g, total, match: Math.round(50 + 49 * Math.tanh(total * 1.15)), why: [...why.slice(0, 3), ...minus.slice(0, 1)] };
+  }).filter(Boolean);
+}
+
+/* Greedy pick with a small variety penalty so one genre doesn't take over. */
+function rank(scored) {
+  const pool = scored.filter(s => !state.hidden.includes(s.g.name)).sort((a, b) => b.total - a.total);
+  const out = [], seen = {};
+  while (out.length < state.shown && pool.length) {
+    pool.sort((a, b) => (b.total - 0.05 * (seen[b.g.genre] || 0)) - (a.total - 0.05 * (seen[a.g.genre] || 0)));
+    const pick = pool.shift(); out.push(pick); seen[pick.g.genre] = (seen[pick.g.genre] || 0) + 1;
+  }
+  out.sort((a, b) => b.total - a.total);
+  const used = new Set(out.map(o => o.g.genre));
+  return { top: out, wild: pool.find(s => !used.has(s.g.genre)), more: pool.length > 0 };
+}
+
+/* ---------------------------------------------------------------
+   UI helpers
+---------------------------------------------------------------- */
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const toggle = (arr, x) => arr.includes(x) ? arr.filter(y => y !== x) : [...arr, x];
+const hue = s => [...s].reduce((h, c) => (h * 31 + c.charCodeAt(0)) % 360, 7);
+function changed({ keepPreset } = {}) { if (!keepPreset) state.preset = null; save(); renderForm(); renderList(); }
+
+function activeCount() {
+  return DIMS.filter(d => state.w[d.k]).length + state.themes.length + state.seeds.length
+    + NUDGES.filter(n => state[n.k]).length + (Object.values(state.modes).every(Boolean) ? 0 : 1);
+}
+
+/* ---------------------------------------------------------------
+   Presets
+---------------------------------------------------------------- */
+$('presets').innerHTML = PRESETS.map(p => `<button type="button" class="preset" data-preset="${p.id}"><span aria-hidden="true">${p.icon}</span>${p.label}</button>`).join('');
+$('presets').addEventListener('click', e => {
+  const b = e.target.closest('[data-preset]'); if (!b) return;
+  const p = PRESETS.find(x => x.id === b.dataset.preset);
+  if (state.preset === p.id) { state = Object.assign(fresh(), keepPersonal()); changed(); return; }
+  state = Object.assign(fresh(), keepPersonal(), {
+    w: { ...zeroW(), ...p.w }, themes: p.themes || [], modes: p.modes || { S: 1, C: 1, P: 1 },
+    horror: p.horror || 0, era: p.era || 0, preset: p.id,
+  });
+  changed({ keepPreset: true });
+  document.getElementById('results').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+});
+const keepPersonal = () => ({ seeds: state.seeds, hidden: state.hidden, owned: state.owned, wish: state.wish, libMode: state.libMode });
+
+/* ---------------------------------------------------------------
+   Form
+---------------------------------------------------------------- */
+function renderForm() {
+  document.querySelectorAll('[data-preset]').forEach(b => b.setAttribute('aria-pressed', state.preset === b.dataset.preset));
+  $('traits').innerHTML = DIMS.map(d => `
+    <div class="var"><span class="name" id="n-${d.k}">${d.name}</span><span class="desc">${d.desc}</span>
+      <span class="seg" role="group" aria-labelledby="n-${d.k}">${STEPS.map(([v, sym, lbl]) =>
+        `<button type="button" data-w="${d.k}" data-v="${v}" title="${lbl}" aria-label="${d.name}: ${lbl}" aria-pressed="${state.w[d.k] === v}" class="${v < 0 ? 'neg' : v > 0 ? 'pos' : ''}${v === 1 ? ' max' : ''}">${sym}</button>`).join('')}</span>
+    </div>`).join('');
+  $('modes').innerHTML = [['S', 'Solo'], ['C', 'Co-op'], ['P', 'Competitive']].map(([k, l]) =>
+    `<button type="button" class="tog" data-mode="${k}" aria-pressed="${!!state.modes[k]}">${l}</button>`).join('');
+  $('nudges').innerHTML = NUDGES.map(n => `
+    <div class="var"><span class="name" id="n-${n.k}">${n.name}</span><span class="desc"></span>
+      <span class="seg words" role="group" aria-labelledby="n-${n.k}">${n.opts.map(([v, l]) =>
+        `<button type="button" data-nudge="${n.k}" data-v="${v}" aria-pressed="${state[n.k] === v}">${l}</button>`).join('')}</span>
+    </div>`).join('');
+  $('themes').innerHTML = THEMES.map(t =>
+    `<button type="button" class="tog" data-theme="${t.id}" aria-pressed="${state.themes.includes(t.id)}">${t.label}</button>`).join('');
+  $('loved').innerHTML = state.seeds.map(n =>
+    `<button type="button" class="chip" data-unseed="${esc(n)}" aria-label="Remove ${esc(n)}">${esc(n)}<b aria-hidden="true">×</b></button>`).join('');
+  $('popular').innerHTML = popular.filter(g => !state.seeds.includes(g.name)).slice(0, 10).map(g =>
+    `<button type="button" class="add" data-seed="${esc(g.name)}">+ ${esc(g.name.replace(/[™®]/g, ''))}</button>`).join('');
+  const n = activeCount();
+  $('setcount').hidden = $('fabn').hidden = !n;
+  $('setcount').textContent = $('fabn').textContent = n;
+}
+
+$('panel').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  if (b.dataset.w) state.w[b.dataset.w] = +b.dataset.v;
+  else if (b.dataset.mode) state.modes[b.dataset.mode] = state.modes[b.dataset.mode] ? 0 : 1;
+  else if (b.dataset.nudge) state[b.dataset.nudge] = +b.dataset.v;
+  else if (b.dataset.theme) state.themes = toggle(state.themes, b.dataset.theme);
+  else if (b.dataset.seed) { if (!state.seeds.includes(b.dataset.seed)) state.seeds.push(b.dataset.seed); changed({ keepPreset: true }); return; }
+  else if (b.dataset.unseed) { state.seeds = state.seeds.filter(x => x !== b.dataset.unseed); changed({ keepPreset: true }); return; }
+  else return;
+  changed();
+});
+
+/* Search any game in the catalogue */
+const q = $('seedq'), list = $('seedlist');
+let hits = [], cursor = -1;
+function search(text) {
+  const t = norm(text); if (!t) return [];
+  const words = t.split(' ');
+  return games.filter(g => !state.seeds.includes(g.name) && words.every(w => g.key.includes(w)))
+    .map(g => ({ g, s: (g.key.startsWith(t) ? 2 : g.key.includes(t) ? 1 : 0) + g.pop / 10 }))
+    .sort((a, b) => b.s - a.s).slice(0, 8).map(x => x.g);
+}
+function renderHits() {
+  const open = q.value.trim().length > 0;
+  list.hidden = !open; q.setAttribute('aria-expanded', open);
+  if (!open) return;
+  list.innerHTML = hits.length ? hits.map((g, i) => `
+    <li role="option" id="opt-${i}" data-i="${i}" aria-selected="${i === cursor}">
+      <img src="${artUrl(g)}" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'ph'}))">
+      <span>${esc(g.name)}</span><span class="yr">${g.year}</span></li>`).join('')
+    : `<li class="none" role="option" aria-disabled="true">Not in the catalogue yet. It covers ${games.length.toLocaleString()} well-reviewed Steam games.</li>`;
+  q.setAttribute('aria-activedescendant', cursor >= 0 ? 'opt-' + cursor : '');
+}
+function pick(i) {
+  const g = hits[i]; if (!g) return;
+  state.seeds.push(g.name); q.value = ''; hits = []; cursor = -1; renderHits();
+  changed({ keepPreset: true }); q.focus();
+}
+q.addEventListener('input', () => { hits = search(q.value); cursor = hits.length ? 0 : -1; renderHits(); });
+q.addEventListener('keydown', e => {
+  if (e.key === 'ArrowDown') { e.preventDefault(); cursor = Math.min(hits.length - 1, cursor + 1); renderHits(); }
+  else if (e.key === 'ArrowUp') { e.preventDefault(); cursor = Math.max(0, cursor - 1); renderHits(); }
+  else if (e.key === 'Enter') { e.preventDefault(); pick(cursor); }
+  else if (e.key === 'Escape') { q.value = ''; hits = []; renderHits(); }
+});
+list.addEventListener('mousedown', e => { const li = e.target.closest('[data-i]'); if (li) { e.preventDefault(); pick(+li.dataset.i); } });
+q.addEventListener('blur', () => setTimeout(() => { list.hidden = true; q.setAttribute('aria-expanded', false); }, 120));
+q.addEventListener('focus', () => { if (q.value) renderHits(); });
+
+/* ---------------------------------------------------------------
+   Steam library (pasted from store.steampowered.com/dynamicstore/userdata)
+---------------------------------------------------------------- */
+const catalogueIds = new Set(games.map(g => g.id));
+function parseLibrary(text) {
+  try {
+    const j = JSON.parse(text);
+    if (Array.isArray(j.rgOwnedApps)) return { owned: j.rgOwnedApps.map(Number), wish: (j.rgWishlist || []).map(Number) };
+  } catch {}
+  const ids = [...text.matchAll(/(?:app\/)?\b(\d{2,8})\b/g)].map(m => +m[1]);
+  return ids.length ? { owned: ids, wish: [] } : null;
+}
+function renderLibrary() {
+  ownedSet = new Set(state.owned); wishSet = new Set(state.wish);
+  const has = state.owned.length > 0;
+  const inCat = state.owned.filter(id => catalogueIds.has(id)).length;
+  const st = $('libstatus');
+  st.className = 'libstatus' + (has ? ' ok' : '');
+  st.innerHTML = has ? `✓ ${state.owned.length} owned (${inCat} in the catalogue), ${state.wish.length} wishlisted · <button type="button" class="linkish" id="libclear">Clear</button>` : '';
+  $('libmode-row').hidden = !has;
+  $('libmode').innerHTML = [['mark', 'Mark'], ['hide', 'Hide'], ['only', 'Only these']].map(([v, l]) =>
+    `<button type="button" data-lib="${v}" aria-pressed="${state.libMode === v}">${l}</button>`).join('');
+  const c = $('libclear'); if (c) c.onclick = e => { e.stopPropagation(); state.owned = []; state.wish = []; state.libMode = 'mark'; save(); renderLibrary(); renderList(); };
+}
+$('libpaste').addEventListener('input', () => {
+  const text = $('libpaste').value.trim(); if (!text) return;
+  const lib = parseLibrary(text), st = $('libstatus');
+  st.className = 'libstatus';
+  if (!lib) { st.textContent = "Couldn't read that. Paste the whole page from the link above."; return; }
+  if (!lib.owned.length && !lib.wish.length) { st.textContent = 'That came back empty. Are you signed in to Steam in this browser?'; return; }
+  state.owned = lib.owned; state.wish = lib.wish; $('libpaste').value = '';
+  save(); renderLibrary(); renderList();
+});
+$('libmode').addEventListener('click', e => {
+  const b = e.target.closest('[data-lib]'); if (!b) return;
+  e.stopPropagation(); state.libMode = b.dataset.lib; save(); renderLibrary(); renderList();
+});
+
+/* ---------------------------------------------------------------
+   Results
+---------------------------------------------------------------- */
+function card(r, label) {
+  const g = r.g, strong = r.match >= 80;
+  return `<article class="card" style="--hue:${hue(g.name)}">
+    <div class="art">${esc(g.name)}
+      <img loading="lazy" alt="" src="${artUrl(g)}" onerror="this.remove()">
+      <span class="badge rank">${label}</span>
+      <span class="badge match ${strong ? '' : 'mid'}">${r.match}% match</span>
+      <button type="button" class="hide" data-hide="${esc(g.name)}" aria-label="Hide ${esc(g.name)}" title="Not for me / played it">×</button>
+    </div>
+    <div class="body">
+      <h3 class="t"><a href="https://store.steampowered.com/app/${g.id}/" target="_blank" rel="noopener">${esc(g.name)}</a></h3>
+      <div class="meta">${g.year} · ${g.genre}${g.tags.includes('indie') ? ' · indie' : ''} · ${[...g.modes].map(m => ({ S: 'solo', C: 'co-op', P: 'PvP' })[m]).join(' / ')}</div>
+      <ul class="why">${r.why.map(w => `<li class="${w.minus ? 'minus' : w.own ? 'own' : ''}">${w.minus ? '− ' : ''}${esc(w.t)}</li>`).join('')}</ul>
+      <div class="live" data-live="${g.id}">Checking prices…</div>
+    </div>
+  </article>`;
+}
+
+let liveTimer;
+function renderList() {
+  const { top, wild, more } = rank(scoreAll(state));
+  const n = activeCount();
+  const preset = PRESETS.find(p => p.id === state.preset);
+  $('res-h').textContent = preset ? `${preset.label} picks` : n ? 'Top picks for you' : 'Highest rated right now';
+  $('res-sub').textContent = n
+    ? `${games.length.toLocaleString()} games ranked against ${n} setting${n > 1 ? 's' : ''}.`
+    : `Nothing set yet, so this is by Steam rating. Pick a quick start or tune it.`;
+  $('cards').innerHTML = top.length ? top.map((r, i) => card(r, i ? '#' + (i + 1) : 'Top pick')).join('')
+    : `<div class="empty">No games match. Loosen a filter, or switch the library to “Mark”.</div>`;
+  $('more').parentElement.hidden = !more;
+  $('wild').innerHTML = wild ? `<h2>Wildcard</h2><p class="res-sub" style="margin-bottom:1rem">Best match from a genre that isn't in your list.</p><div class="cards">${card(wild, 'Wildcard')}</div>` : '';
+  $('unhide').hidden = !state.hidden.length; $('unhide').textContent = `Show hidden (${state.hidden.length})`;
+  renderFormula();
+  clearTimeout(liveTimer);
+  liveTimer = setTimeout(() => [...top, wild].filter(Boolean).forEach(r => live(r.g)), 400);
+}
+$('results').addEventListener('click', e => {
+  const b = e.target.closest('[data-hide]'); if (!b) return;
+  state.hidden.push(b.dataset.hide); save(); renderList();
+});
+$('more').onclick = () => { state.shown += 12; save(); renderList(); };
+$('unhide').onclick = () => { state.hidden = []; save(); renderList(); };
+
+function renderFormula() {
+  const seeded = state.seeds.length > 0;
+  $('formula').textContent =
+`score =
+    ${seeded ? '0.6 × ' : ''}Σ(weight · trait) / Σ|weight|
+  ${seeded ? `+ 0.4 × cosine(game, loved games)
+  ` : ''}− 0.6 if none of its modes are selected
+  + 0.13 per theme match (max 0.3)
+  + horror / release / studio (±0.2)
+  + 0.1 if on your wishlist
+  + 0.7 × quality (Steam rating, review count)
+
+your weights
+  ${DIMS.map(d => d.name.toLowerCase().padEnd(15) + (state.w[d.k] > 0 ? '+' : state.w[d.k] < 0 ? '' : ' ') + state.w[d.k]).join('\n  ')}
+
+traits are 0..3 per game, mapped to −1..+1.
+top N is greedy with −0.05 per repeated genre.`;
+}
+
+/* Live prices from CheapShark */
+const liveCache = {};
+async function live(g) {
+  const paint = html => document.querySelectorAll(`[data-live="${g.id}"]`).forEach(el => el.innerHTML = html);
+  try {
+    liveCache[g.id] ||= fetch(`https://www.cheapshark.com/api/1.0/deals?steamAppID=${g.id}&sortBy=Price&pageSize=10`).then(r => { if (!r.ok) throw r; return r.json(); });
+    const deals = await liveCache[g.id];
+    const bits = [`<span>Steam <b>${g.q}%</b></span>`];
+    if (deals.length) {
+      const d = deals.reduce((a, b) => +b.salePrice < +a.salePrice ? b : a);
+      if (+d.metacriticScore) bits.push(`<span>Meta <b>${d.metacriticScore}</b></span>`);
+      bits.push(`<a href="https://www.cheapshark.com/redirect?dealID=${encodeURIComponent(d.dealID)}" target="_blank" rel="noopener">${+d.salePrice === 0 ? 'Free' : 'US$' + d.salePrice}${+d.savings > 1 ? ` −${Math.round(d.savings)}%` : ''} →</a>`);
+    } else if (g.tags.includes('f2p')) bits.push('<span>Free to play</span>');
+    paint(bits.join(''));
+  } catch { delete liveCache[g.id]; paint(`<span>Steam <b>${g.q}%</b></span>`); }
+}
+
+/* ---------------------------------------------------------------
+   Mobile sheet + reset
+---------------------------------------------------------------- */
+function sheet(open) {
+  $('panel').classList.toggle('open', open); $('scrim').classList.toggle('open', open);
+  $('fab').setAttribute('aria-expanded', open);
+  document.body.style.overflow = open && matchMedia('(max-width: 1019.98px)').matches ? 'hidden' : '';
+}
+$('fab').onclick = () => sheet(true);
+$('done').onclick = () => sheet(false);
+$('scrim').onclick = () => sheet(false);
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && $('panel').classList.contains('open')) sheet(false); });
+$('reset').onclick = () => { state = Object.assign(fresh(), { hidden: state.hidden, owned: state.owned, wish: state.wish, libMode: state.libMode }); changed(); };
+
+$('count').textContent = games.length.toLocaleString();
+renderForm();
+renderLibrary();
+renderList();
+</script>
+</body>
+</html>

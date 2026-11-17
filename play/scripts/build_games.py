@@ -63,7 +63,7 @@ TRAIT_TAGS = {
 # theme/genre tags for the page (match the THEMES table in games.html)
 THEME_TAGS = {
     "bikes": ["Motorbike", "Bikes", "Cycling", "BMX", "Motocross"],
-    "motor": ["Racing", "Automobile Sim", "Motorbike", "Offroad", "Vehicular Combat", "Driving", "Motocross"],
+    "motor": ["Racing", "Automobile Sim", "Motorbike", "Offroad", "Driving", "Motocross"],
     "driving": ["Driving"],
     "racing": ["Racing"],
     "football": ["Football (Soccer)"],
@@ -176,7 +176,7 @@ def year_of(store):
 
 def main():
     ids = load(f"{CACHE}/ids.json") or []
-    html = open(f"{ROOT}/games.html").read()
+    html = open(f"{ROOT}/hand-tags.js").read()
     hand = {}
     for m in re.finditer(r'^\["(.*?)",(\d+),(\d+),"(\d{11})","([SCP]+)","([^"]*)",(\d+)\],?$', html, re.M):
         hand[int(m.group(2))] = m.groups()
