@@ -112,6 +112,10 @@
   .chips { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.8rem; }
   .chips span { font-size: 0.8rem; background: var(--chip); border-radius: 999px; padding: 0.15rem 0.6rem; color: var(--ink-2); }
   .toolbar { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1rem; }
+  .seedsearch { margin-top: 1rem; display: grid; gap: 0.4rem; }
+  .seedsearch input { font: inherit; color: inherit; background: var(--bg); border: 1px solid var(--line); border-radius: var(--r); padding: 0.65rem 0.9rem; width: 100%; }
+  .seedsearch input:focus { outline: 2px solid var(--next); outline-offset: 1px; }
+  .seedsearch .chips span { display: inline-flex; gap: 0.35rem; align-items: center; }
   [hidden] { display: none !important; }
   @media (max-width: 520px) { .w { grid-template-columns: 1fr 3rem; } .w label { grid-column: 1 / -1; } }
 </style>
@@ -120,7 +124,7 @@
 <main class="wrap">
   <div class="kicker"><a href="./">← The T1 build</a><span>What to play · <span id="count"></span> games</span></div>
   <h1>What should the T1 play first?</h1>
-  <p class="lede">Sixteen quick questions. Each answer sets a weight, the weights become a scoring formula, and the formula ranks a hand-tagged catalogue of PC games. Live Steam ratings and prices come from the CheapShark database.</p>
+  <p class="lede">Sixteen quick questions. Each answer sets a weight, the weights become a scoring formula, and the formula ranks <span id="count2"></span> Steam games by how well their traits fit. Live Steam ratings and prices come from the CheapShark database.</p>
 
   <section class="quiz" id="quiz" aria-live="polite"></section>
 
@@ -147,9 +151,10 @@
     </details>
   </section>
 
-  <footer>Game tags are hand-assigned and opinionated. Live data: <a href="https://www.cheapshark.com" target="_blank" rel="noopener">CheapShark</a> (USD, PC stores). Art: Steam.</footer>
+  <footer>Traits come from Steam user-tag votes and median playtime via <a href="https://steamspy.com" target="_blank" rel="noopener">SteamSpy</a>; about 190 favourites are hand-tagged. Live data: <a href="https://www.cheapshark.com" target="_blank" rel="noopener">CheapShark</a> (USD, PC stores). Art: Steam.</footer>
 </main>
 
+<script src="games-data.js"></script>
 <script>
 /* ---------------------------------------------------------------
    Catalogue. Each row: [name, steamAppId (0 = not on Steam), year,
@@ -471,11 +476,16 @@ const store = {
 let state = store.get() || { answers: {}, step: 0, done: false, overrides: {}, hidden: [] };
 state.overrides ||= {}; state.hidden ||= [];
 
-const games = G.map(([name, id, year, traits, modes, tags, q], i) => {
+const BIG = Array.isArray(window.GAMES_DB) && window.GAMES_DB.length > G.length;
+const SRC = BIG ? window.GAMES_DB : G.map(r => [...r, 4, '']);
+const Q_MID = BIG ? 88 : 82;   // Steam rating (big DB) vs critic score (hand list)
+const games = SRC.map(([name, id, year, traits, modes, tags, q, pop, art], i) => {
   const t = tags.split(',');
-  return { i, name, id, year, q, modes, tags: t, genre: t[0], v: [...traits].map(d => (+d / 3) * 2 - 1) };
+  return { i, name, id, year, q, pop, art, modes, tags: t, genre: t[0], v: [...traits].map(d => (+d / 3) * 2 - 1) };
 });
-document.getElementById('count').textContent = games.length;
+const byName = new Map(games.map(g => [g.name.toLowerCase(), g]));
+document.getElementById('count').textContent = games.length.toLocaleString();
+document.getElementById('count2').textContent = games.length.toLocaleString();
 
 /* Turn answers into a profile. */
 function buildProfile() {
@@ -492,6 +502,7 @@ function buildProfile() {
       if (fx.seed) p.seeds.push(fx.seed);
     }
   }
+  for (const n of state.extraSeeds || []) if (!p.seeds.includes(n)) p.seeds.push(n);
   for (const k in w) w[k] = Math.max(-1, Math.min(1, w[k]));
   for (const [k, v] of Object.entries(state.overrides)) if (k in w) w[k] = v;
   if (!Object.keys(p.modes).length) p.modes = { S: 1, C: 1, P: 1 };
@@ -546,7 +557,7 @@ function scoreAll(p) {
     const horror = g.tags.includes('horror') ? (p.horror > 0 ? 0.1 : -0.12) : 0;
     const era = p.era * Math.max(-0.2, Math.min(0.2, (g.year - 2018) / 30));
     const indie = p.indie * (g.tags.includes('indie') ? 0.1 : -0.04);
-    const quality = (g.q - 82) / 100;
+    const quality = (g.q - Q_MID) / 100 + (BIG ? 0.03 * (g.pop - 4) : 0);
 
     const total = (centroid ? 0.6 : 1) * fit + (centroid ? 0.4 : 0) * sim + mode + theme + horror + era + indie + 0.7 * quality;
     return { g, total, match: Math.round(50 + 49 * Math.tanh(total * 1.15)), why: [...why.slice(0, 3), ...minus.slice(0, 1)] };
@@ -557,7 +568,7 @@ function scoreAll(p) {
 function rank(scored) {
   const pool = scored.filter(s => !state.hidden.includes(s.g.name)).sort((a, b) => b.total - a.total);
   const out = [], seen = {};
-  while (out.length < 12 && pool.length) {
+  while (out.length < (state.shown || 12) && pool.length) {
     pool.sort((a, b) => (b.total - 0.09 * (seen[b.g.genre] || 0)) - (a.total - 0.09 * (seen[a.g.genre] || 0)));
     const pick = pool.shift(); out.push(pick); seen[pick.g.genre] = (seen[pick.g.genre] || 0) + 1;
   }
@@ -588,13 +599,30 @@ function renderQuiz() {
         ${q.grid ? '' : `<span class="key">${i + 1}</span>`}
         <span class="lbl">${o.label}${o.sub ? `<span class="sub">${o.sub}</span>` : ''}</span></button>`).join('')}
     </div>
+    ${q.id === 'seeds' ? `<div class="seedsearch">
+      <label for="seedq" class="small">Or search all ${games.length} games</label>
+      <input id="seedq" list="seedlist" placeholder="Type a game, press Enter" autocomplete="off">
+      <datalist id="seedlist">${games.map(g => `<option value="${esc(g.name)}">`).join('')}</datalist>
+      <div class="chips">${(state.extraSeeds || []).map(n => `<span>♥ ${esc(n)} <button class="linkish" data-unseed="${esc(n)}" aria-label="Remove ${esc(n)}">×</button></span>`).join('')}</div>
+    </div>` : ''}
     <div class="qnav">
       <button class="btn" id="back" ${state.step ? '' : 'disabled'}>Back</button>
-      ${q.multi || q.optional ? `<button class="btn primary" id="next" ${canNext ? '' : 'disabled'}>${state.step === Q.length - 1 ? (chosen.size ? 'Show my games' : 'Skip, show my games') : 'Next'}</button>` : '<span class="small">Pick one to continue</span>'}
+      ${q.multi || q.optional ? `<button class="btn primary" id="next" ${canNext ? '' : 'disabled'}>${state.step === Q.length - 1 ? (chosen.size || state.extraSeeds?.length ? 'Show my games' : 'Skip, show my games') : 'Next'}</button>` : '<span class="small">Pick one to continue</span>'}
     </div>`;
   $q.querySelectorAll('.opt').forEach(b => b.onclick = () => choose(+b.dataset.i));
   $q.querySelector('#back').onclick = () => { state.step--; save(); renderQuiz(); };
   const n = $q.querySelector('#next'); if (n) n.onclick = advance;
+  const sq = $q.querySelector('#seedq');
+  if (sq) {
+    const add = () => {
+      const g = byName.get(sq.value.trim().toLowerCase()); if (!g) return;
+      state.extraSeeds = [...new Set([...(state.extraSeeds || []), g.name])]; save(); renderQuiz();
+      $q.querySelector('#seedq').focus();
+    };
+    sq.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); e.stopPropagation(); add(); } });
+    sq.addEventListener('change', add);
+    $q.querySelectorAll('[data-unseed]').forEach(b => b.onclick = () => { state.extraSeeds = state.extraSeeds.filter(x => x !== b.dataset.unseed); save(); renderQuiz(); });
+  }
 }
 
 function choose(i) {
@@ -635,7 +663,7 @@ function card(r, label) {
   const g = r.g;
   return `<article class="card" style="--hue:${hue(g.name)}">
     <div class="art">${esc(g.name)}
-      ${g.id ? `<img loading="lazy" alt="" src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/${g.id}/header.jpg" onerror="this.remove()">` : ''}
+      ${g.id ? `<img loading="lazy" alt="" src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/${g.art || g.id + '/header.jpg'}" onerror="this.remove()">` : ''}
       <span class="rank">${label}</span>
       <button class="hide" data-hide="${esc(g.name)}" aria-label="Hide ${esc(g.name)}" title="Played it / not for me">×</button>
     </div>
@@ -660,7 +688,10 @@ function renderList() {
   const { top, wild } = rank(scoreAll(p));
   const who = Object.keys(p.modes).map(m => ({ S: 'solo', C: 'co-op', P: 'competitive' })[m]).join(', ');
   document.getElementById('res-sub').textContent = `Ranked from ${games.length} games for ${who} play${p.themes.length ? `, leaning ${THEMES.filter(t => p.themes.includes(t.id)).map(t => t.label.toLowerCase()).join(', ')}` : ''}. Tap × on anything you've played.`;
-  document.getElementById('cards').innerHTML = top.map((r, i) => card(r, '#' + (i + 1))).join('');
+  document.getElementById('cards').innerHTML = top.map((r, i) => card(r, '#' + (i + 1))).join('')
+    + `<div style="grid-column:1/-1;text-align:center"><button class="btn" id="more">Show 12 more</button></div>`;
+  document.getElementById('more').onclick = () => { state.shown = (state.shown || 12) + 12; save(); renderList(); };
+  document.getElementById('res-h').textContent = top.length > 12 ? `Your top ${top.length}` : 'Your top twelve';
   document.getElementById('wild').innerHTML = wild ? `<h2>Wildcard</h2><p class="small">Best match from a genre that didn't make your top twelve.</p>${card(wild, 'Wildcard')}` : '';
   document.querySelectorAll('[data-hide]').forEach(b => b.onclick = () => { state.hidden.push(b.dataset.hide); save(); renderList(); });
   const uh = document.getElementById('unhide');
@@ -701,7 +732,7 @@ function renderExtras(p) {
   ` : ''}+ 0.06 per matching mode, −0.6 if none   who you play with
   + 0.13 per theme match (max 0.3)
   + horror, era and indie nudges (±0.2)
-  + 0.7 × (critic score − 82) / 100       quality prior
+  + ${BIG ? '0.7 × ((Steam rating − 88) / 100 + 0.03 × log₁₀ reviews)' : '0.7 × (critic score − 82) / 100'}  quality prior
 then greedy top 12, −0.09 per repeat genre  variety`;
 }
 
@@ -723,7 +754,7 @@ async function live(g) {
   } catch { delete liveCache[g.id]; paint('Live data unavailable'); }
 }
 
-document.getElementById('retake').onclick = () => { state = { answers: {}, step: 0, done: false, overrides: {}, hidden: state.hidden }; save(); document.getElementById('results').hidden = true; $q.hidden = false; renderQuiz(); window.scrollTo(0, 0); };
+document.getElementById('retake').onclick = () => { state = { answers: {}, step: 0, done: false, overrides: {}, hidden: state.hidden, extraSeeds: [], shown: 12 }; save(); document.getElementById('results').hidden = true; $q.hidden = false; renderQuiz(); window.scrollTo(0, 0); };
 document.getElementById('unhide').onclick = () => { state.hidden = []; save(); renderList(); };
 document.getElementById('copy').onclick = async e => {
   const p = buildProfile();
