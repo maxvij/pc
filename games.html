@@ -54,28 +54,39 @@
   .mono { font-family: var(--mono); }
   footer { margin: 3rem 0; padding-top: 1.2rem; border-top: 1px solid var(--line); color: var(--ink-3); font-size: 0.85rem; }
 
-  /* Quiz */
-  .quiz { margin-top: 2rem; background: var(--bg-elev); border: 1px solid var(--line); border-radius: 18px; padding: clamp(1.2rem, 3vw, 2rem); }
-  .qbar { height: 4px; background: var(--line); border-radius: 4px; overflow: hidden; margin-bottom: 1.4rem; }
-  .qbar span { display: block; height: 100%; background: var(--next); width: calc(var(--p) * 100%); transition: width .3s ease; }
-  .qmeta { font: 500 0.78rem/1 var(--mono); color: var(--ink-3); margin-bottom: 0.7rem; }
-  .qtitle { font: 400 clamp(1.6rem, 1.2rem + 1.5vw, 2.2rem)/1.15 var(--serif); margin: 0 0 0.4rem; }
-  .qhint { color: var(--ink-2); margin: 0 0 1.3rem; font-size: 0.95rem; }
-  .opts { display: grid; gap: 0.5rem; }
-  .opts.grid { grid-template-columns: repeat(auto-fill, minmax(min(100%, 190px), 1fr)); }
-  .opt { text-align: left; background: var(--bg); border: 1px solid var(--line); border-radius: var(--r); padding: 0.75rem 0.95rem; cursor: pointer; display: flex; gap: 0.75rem; align-items: baseline; transition: border-color .15s, background .15s; }
-  .opt:hover { border-color: var(--ink-3); }
-  .opt[aria-pressed="true"] { border-color: var(--next); background: color-mix(in oklch, var(--next) 9%, var(--bg)); }
-  .opt .key { font: 500 0.72rem/1 var(--mono); color: var(--ink-3); min-width: 1ch; }
-  .opt .lbl { font-weight: 500; }
-  .opt .sub { display: block; color: var(--ink-3); font-size: 0.85rem; font-weight: 400; }
-  .qnav { display: flex; justify-content: space-between; align-items: center; margin-top: 1.4rem; gap: 1rem; }
-  .btn { border: 1px solid var(--line); background: var(--bg); border-radius: 999px; padding: 0.55rem 1.1rem; cursor: pointer; font-weight: 500; }
+  /* Form */
+  .wide { max-width: 1240px; }
+  .layout { display: grid; gap: 2rem; margin-top: 1.8rem; align-items: start; }
+  @media (min-width: 1000px) {
+    .layout { grid-template-columns: minmax(380px, 440px) 1fr; }
+    .vars { position: sticky; top: 1rem; max-height: calc(100vh - 2rem); overflow-y: auto; }
+  }
+  .vars { background: var(--bg-elev); border: 1px solid var(--line); border-radius: 16px; padding: 0.4rem 1.1rem 1.1rem; }
+  fieldset { border: 0; border-bottom: 1px solid var(--line); margin: 0; padding: 0.9rem 0 1rem; min-width: 0; }
+  legend { font-weight: 600; padding: 0; margin-bottom: 0.6rem; float: left; width: 100%; }
+  legend span { font-weight: 400; color: var(--ink-3); font-size: 0.85rem; margin-left: 0.4rem; }
+  legend + * { clear: both; }
+  .var { display: grid; grid-template-columns: 1fr auto; gap: 0.2rem 0.8rem; align-items: center; padding: 0.35rem 0; }
+  .var .name { font-size: 0.92rem; font-weight: 500; }
+  .var .desc { font-size: 0.78rem; color: var(--ink-3); grid-column: 1; }
+  .var .seg { grid-row: 1 / span 2; grid-column: 2; }
+  .seg { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+  .seg button { border: 0; background: var(--bg); padding: 0.4rem 0; width: 2.3rem; cursor: pointer; font: 500 0.78rem/1 var(--mono); color: var(--ink-3); }
+  .seg button + button { border-left: 1px solid var(--line); }
+  .seg.wide3 button { width: auto; padding: 0.4rem 0.6rem; font-family: var(--sans); }
+  .seg button:hover { color: var(--ink); }
+  .seg button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+  .seg button[aria-pressed="true"].neg { background: var(--neg); }
+  .seg button[aria-pressed="true"].pos { background: var(--next); }
+  .toggles { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+  .tog { border: 1px solid var(--line); background: var(--bg); border-radius: 999px; padding: 0.3rem 0.7rem; cursor: pointer; font-size: 0.85rem; }
+  .tog:hover { border-color: var(--ink-3); }
+  .tog[aria-pressed="true"] { background: var(--next); border-color: var(--next); color: var(--bg); }
+  #seedq { font: inherit; font-size: 0.9rem; color: inherit; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 0.5rem 0.7rem; width: 100%; margin-bottom: 0.6rem; }
+  #seedq:focus { outline: 2px solid var(--next); outline-offset: 1px; }
+  .btn { border: 1px solid var(--line); background: var(--bg); border-radius: 999px; padding: 0.45rem 1rem; cursor: pointer; font-weight: 500; font-size: 0.9rem; }
   .btn:hover { border-color: var(--ink-3); }
-  .btn.primary { background: var(--ink); color: var(--bg); border-color: var(--ink); }
-  .btn.primary:hover { background: var(--next); border-color: var(--next); }
-  .btn:disabled { opacity: .4; cursor: default; }
-  .linkish { background: none; border: 0; padding: 0; cursor: pointer; color: var(--ink-3); text-decoration: underline; text-underline-offset: 3px; font-size: 0.85rem; }
+  #results h2 { margin-top: 0; }
 
   /* Results */
   .results-head { display: flex; justify-content: space-between; align-items: end; gap: 1rem; flex-wrap: wrap; }
@@ -99,57 +110,64 @@
   .wild { margin-top: 1.4rem; }
   .wild .card { max-width: 460px; }
 
-  /* Algorithm panel */
-  .algo { background: var(--bg-elev); border: 1px solid var(--line); border-radius: 14px; padding: 1rem 1.1rem 1.2rem; margin-top: 1rem; }
-  .algo summary { cursor: pointer; font-weight: 600; }
-  .algo summary span { font-weight: 400; color: var(--ink-3); font-size: 0.9rem; }
-  .weights { display: grid; gap: 0.55rem; margin-top: 1rem; }
-  .w { display: grid; grid-template-columns: minmax(7.5rem, 11rem) 1fr 3.2rem; gap: 0.8rem; align-items: center; font-size: 0.9rem; }
-  .w label { color: var(--ink-2); }
-  .w output { font: 400 0.78rem/1 var(--mono); color: var(--ink-3); text-align: right; }
-  .w input[type=range] { width: 100%; accent-color: var(--next); }
+  /* Formula */
+  .algo { margin-top: 0.8rem; }
+  .algo summary { cursor: pointer; font-size: 0.9rem; color: var(--ink-2); }
   .formula { font: 400 0.8rem/1.6 var(--mono); color: var(--ink-2); background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 0.8rem 0.9rem; overflow-x: auto; white-space: pre; margin-top: 1rem; }
   .chips { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.8rem; }
   .chips span { font-size: 0.8rem; background: var(--chip); border-radius: 999px; padding: 0.15rem 0.6rem; color: var(--ink-2); }
   .toolbar { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1rem; }
-  .seedsearch { margin-top: 1rem; display: grid; gap: 0.4rem; }
-  .seedsearch input { font: inherit; color: inherit; background: var(--bg); border: 1px solid var(--line); border-radius: var(--r); padding: 0.65rem 0.9rem; width: 100%; }
-  .seedsearch input:focus { outline: 2px solid var(--next); outline-offset: 1px; }
-  .seedsearch .chips span { display: inline-flex; gap: 0.35rem; align-items: center; }
   [hidden] { display: none !important; }
-  @media (max-width: 520px) { .w { grid-template-columns: 1fr 3rem; } .w label { grid-column: 1 / -1; } }
 </style>
 </head>
 <body>
-<main class="wrap">
+<main class="wrap wide">
   <div class="kicker"><a href="./">← The T1 build</a><span>What to play · <span id="count"></span> games</span></div>
   <h1>What should the T1 play first?</h1>
-  <p class="lede">Sixteen quick questions. Each answer sets a weight, the weights become a scoring formula, and the formula ranks <span id="count2"></span> Steam games by how well their traits fit. Live Steam ratings and prices come from the CheapShark database.</p>
+  <p class="lede">Set each variable. Results re-rank as you go. Steam ratings and prices are live from CheapShark.</p>
 
-  <section class="quiz" id="quiz" aria-live="polite"></section>
-
-  <section id="results" hidden>
-    <div class="results-head">
-      <h2 id="res-h">Your top twelve</h2>
+  <div class="layout">
+    <form class="vars" id="vars" onsubmit="return false">
+      <fieldset>
+        <legend>Traits <span>how much you want each one</span></legend>
+        <div id="traits"></div>
+      </fieldset>
+      <fieldset>
+        <legend>Play with</legend>
+        <div class="toggles" id="modes"></div>
+      </fieldset>
+      <fieldset>
+        <legend>Adjustments</legend>
+        <div id="nudges"></div>
+      </fieldset>
+      <fieldset>
+        <legend>Themes <span>+ bonus per match</span></legend>
+        <div class="toggles" id="themes"></div>
+      </fieldset>
+      <fieldset>
+        <legend>Games I loved <span>ranks by similarity, hides them</span></legend>
+        <input id="seedq" list="seedlist" placeholder="Search and press Enter" autocomplete="off" aria-label="Add a game you loved">
+        <datalist id="seedlist"></datalist>
+        <div class="toggles" id="seeds"></div>
+      </fieldset>
       <div class="toolbar">
-        <button class="btn" id="retake">Retake</button>
-        <button class="btn" id="copy">Copy algorithm</button>
-        <button class="btn" id="unhide" hidden>Show hidden</button>
+        <button type="button" class="btn" id="reset">Reset</button>
+        <button type="button" class="btn" id="copy">Copy settings</button>
+        <button type="button" class="btn" id="unhide" hidden>Show hidden</button>
       </div>
-    </div>
-    <p class="small" id="res-sub"></p>
-    <div class="cards" id="cards"></div>
-    <div class="wild" id="wild"></div>
+      <details class="algo">
+        <summary>Formula</summary>
+        <div class="formula" id="formula"></div>
+      </details>
+    </form>
 
-    <h2>Your algorithm</h2>
-    <p class="lede">Every slider below came from an answer. Drag one and the ranking reshuffles instantly.</p>
-    <details class="algo" open>
-      <summary>Taste weights <span>−1 avoid · 0 don't care · +1 want</span></summary>
-      <div class="weights" id="weights"></div>
-      <div class="chips" id="extras"></div>
-      <div class="formula" id="formula"></div>
-    </details>
-  </section>
+    <section id="results" aria-live="polite">
+      <div class="results-head"><h2 id="res-h">Top 12</h2></div>
+      <p class="small" id="res-sub"></p>
+      <div class="cards" id="cards"></div>
+      <div class="wild" id="wild"></div>
+    </section>
+  </div>
 
   <footer>Traits come from Steam user-tag votes and median playtime via <a href="https://steamspy.com" target="_blank" rel="noopener">SteamSpy</a>; about 190 favourites are hand-tagged. Live data: <a href="https://www.cheapshark.com" target="_blank" rel="noopener">CheapShark</a> (USD, PC stores). Art: Steam.</footer>
 </main>
@@ -373,108 +391,46 @@ const G = [
 ];
 
 /* ---------------------------------------------------------------
-   Questions. Each option carries "effects": additive nudges to the
-   weights (w.*), or settings (set: {...}).
+   Variables
 ---------------------------------------------------------------- */
+const DESC = {
+  s: 'Cutscenes, dialogue, plot', a: 'Fast reactions, aiming, timing', t: 'Planning, strategy, puzzles',
+  x: 'Big maps to roam freely', c: 'Hard, punishing, skill-heavy', z: 'Relaxing, low stress',
+  b: 'Bases, factories, cities, crafting', r: 'Simulation over arcade', g: 'Visual showcase, pushes the GPU',
+  h: 'Long games, 50+ hours or endless', k: 'Playable in a 20–30 minute session',
+};
+DIMS.find(d => d.k === 'k').name = 'Short sessions';
+const STEPS = [[-1, '−−', 'Avoid'], [-0.5, '−', 'Less'], [0, '·', "Don't mind"], [0.5, '+', 'More'], [1, '++', 'Must']];
 const THEMES = [
-  { id: 'motor',   label: 'Bikes & motorsport', tags: ['bikes','motor','racing','driving'] },
+  { id: 'motor',   label: 'Motorsport & bikes', tags: ['bikes','motor','racing','driving'] },
   { id: 'sport',   label: 'Football & sport',   tags: ['football','sport'] },
-  { id: 'fantasy', label: 'Swords & magic',     tags: ['fantasy'] },
+  { id: 'fantasy', label: 'Fantasy',            tags: ['fantasy'] },
   { id: 'scifi',   label: 'Sci-fi & space',     tags: ['scifi','space'] },
   { id: 'history', label: 'History & war',      tags: ['history','war'] },
-  { id: 'modern',  label: 'Cities & crime',     tags: ['modern','crime','city'] },
-  { id: 'nature',  label: 'Outdoors & nature',  tags: ['nature'] },
+  { id: 'modern',  label: 'Modern & crime',     tags: ['modern','crime','city'] },
+  { id: 'nature',  label: 'Nature & survival',  tags: ['nature'] },
   { id: 'anime',   label: 'Anime & JRPG',       tags: ['anime'] },
-  { id: 'mystery', label: 'Mysteries & puzzles',tags: ['mystery','puzzle'] },
+  { id: 'mystery', label: 'Mystery & puzzle',   tags: ['mystery','puzzle'] },
   { id: 'cozy',    label: 'Cozy',               tags: ['cozy'] },
 ];
-const SEEDS = ["Forza Horizon 5","Rocket League","Elden Ring","The Witcher 3: Wild Hunt","Red Dead Redemption 2","Cyberpunk 2077","Grand Theft Auto V","Hades","Stardew Valley","Portal 2","Counter-Strike 2","Football Manager 2024","EA Sports FC 25","Baldur's Gate 3","Half-Life 2","Sid Meier's Civilization VI","Hollow Knight","Celeste","God of War","The Elder Scrolls V: Skyrim Special Edition","Assetto Corsa","Factorio","It Takes Two","Helldivers 2","DOOM Eternal","Subnautica","Balatro","Outer Wilds","Mass Effect Legendary Edition","Valheim"];
-
-const scale = (dim, words) => words.map((w, i) => ({ label: w[0], sub: w[1], fx: { w: { [dim]: [-1, -0.5, 0, 0.5, 1][i] } } }));
-
-const Q = [
-  { id: 'time', title: "It's a weekday morning, coffee in hand. How long have you got?", hint: 'Sets how much bite-size play matters.',
-    opts: [
-      { label: '20 minutes before work', sub: 'In, one run, out', fx: { w: { k: 1, h: -0.2 } } },
-      { label: 'About an hour', fx: { w: { k: 0.4 } } },
-      { label: 'Evenings, a couple of hours', fx: { w: { k: -0.3, h: 0.2 } } },
-      { label: 'Weekends vanish', sub: 'I want something to sink into', fx: { w: { k: -0.6, h: 0.6 } } },
-    ] },
-  { id: 'story', title: 'How do you feel about cutscenes and dialogue?', hint: 'Story weight.',
-    opts: scale('s', [['Skip, skip, skip'], ['Keep it short'], ['Fine either way'], ['Good writing pulls me in'], ['Story is the point', 'I play games like books']]) },
-  { id: 'brain', title: 'Fast hands or slow thinking?', hint: 'One slider, two weights: reflexes go one way, strategy the other.',
-    opts: [
-      { label: 'Pure reflexes', sub: 'Shooters, racers, flow state', fx: { w: { a: 1, t: -0.6 } } },
-      { label: 'Mostly action', fx: { w: { a: 0.5, t: -0.2 } } },
-      { label: 'A mix', fx: { w: { a: 0.2, t: 0.2 } } },
-      { label: 'Mostly thinking', fx: { w: { a: -0.3, t: 0.6 } } },
-      { label: 'Turn-based all day', sub: 'Pause, plan, execute', fx: { w: { a: -0.8, t: 1 } } },
-    ] },
-  { id: 'challenge', title: 'Dying 40 times to the same boss sounds…', hint: 'Challenge. Like the last rep of a calisthenics set.',
-    opts: scale('c', [['Miserable'], ['Annoying'], ['Okay now and then'], ['Satisfying'], ['Like the whole point', 'Bring on the Souls-likes']]) },
-  { id: 'world', title: 'A huge map covered in question marks?', hint: 'Open world appetite.',
-    opts: scale('x', [['Exhausting', 'Give me a straight line'], ['A bit much'], ['Depends on the game'], ['Yes, let me wander'], ['The bigger the better']]) },
-  { id: 'pulse', title: 'After a session, should your heart rate be up or down?', hint: 'Chill vs intensity.',
-    opts: [
-      { label: 'Way up', sub: 'Adrenaline, like a good ride', fx: { w: { z: -1, a: 0.2 } } },
-      { label: 'A bit up', fx: { w: { z: -0.4 } } },
-      { label: 'No preference', fx: { w: {} } },
-      { label: 'Calm', fx: { w: { z: 0.5 } } },
-      { label: 'Fully zen', sub: 'Cozy, soothing, no fail state', fx: { w: { z: 1, c: -0.3 } } },
-    ] },
-  { id: 'build', title: 'Building bases, factories or cities?', hint: 'Creative and building weight.',
-    opts: scale('b', [['Not my thing'], ['Rarely'], ['Sometimes'], ['I enjoy it'], ['I could optimise a factory for months']]) },
-  { id: 'real', title: 'Simulation or arcade?', hint: 'Realism. Think track-day physics vs boosting off a cliff.',
-    opts: scale('r', [['Full arcade', 'Fun over physics'], ['Mostly arcade'], ['Either'], ['Leaning sim'], ['Proper sim', 'Tyre temps, clutch, the lot']]) },
-  { id: 'gfx', title: "There's a 5080 and a 4K 240 Hz OLED on the desk. Should they sweat?", hint: 'Graphics showcase weight.',
-    opts: scale('g', [['Pixel art is fine'], ['Not fussed'], ['Nice to have'], ['I want it to look great'], ['Path tracing or bust']]) },
-  { id: 'length', title: 'How long should a game last?', hint: 'Game length.',
-    opts: [
-      { label: 'A weekend', sub: 'Under 10 hours', fx: { w: { h: -1 } } },
-      { label: '15 to 30 hours', fx: { w: { h: -0.3 } } },
-      { label: '50+ hours', fx: { w: { h: 0.5 } } },
-      { label: 'Endless', sub: 'One game for a whole year', fx: { w: { h: 1 } } },
-    ] },
-  { id: 'who', title: 'Who are you playing with?', hint: 'Pick any.', multi: true,
-    opts: [
-      { label: 'Just me', fx: { set: { S: 1 } } },
-      { label: 'Mates, co-op', sub: 'Discord on, same team', fx: { set: { C: 1 } } },
-      { label: 'Strangers, competitive', sub: 'Ranked, leaderboards', fx: { set: { P: 1 } } },
-    ] },
-  { id: 'horror', title: 'Horror?', hint: 'A filter, not a weight.',
-    opts: [
-      { label: 'No thanks', sub: 'Hide it', fx: { set: { horror: -1 } } },
-      { label: 'A little tension is fine', fx: { set: { horror: 0 } } },
-      { label: 'Scare me', fx: { set: { horror: 1 } } },
-    ] },
-  { id: 'themes', title: 'Which worlds pull you in?', hint: 'Pick any. Each match adds a bonus.', multi: true, grid: true,
-    opts: THEMES.map(t => ({ label: t.label, fx: { theme: t.id } })) },
-  { id: 'era', title: 'New releases or classics?', hint: 'Recency weight.',
-    opts: [
-      { label: 'Only the latest', fx: { set: { era: 1 } } },
-      { label: "Don't mind", fx: { set: { era: 0 } } },
-      { label: 'Love a classic', fx: { set: { era: -1 } } },
-    ] },
-  { id: 'indie', title: 'Blockbusters or small studios?', hint: 'Indie weight.',
-    opts: [
-      { label: 'Big budget', fx: { set: { indie: -1 } } },
-      { label: 'Either', fx: { set: { indie: 0 } } },
-      { label: 'Indie gems', fx: { set: { indie: 1 } } },
-    ] },
-  { id: 'seeds', title: 'Any of these you loved?', hint: 'Optional. They teach the algorithm by example and drop out of the results.', multi: true, grid: true, optional: true,
-    opts: SEEDS.map(n => ({ label: n, fx: { seed: n } })) },
+const NUDGES = [
+  { k: 'horror', name: 'Horror',  opts: [[-1, 'Hide'], [0, 'Neutral'], [1, 'Boost']] },
+  { k: 'era',    name: 'Release', opts: [[-1, 'Older'], [0, 'Any'], [1, 'Newer']] },
+  { k: 'indie',  name: 'Studio',  opts: [[-1, 'AAA'], [0, 'Any'], [1, 'Indie']] },
 ];
+const SUGGEST = ["Forza Horizon 5","Rocket League","Elden Ring","The Witcher 3: Wild Hunt","Red Dead Redemption 2","Cyberpunk 2077","Grand Theft Auto V","Hades","Football Manager 2024","Baldur's Gate 3","Assetto Corsa","Helldivers 2"];
 
 /* ---------------------------------------------------------------
    State
 ---------------------------------------------------------------- */
-const KEY = 'pc-games-quiz-v1';
+const KEY = 'pc-games-vars-v2';
 const store = {
   get() { try { return JSON.parse(localStorage.getItem(KEY)) || null; } catch { return null; } },
   set(v) { try { localStorage.setItem(KEY, JSON.stringify(v)); } catch {} },
 };
-let state = store.get() || { answers: {}, step: 0, done: false, overrides: {}, hidden: [] };
-state.overrides ||= {}; state.hidden ||= [];
+const fresh = () => ({ w: Object.fromEntries(DIMS.map(d => [d.k, 0])), modes: { S: 1, C: 1, P: 1 }, horror: 0, era: 0, indie: 0, themes: [], seeds: [], hidden: [], shown: 12 });
+let state = Object.assign(fresh(), store.get() || {});
+const save = () => store.set(state);
 
 const BIG = Array.isArray(window.GAMES_DB) && window.GAMES_DB.length > G.length;
 const SRC = BIG ? window.GAMES_DB : G.map(r => [...r, 4, '']);
@@ -485,29 +441,6 @@ const games = SRC.map(([name, id, year, traits, modes, tags, q, pop, art], i) =>
 });
 const byName = new Map(games.map(g => [g.name.toLowerCase(), g]));
 document.getElementById('count').textContent = games.length.toLocaleString();
-document.getElementById('count2').textContent = games.length.toLocaleString();
-
-/* Turn answers into a profile. */
-function buildProfile() {
-  const w = Object.fromEntries(DIMS.map(d => [d.k, 0]));
-  const p = { w, modes: {}, themes: [], seeds: [], horror: 0, era: 0, indie: 0 };
-  for (const q of Q) {
-    const a = state.answers[q.id];
-    if (a == null) continue;
-    for (const idx of [].concat(a)) {
-      const fx = q.opts[idx]?.fx; if (!fx) continue;
-      for (const [k, v] of Object.entries(fx.w || {})) w[k] += v;
-      for (const [k, v] of Object.entries(fx.set || {})) { if ('SCP'.includes(k)) p.modes[k] = v; else p[k] = v; }
-      if (fx.theme) p.themes.push(fx.theme);
-      if (fx.seed) p.seeds.push(fx.seed);
-    }
-  }
-  for (const n of state.extraSeeds || []) if (!p.seeds.includes(n)) p.seeds.push(n);
-  for (const k in w) w[k] = Math.max(-1, Math.min(1, w[k]));
-  for (const [k, v] of Object.entries(state.overrides)) if (k in w) w[k] = v;
-  if (!Object.keys(p.modes).length) p.modes = { S: 1, C: 1, P: 1 };
-  return p;
-}
 
 const dot = (a, b) => a.reduce((s, x, i) => s + x * b[i], 0);
 const norm = a => Math.sqrt(dot(a, a)) || 1;
@@ -517,43 +450,41 @@ function scoreAll(p) {
   const wsum = wv.reduce((s, x) => s + Math.abs(x), 0) || 1;
   const seedGames = games.filter(g => p.seeds.includes(g.name));
   const centroid = seedGames.length ? DIMS.map((_, i) => seedGames.reduce((s, g) => s + g.v[i], 0) / seedGames.length) : null;
-  const themeTags = new Set(THEMES.filter(t => p.themes.includes(t.id)).flatMap(t => t.tags));
+  const anyMode = Object.values(p.modes).some(Boolean);
 
   return games.map(g => {
-    const why = [];
+    const why = [], minus = [];
     if (p.horror < 0 && g.tags.includes('horror')) return null;
     if (p.seeds.includes(g.name)) return null;
 
     // 1. Trait fit: weighted agreement between your weights and the game's traits.
-    const contrib = DIMS.map((d, i) => ({ d, c: wv[i] * g.v[i], w: wv[i], v: g.v[i] }));
+    const contrib = DIMS.map((d, i) => ({ d, c: wv[i] * g.v[i], v: g.v[i] }));
     const fit = contrib.reduce((s, x) => s + x.c, 0) / wsum;
     contrib.filter(x => x.c > 0.25).sort((a, b) => b.c - a.c).slice(0, 2)
       .forEach(x => why.push({ t: x.v > 0 ? x.d.plus : x.d.minus }));
     const worst = contrib.filter(x => x.c < -0.4).sort((a, b) => a.c - b.c)[0];
-    const minus = [];
     if (worst) minus.push({ t: worst.v > 0 ? worst.d.plus : worst.d.minus, minus: true });
 
-    // 2. Taste by example: cosine similarity to the games you loved.
-    let sim = 0, nearest = null;
+    // 2. Similarity to the games you loved (cosine).
+    let sim = 0;
     if (centroid) {
       sim = dot(g.v, centroid) / (norm(g.v) * norm(centroid));
-      let best = -2;
+      let best = -2, nearest = null;
       for (const s of seedGames) { const c = dot(g.v, s.v) / (norm(g.v) * norm(s.v)); if (c > best) { best = c; nearest = s; } }
       if (best > 0.8) why.unshift({ t: 'Like ' + nearest.name.replace(/:.*/, '') });
     }
 
-    // 3. Who you play with.
+    // 3. Play with.
     const ok = [...g.modes].filter(m => p.modes[m]);
-    let mode = ok.length ? 0.06 * ok.length : -0.6;
-    if (!ok.length) minus.unshift({ t: g.modes === 'P' ? 'Competitive only' : g.modes === 'C' ? 'Co-op only' : 'Solo only', minus: true });
-    else if (p.modes.C && g.modes.includes('C') && !p.modes.S) why.push({ t: 'Co-op' });
+    const mode = !anyMode ? 0 : ok.length ? 0.06 * ok.length : -0.6;
+    if (anyMode && !ok.length) minus.unshift({ t: g.modes === 'P' ? 'Competitive only' : g.modes === 'C' ? 'Co-op only' : 'Solo only', minus: true });
 
     // 4. Themes.
     const hits = THEMES.filter(t => p.themes.includes(t.id) && t.tags.some(x => g.tags.includes(x)));
     const theme = Math.min(0.3, hits.length * 0.13);
     hits.slice(0, 2).forEach(t => why.push({ t: t.label }));
 
-    // 5. Small nudges.
+    // 5. Adjustments.
     const horror = g.tags.includes('horror') ? (p.horror > 0 ? 0.1 : -0.12) : 0;
     const era = p.era * Math.max(-0.2, Math.min(0.2, (g.year - 2018) / 30));
     const indie = p.indie * (g.tags.includes('indie') ? 0.1 : -0.04);
@@ -564,106 +495,77 @@ function scoreAll(p) {
   }).filter(Boolean);
 }
 
-/* Greedy pick with a variety penalty so twelve Souls-likes don't crowd the list. */
+/* Greedy pick with a variety penalty so one genre doesn't fill the list. */
 function rank(scored) {
   const pool = scored.filter(s => !state.hidden.includes(s.g.name)).sort((a, b) => b.total - a.total);
   const out = [], seen = {};
-  while (out.length < (state.shown || 12) && pool.length) {
+  while (out.length < state.shown && pool.length) {
     pool.sort((a, b) => (b.total - 0.09 * (seen[b.g.genre] || 0)) - (a.total - 0.09 * (seen[a.g.genre] || 0)));
     const pick = pool.shift(); out.push(pick); seen[pick.g.genre] = (seen[pick.g.genre] || 0) + 1;
   }
   out.sort((a, b) => b.total - a.total);
   const used = new Set(out.map(o => o.g.genre));
-  const wild = pool.find(s => !used.has(s.g.genre));
-  return { top: out, wild };
+  return { top: out, wild: pool.find(s => !used.has(s.g.genre)) };
 }
 
 /* ---------------------------------------------------------------
-   Quiz UI
+   Form
 ---------------------------------------------------------------- */
-const $q = document.getElementById('quiz');
-const save = () => store.set(state);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const $ = id => document.getElementById(id);
 
-function renderQuiz() {
-  const q = Q[state.step];
-  const a = state.answers[q.id];
-  const chosen = new Set([].concat(a ?? []));
-  const canNext = q.optional || (q.multi ? chosen.size > 0 : a != null);
-  $q.innerHTML = `
-    <div class="qbar"><span style="--p:${state.step / Q.length}"></span></div>
-    <div class="qmeta">Question ${state.step + 1} of ${Q.length}</div>
-    <h2 class="qtitle">${q.title}</h2>
-    <p class="qhint">${q.hint}</p>
-    <div class="opts ${q.grid ? 'grid' : ''}" role="group" aria-label="${q.title}">
-      ${q.opts.map((o, i) => `<button class="opt" data-i="${i}" aria-pressed="${chosen.has(i)}">
-        ${q.grid ? '' : `<span class="key">${i + 1}</span>`}
-        <span class="lbl">${o.label}${o.sub ? `<span class="sub">${o.sub}</span>` : ''}</span></button>`).join('')}
-    </div>
-    ${q.id === 'seeds' ? `<div class="seedsearch">
-      <label for="seedq" class="small">Or search all ${games.length} games</label>
-      <input id="seedq" list="seedlist" placeholder="Type a game, press Enter" autocomplete="off">
-      <datalist id="seedlist">${games.map(g => `<option value="${esc(g.name)}">`).join('')}</datalist>
-      <div class="chips">${(state.extraSeeds || []).map(n => `<span>♥ ${esc(n)} <button class="linkish" data-unseed="${esc(n)}" aria-label="Remove ${esc(n)}">×</button></span>`).join('')}</div>
-    </div>` : ''}
-    <div class="qnav">
-      <button class="btn" id="back" ${state.step ? '' : 'disabled'}>Back</button>
-      ${q.multi || q.optional ? `<button class="btn primary" id="next" ${canNext ? '' : 'disabled'}>${state.step === Q.length - 1 ? (chosen.size || state.extraSeeds?.length ? 'Show my games' : 'Skip, show my games') : 'Next'}</button>` : '<span class="small">Pick one to continue</span>'}
-    </div>`;
-  $q.querySelectorAll('.opt').forEach(b => b.onclick = () => choose(+b.dataset.i));
-  $q.querySelector('#back').onclick = () => { state.step--; save(); renderQuiz(); };
-  const n = $q.querySelector('#next'); if (n) n.onclick = advance;
-  const sq = $q.querySelector('#seedq');
-  if (sq) {
-    const add = () => {
-      const g = byName.get(sq.value.trim().toLowerCase()); if (!g) return;
-      state.extraSeeds = [...new Set([...(state.extraSeeds || []), g.name])]; save(); renderQuiz();
-      $q.querySelector('#seedq').focus();
-    };
-    sq.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); e.stopPropagation(); add(); } });
-    sq.addEventListener('change', add);
-    $q.querySelectorAll('[data-unseed]').forEach(b => b.onclick = () => { state.extraSeeds = state.extraSeeds.filter(x => x !== b.dataset.unseed); save(); renderQuiz(); });
-  }
+function renderForm() {
+  $('traits').innerHTML = DIMS.map(d => `
+    <div class="var"><span class="name" id="n-${d.k}">${d.name}</span><span class="desc">${DESC[d.k]}</span>
+      <span class="seg" role="group" aria-labelledby="n-${d.k}">${STEPS.map(([v, sym, lbl]) =>
+        `<button type="button" data-w="${d.k}" data-v="${v}" title="${lbl}" aria-label="${d.name}: ${lbl}" aria-pressed="${state.w[d.k] === v}" class="${v < 0 ? 'neg' : v > 0 ? 'pos' : ''}">${sym}</button>`).join('')}</span>
+    </div>`).join('');
+  $('modes').innerHTML = [['S', 'Solo'], ['C', 'Co-op'], ['P', 'Competitive']].map(([k, l]) =>
+    `<button type="button" class="tog" data-mode="${k}" aria-pressed="${!!state.modes[k]}">${l}</button>`).join('');
+  $('nudges').innerHTML = NUDGES.map(n => `
+    <div class="var"><span class="name" id="n-${n.k}">${n.name}</span><span class="desc"></span>
+      <span class="seg wide3" role="group" aria-labelledby="n-${n.k}">${n.opts.map(([v, l]) =>
+        `<button type="button" data-nudge="${n.k}" data-v="${v}" aria-pressed="${state[n.k] === v}">${l}</button>`).join('')}</span>
+    </div>`).join('');
+  $('themes').innerHTML = THEMES.map(t =>
+    `<button type="button" class="tog" data-theme="${t.id}" aria-pressed="${state.themes.includes(t.id)}">${t.label}</button>`).join('');
+  const seedNames = [...new Set([...state.seeds, ...SUGGEST.filter(n => byName.has(n.toLowerCase()))])];
+  $('seeds').innerHTML = seedNames.map(n =>
+    `<button type="button" class="tog" data-seed="${esc(n)}" aria-pressed="${state.seeds.includes(n)}">${esc(n)}</button>`).join('');
 }
 
-function choose(i) {
-  const q = Q[state.step];
-  if (q.multi) {
-    const s = new Set([].concat(state.answers[q.id] ?? []));
-    s.has(i) ? s.delete(i) : s.add(i);
-    state.answers[q.id] = [...s];
-    save(); renderQuiz();
-  } else {
-    state.answers[q.id] = i; save(); renderQuiz();
-    setTimeout(advance, 180);
-  }
-}
-
-function advance() {
-  if (state.step < Q.length - 1) { state.step++; save(); renderQuiz(); }
-  else { state.done = true; state.overrides = {}; save(); showResults(); }
-}
-
-document.addEventListener('keydown', e => {
-  if (state.done || e.target.matches('input')) return;
-  const q = Q[state.step];
-  const n = +e.key;
-  if (n >= 1 && n <= q.opts.length && !q.grid) choose(n - 1);
-  if (e.key === 'Enter' && (q.multi || q.optional)) advance();
-  if (e.key === 'Backspace' && state.step) { state.step--; save(); renderQuiz(); }
+$('vars').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  if (b.dataset.w) state.w[b.dataset.w] = +b.dataset.v;
+  else if (b.dataset.mode) state.modes[b.dataset.mode] = state.modes[b.dataset.mode] ? 0 : 1;
+  else if (b.dataset.nudge) state[b.dataset.nudge] = +b.dataset.v;
+  else if (b.dataset.theme) state.themes = toggle(state.themes, b.dataset.theme);
+  else if (b.dataset.seed) state.seeds = toggle(state.seeds, b.dataset.seed);
+  else return;
+  save(); renderForm(); renderList();
 });
+const toggle = (arr, x) => arr.includes(x) ? arr.filter(y => y !== x) : [...arr, x];
+
+$('seedlist').innerHTML = games.map(g => `<option value="${esc(g.name)}">`).join('');
+const addSeed = () => {
+  const g = byName.get($('seedq').value.trim().toLowerCase()); if (!g) return;
+  if (!state.seeds.includes(g.name)) state.seeds.push(g.name);
+  $('seedq').value = ''; save(); renderForm(); renderList();
+};
+$('seedq').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); addSeed(); } });
+$('seedq').addEventListener('change', addSeed);
 
 /* ---------------------------------------------------------------
-   Results UI
+   Results
 ---------------------------------------------------------------- */
-const esc = s => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const hue = s => [...s].reduce((h, c) => (h * 31 + c.charCodeAt(0)) % 360, 7);
-const steamUrl = g => g.id ? `https://store.steampowered.com/app/${g.id}/` : `https://www.google.com/search?q=${encodeURIComponent(g.name + ' PC')}`;
+const steamUrl = g => `https://store.steampowered.com/app/${g.id}/`;
 
 function card(r, label) {
   const g = r.g;
   return `<article class="card" style="--hue:${hue(g.name)}">
     <div class="art">${esc(g.name)}
-      ${g.id ? `<img loading="lazy" alt="" src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/${g.art || g.id + '/header.jpg'}" onerror="this.remove()">` : ''}
+      <img loading="lazy" alt="" src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/${g.art || g.id + '/header.jpg'}" onerror="this.remove()">
       <span class="rank">${label}</span>
       <button class="hide" data-hide="${esc(g.name)}" aria-label="Hide ${esc(g.name)}" title="Played it / not for me">×</button>
     </div>
@@ -671,69 +573,42 @@ function card(r, label) {
       <div class="title"><b><a href="${steamUrl(g)}" target="_blank" rel="noopener">${esc(g.name)}</a></b><span class="match">${r.match}%</span></div>
       <div class="meta">${g.year} · ${g.genre}${g.tags.includes('indie') ? ' · indie' : ''} · ${[...g.modes].map(m => ({ S: 'solo', C: 'co-op', P: 'PvP' })[m]).join('/')}</div>
       <ul class="why">${r.why.map(w => `<li class="${w.minus ? 'minus' : ''}">${w.minus ? '− ' : ''}${esc(w.t)}</li>`).join('')}</ul>
-      <div class="live" data-live="${g.id}">${g.id ? 'Checking CheapShark…' : 'Not on Steam'}</div>
+      <div class="live" data-live="${g.id}">Checking CheapShark…</div>
     </div>
   </article>`;
 }
 
-function showResults() {
-  $q.hidden = true;
-  document.getElementById('results').hidden = false;
-  renderWeights();
-  renderList();
-}
-
+let liveTimer;
 function renderList() {
-  const p = buildProfile();
-  const { top, wild } = rank(scoreAll(p));
-  const who = Object.keys(p.modes).map(m => ({ S: 'solo', C: 'co-op', P: 'competitive' })[m]).join(', ');
-  document.getElementById('res-sub').textContent = `Ranked from ${games.length} games for ${who} play${p.themes.length ? `, leaning ${THEMES.filter(t => p.themes.includes(t.id)).map(t => t.label.toLowerCase()).join(', ')}` : ''}. Tap × on anything you've played.`;
-  document.getElementById('cards').innerHTML = top.map((r, i) => card(r, '#' + (i + 1))).join('')
+  const { top, wild } = rank(scoreAll(state));
+  const set = DIMS.filter(d => state.w[d.k]).length;
+  $('res-h').textContent = `Top ${top.length}`;
+  $('res-sub').textContent = `${games.length.toLocaleString()} games, ${set ? `${set} trait${set > 1 ? 's' : ''} set` : 'no traits set yet, so ranked by rating'}. × hides a game.`;
+  $('cards').innerHTML = top.map((r, i) => card(r, '#' + (i + 1))).join('')
     + `<div style="grid-column:1/-1;text-align:center"><button class="btn" id="more">Show 12 more</button></div>`;
-  document.getElementById('more').onclick = () => { state.shown = (state.shown || 12) + 12; save(); renderList(); };
-  document.getElementById('res-h').textContent = top.length > 12 ? `Your top ${top.length}` : 'Your top twelve';
-  document.getElementById('wild').innerHTML = wild ? `<h2>Wildcard</h2><p class="small">Best match from a genre that didn't make your top twelve.</p>${card(wild, 'Wildcard')}` : '';
+  $('more').onclick = () => { state.shown += 12; save(); renderList(); };
+  $('wild').innerHTML = wild ? `<h2>Wildcard</h2><p class="small">Best match from a genre not in the list above.</p>${card(wild, 'Wildcard')}` : '';
   document.querySelectorAll('[data-hide]').forEach(b => b.onclick = () => { state.hidden.push(b.dataset.hide); save(); renderList(); });
-  const uh = document.getElementById('unhide');
-  uh.hidden = !state.hidden.length; uh.textContent = `Show hidden (${state.hidden.length})`;
-  renderExtras(p);
-  [...top, wild].filter(Boolean).forEach(r => live(r.g));
+  $('unhide').hidden = !state.hidden.length; $('unhide').textContent = `Show hidden (${state.hidden.length})`;
+  renderFormula();
+  clearTimeout(liveTimer);   // wait for clicking to settle before hitting the API
+  liveTimer = setTimeout(() => [...top, wild].filter(Boolean).forEach(r => live(r.g)), 400);
 }
 
-function renderWeights() {
-  const p = buildProfile();
-  document.getElementById('weights').innerHTML = DIMS.map(d => `
-    <div class="w"><label for="w-${d.k}">${d.name}</label>
-      <input type="range" id="w-${d.k}" min="-1" max="1" step="0.1" value="${p.w[d.k]}" data-k="${d.k}">
-      <output id="o-${d.k}">${fmt(p.w[d.k])}</output></div>`).join('');
-  document.querySelectorAll('.weights input').forEach(inp => inp.oninput = () => {
-    state.overrides[inp.dataset.k] = +inp.value;
-    document.getElementById('o-' + inp.dataset.k).textContent = fmt(+inp.value);
-    save(); renderList();
-  });
-}
-const fmt = v => (v > 0 ? '+' : v < 0 ? '−' : '') + Math.abs(v).toFixed(1);
-
-function renderExtras(p) {
-  const chips = [
-    ...Object.keys(p.modes).map(m => ({ S: 'Solo', C: 'Co-op', P: 'Competitive' })[m]),
-    ...THEMES.filter(t => p.themes.includes(t.id)).map(t => '+ ' + t.label),
-    p.horror < 0 ? 'No horror' : p.horror > 0 ? '+ Horror' : 'Horror ok',
-    p.era > 0 ? '+ Recent' : p.era < 0 ? '+ Classics' : null,
-    p.indie > 0 ? '+ Indie' : p.indie < 0 ? '+ AAA' : null,
-    ...p.seeds.map(s => '♥ ' + s),
-  ].filter(Boolean);
-  document.getElementById('extras').innerHTML = chips.map(c => `<span>${esc(c)}</span>`).join('');
-  const seeded = p.seeds.length > 0;
-  document.getElementById('formula').textContent =
-`score(game) =
-    ${seeded ? '0.6 × ' : ''}Σ(weight · trait) / Σ|weight|      trait fit, −1…+1
-  ${seeded ? `+ 0.4 × cosine(game, ♥ games)          taste by example
-  ` : ''}+ 0.06 per matching mode, −0.6 if none   who you play with
+function renderFormula() {
+  const seeded = state.seeds.length > 0;
+  $('formula').textContent =
+`score =
+    ${seeded ? '0.6 × ' : ''}Σ(weight · trait) / Σ|weight|
+  ${seeded ? `+ 0.4 × cosine(game, loved games)
+  ` : ''}+ 0.06 per matching mode, −0.6 if none
   + 0.13 per theme match (max 0.3)
-  + horror, era and indie nudges (±0.2)
-  + ${BIG ? '0.7 × ((Steam rating − 88) / 100 + 0.03 × log₁₀ reviews)' : '0.7 × (critic score − 82) / 100'}  quality prior
-then greedy top 12, −0.09 per repeat genre  variety`;
+  + horror / release / studio (±0.2)
+  + 0.7 × quality (${BIG ? 'Steam rating, review count' : 'critic score'})
+
+weights: ${DIMS.map(d => d.k + '=' + state.w[d.k]).join(' ')}
+traits:  0..3 per game, mapped to −1..+1
+top N:   greedy, −0.09 per repeated genre`;
 }
 
 /* Live data from CheapShark: cheapest current PC deal, Steam rating, Metacritic. */
@@ -754,15 +629,17 @@ async function live(g) {
   } catch { delete liveCache[g.id]; paint('Live data unavailable'); }
 }
 
-document.getElementById('retake').onclick = () => { state = { answers: {}, step: 0, done: false, overrides: {}, hidden: state.hidden, extraSeeds: [], shown: 12 }; save(); document.getElementById('results').hidden = true; $q.hidden = false; renderQuiz(); window.scrollTo(0, 0); };
-document.getElementById('unhide').onclick = () => { state.hidden = []; save(); renderList(); };
-document.getElementById('copy').onclick = async e => {
-  const p = buildProfile();
-  try { await navigator.clipboard.writeText(JSON.stringify(p, null, 2)); e.target.textContent = 'Copied'; } catch { e.target.textContent = 'Copy failed'; }
-  setTimeout(() => e.target.textContent = 'Copy algorithm', 1500);
+
+$('reset').onclick = () => { state = Object.assign(fresh(), { hidden: state.hidden }); save(); renderForm(); renderList(); };
+$('unhide').onclick = () => { state.hidden = []; save(); renderList(); };
+$('copy').onclick = async e => {
+  const { hidden, shown, ...settings } = state;
+  try { await navigator.clipboard.writeText(JSON.stringify(settings, null, 2)); e.target.textContent = 'Copied'; } catch { e.target.textContent = 'Copy failed'; }
+  setTimeout(() => e.target.textContent = 'Copy settings', 1500);
 };
 
-state.done ? showResults() : renderQuiz();
+renderForm();
+renderList();
 </script>
 </body>
 </html>
