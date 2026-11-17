@@ -476,7 +476,7 @@ function scoreAll(p) {
 
     // 3. Play with.
     const ok = [...g.modes].filter(m => p.modes[m]);
-    const mode = !anyMode ? 0 : ok.length ? 0.06 * ok.length : -0.6;
+    const mode = !anyMode || ok.length ? 0 : -0.6;
     if (anyMode && !ok.length) minus.unshift({ t: g.modes === 'P' ? 'Competitive only' : g.modes === 'C' ? 'Co-op only' : 'Solo only', minus: true });
 
     // 4. Themes.
@@ -500,7 +500,7 @@ function rank(scored) {
   const pool = scored.filter(s => !state.hidden.includes(s.g.name)).sort((a, b) => b.total - a.total);
   const out = [], seen = {};
   while (out.length < state.shown && pool.length) {
-    pool.sort((a, b) => (b.total - 0.09 * (seen[b.g.genre] || 0)) - (a.total - 0.09 * (seen[a.g.genre] || 0)));
+    pool.sort((a, b) => (b.total - 0.05 * (seen[b.g.genre] || 0)) - (a.total - 0.05 * (seen[a.g.genre] || 0)));
     const pick = pool.shift(); out.push(pick); seen[pick.g.genre] = (seen[pick.g.genre] || 0) + 1;
   }
   out.sort((a, b) => b.total - a.total);
@@ -601,14 +601,14 @@ function renderFormula() {
 `score =
     ${seeded ? '0.6 × ' : ''}Σ(weight · trait) / Σ|weight|
   ${seeded ? `+ 0.4 × cosine(game, loved games)
-  ` : ''}+ 0.06 per matching mode, −0.6 if none
+  ` : ''}− 0.6 if none of the game's modes are selected
   + 0.13 per theme match (max 0.3)
   + horror / release / studio (±0.2)
   + 0.7 × quality (${BIG ? 'Steam rating, review count' : 'critic score'})
 
 weights: ${DIMS.map(d => d.k + '=' + state.w[d.k]).join(' ')}
 traits:  0..3 per game, mapped to −1..+1
-top N:   greedy, −0.09 per repeated genre`;
+top N:   greedy, −0.05 per repeated genre`;
 }
 
 /* Live data from CheapShark: cheapest current PC deal, Steam rating, Metacritic. */
